@@ -1,0 +1,13 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local temporary files
+*.tmp
+*.bak
+
+# Build/package outputs
+/dist/
+/build/

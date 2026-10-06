@@ -1,0 +1,21 @@
+.card-ghost{position:fixed;z-index:120;pointer-events:none;margin:0;box-shadow:0 20px 45px rgba(0,0,0,.55);transform-origin:center;transition:transform .34s cubic-bezier(.2,.8,.2,1),opacity .34s ease,filter .34s ease}
+.card-ghost.launch{transform:translateY(-120px) scale(.82) rotate(-3deg);opacity:0;filter:brightness(1.35)}
+.enemy.fx-hit{animation:enemy-hit .28s ease}
+.enemy.fx-heavy{animation:enemy-heavy .36s ease}
+.field-hero.fx-damage{animation:hero-damage .3s ease}
+.field-hero.fx-block{animation:hero-block .34s ease}
+.field-hero.fx-heal{animation:hero-heal .45s ease}
+#battlefieldVisual.fx-combo{animation:combo-field .5s ease}
+.fx-float{position:fixed;z-index:130;pointer-events:none;font-weight:900;font-size:20px;text-shadow:0 2px 8px rgba(0,0,0,.7);transform:translate(-50%,-50%);animation:float-up .72s ease forwards}
+.fx-float.damage{color:#ff8f98}.fx-float.block{color:#8fc7ff}.fx-float.heal{color:#83e4aa}.fx-float.combo{color:#f1d27f}
+.combo-pop{position:fixed;left:50%;top:18%;transform:translate(-50%,-50%);z-index:125;padding:12px 18px;border-radius:14px;background:rgba(23,28,39,.95);border:1px solid var(--gold);font-weight:900;color:#f2d284;opacity:0;pointer-events:none}
+.combo-pop.show{animation:combo-pop .95s ease}
+@keyframes enemy-hit{0%{transform:translateX(0);filter:brightness(1)}30%{transform:translateX(7px);filter:brightness(1.75)}65%{transform:translateX(-4px)}100%{transform:translateX(0);filter:brightness(1)}}
+@keyframes enemy-heavy{0%{transform:scale(1)}30%{transform:scale(.95) rotate(-1deg);filter:brightness(2)}70%{transform:scale(1.03)}100%{transform:scale(1);filter:brightness(1)}}
+@keyframes hero-damage{0%{transform:translateX(0);filter:brightness(1)}35%{transform:translateX(-6px);filter:brightness(1.7)}70%{transform:translateX(3px)}100%{transform:translateX(0);filter:brightness(1)}}
+@keyframes hero-block{0%{filter:drop-shadow(0 0 0 rgba(120,185,255,0))}40%{filter:drop-shadow(0 0 16px rgba(120,185,255,.9));transform:scale(1.04)}100%{filter:none;transform:scale(1)}}
+@keyframes hero-heal{0%{filter:drop-shadow(0 0 0 rgba(110,220,150,0))}45%{filter:drop-shadow(0 0 18px rgba(110,220,150,.95));transform:translateY(-2px)}100%{filter:none;transform:none}}
+@keyframes combo-field{0%{box-shadow:0 0 0 rgba(229,187,105,0)}40%{box-shadow:0 0 28px rgba(229,187,105,.38)}100%{box-shadow:none}}
+@keyframes float-up{0%{opacity:0;transform:translate(-50%,-35%) scale(.8)}20%{opacity:1;transform:translate(-50%,-55%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-120%) scale(.95)}}
+@keyframes combo-pop{0%{opacity:0;transform:translate(-50%,-35%) scale(.88)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}70%{opacity:1}100%{opacity:0;transform:translate(-50%,-62%) scale(.98)}}
+@media (prefers-reduced-motion:reduce){.card-ghost,.enemy.fx-hit,.enemy.fx-heavy,.field-hero.fx-damage,.field-hero.fx-block,.field-hero.fx-heal,#battlefieldVisual.fx-combo,.fx-float,.combo-pop.show{animation:none!important;transition:none!important}}

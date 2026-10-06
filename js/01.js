@@ -1,0 +1,50 @@
+const $=s=>document.querySelector(s);
+const BASE_KAEL_HP=48;
+const BASE_LYRA_HP=38;
+const DIFFICULTIES={
+ explorer:{name:"Odkrywca",enemyHp:.89,enemyDmg:.80,postHeal:4,startGold:50,startPotions:["heal","heal"]},
+ standard:{name:"Standard",enemyHp:.90,enemyDmg:.86,postHeal:2,startGold:40,startPotions:["heal","ward"]},
+ veteran:{name:"Weteran",enemyHp:.92,enemyDmg:.90,postHeal:0,startGold:32,startPotions:["heal","ward"]}
+};
+
+const cards={
+ strike:{name:"Strike",actor:"Kael",cost:1,text:"6 dmg. +1 Momentum.",kind:"attack",dmg:6,mom:1,tag:"Kael"},
+ guard:{name:"Guard",actor:"Kael",cost:1,text:"+7 Block Kaela.",kind:"block",block:7,tag:"Kael"},
+ challenge:{name:"Prowokacja",actor:"Kael",cost:1,text:"+7 Block Kaela. Większość wrogów celuje w Kaela do następnej tury.",kind:"taunt",block:7,tag:"Tank"},
+ heavy:{name:"Heavy Strike",actor:"Kael",cost:2,text:"10 dmg + 4 za każdy Marked. Zużywa Marked.",kind:"heavy",tag:"Kael"},
+ finish:{name:"Brutal Finish",actor:"Kael",cost:2,text:"8 dmg. Przy 3 Momentum: 18 dmg i reset Momentum.",kind:"finish",tag:"Momentum"},
+ shot:{name:"Quick Shot",actor:"Lyra",cost:1,text:"5 dmg.",kind:"attack",dmg:5,tag:"Lyra"},
+ expose:{name:"Expose Weakness",actor:"Lyra",cost:1,text:"+2 Marked.",kind:"mark",mark:2,tag:"Marked"},
+ focus:{name:"Hunter's Focus",actor:"Lyra",cost:1,text:"Dobierz 2. +5 Synergy.",kind:"draw",draw:2,tag:"Lyra"},
+ evade:{name:"Evasive Step",actor:"Lyra",cost:1,text:"+6 Block Lyry, dobierz 1.",kind:"evade",block:6,draw:1,tag:"Lyra"},
+ cover:{name:"Cover Me",actor:"Duo",cost:1,text:"+7 Block Kaela, 4 dmg. Kael przechwytuje następny cios w Lyrę.",kind:"cover",trust:0,tag:"Duo"},
+ intercept:{name:"Ochrona",actor:"Duo",cost:1,text:"+5 Block Kaela. Przechwyć następny atak wymierzony w Lyrę.",kind:"intercept",trust:0,tag:"Duo"},
+ opening:{name:"Opening",actor:"Duo",cost:2,text:"Jeśli cel ma Marked: 14 dmg, +20 Synergy.",kind:"opening",trust:20,tag:"Trust 20"},
+ rally:{name:"Rally",actor:"Duo",cost:1,text:"+6 Block dla Kaela i Lyry, +15 Synergy.",kind:"rally",trust:20,tag:"Trust 20"},
+ twin:{name:"Twin Assault",actor:"Duo",cost:2,text:"10 dmg. Jeśli Marked ≥2: 17 dmg. +15 Synergy.",kind:"twin",trust:40,tag:"Trust 40"},
+ back:{name:"Back to Back",actor:"Duo",cost:3,text:"Wymaga 100 Synergy. 22 dmg wszystkim, +8 Block dla obojga.",kind:"back",trust:40,syn:100,tag:"Trust 40"},
+ protect:{name:"Shield and Arrow",actor:"Duo",cost:1,text:"+10 Block Kaela. 2 ładunki Ochrony i kontratak Lyry.",kind:"protect",trust:60,tag:"Trust 60"},
+ cross:{name:"Crossfire",actor:"Duo",cost:2,text:"8 dmg. Jeśli Kael zagrał kartę w tej turze: kolejne 8 dmg.",kind:"cross",trust:60,tag:"Trust 60"},
+ bash:{name:"Shield Bash",actor:"Kael",cost:1,text:"5 dmg + połowa Block Kaela.",kind:"shieldbash",tag:"Block"},
+ wall:{name:"Iron Wall",actor:"Kael",cost:2,text:"+12 Block Kaela i Prowokacja.",kind:"ironwall",tag:"Tank"},
+ snipe:{name:"Snipe",actor:"Lyra",cost:2,text:"7 dmg. Jeśli cel ma Marked: 16 dmg.",kind:"snipe",tag:"Marked"},
+ volley:{name:"Volley",actor:"Lyra",cost:2,text:"4 dmg wszystkim wrogom.",kind:"volley",tag:"AoE"},
+ bond:{name:"Hunter's Bond",actor:"Duo",cost:1,text:"Dobierz 2, +12 Synergy.",kind:"duodraw",trust:20,tag:"Trust 20"},
+ advancecard:{name:"Guarded Advance",actor:"Duo",cost:2,text:"10 dmg, +5 Block dla Kaela i Lyry.",kind:"guardedadvance",trust:40,tag:"Trust 40"}
+};
+
+const gearDefs={
+ ironArmor:{name:"Żelazny napierśnik",slot:"armor",desc:"+20% odporności na obrażenia fizyczne.",res:{physical:20,magic:0,toxin:0}},
+ paddedArmor:{name:"Pikowany kaftan",slot:"armor",desc:"+10% fizyczne i +10% toksyny.",res:{physical:10,magic:0,toxin:10}},
+ arcaneCharm:{name:"Amulet runiczny",slot:"amulet",desc:"+25% odporności na magię.",res:{physical:0,magic:25,toxin:0}},
+ serpentCharm:{name:"Talizman żmii",slot:"amulet",desc:"+25% odporności na toksyny.",res:{physical:0,magic:0,toxin:25}},
+ wardCharm:{name:"Amulet strażnika",slot:"amulet",desc:"+10% do wszystkich odporności.",res:{physical:10,magic:10,toxin:10}},
+ hunterPlate:{name:"Pancerz łowcy",slot:"armor",desc:"+15% fizyczne i +5% magia.",res:{physical:15,magic:5,toxin:0}}
+};
+const potionDefs={heal:{name:"Mikstura leczenia",icon:"🧪",desc:"Przywraca 18 HP."},ward:{name:"Eliksir odporności",icon:"✨",desc:"+20% odporności na magię do końca walki."},antidote:{name:"Antidotum",icon:"🌿",desc:"+25% odporności na toksyny do końca walki."},tonic:{name:"Tonik bojowy",icon:"⚔️",desc:"+12 Block i +1 Momentum."}};
+const baseDeck=["strike","strike","strike","guard","guard","challenge","heavy","finish","shot","shot","shot","expose","expose","focus","evade","cover","intercept","opening","rally"];
+const rewards=["finish","focus","evade","heavy","expose","rally","twin","guard","challenge","intercept","strike","shot","cross","protect","bash","wall","snipe","volley","bond","advancecard"];
+const ACTS=[{num:1,title:"Pogranicze",route:[[{type:"battle",label:"Patrol",terrain:"road",icon:"🛤️"},{type:"battle",label:"Wilki",terrain:"plains",icon:"🐺"}],[{type:"battle",label:"Zasadzka",terrain:"road",icon:"🗡️"},{type:"story",label:"Rozmowa na trakcie",terrain:"story",icon:"💬"}],[{type:"battle",label:"Kultystki",terrain:"ruins",icon:"🕯️"},{type:"elite",label:"Łowca głów",terrain:"ruins",icon:"☠️"}],[{type:"camp",label:"Ognisko",terrain:"camp",icon:"🔥"}],[{type:"battle",label:"Most",terrain:"road",icon:"🌉"},{type:"battle",label:"Ruiny",terrain:"ruins",icon:"🏚️"}],[{type:"event",label:"Nieznajomy",terrain:"story",icon:"❓"},{type:"battle",label:"Najemnicy",terrain:"road",icon:"⚔️"}],[{type:"battle",label:"Przełęcz",terrain:"plains",icon:"⛰️"},{type:"elite",label:"Egzekutor",terrain:"ruins",icon:"☠️"}],[{type:"shop",label:"Kupiec",terrain:"shop",icon:"🛒"}],[{type:"battle",label:"Straż przed bramą",terrain:"road",icon:"🛡️"},{type:"story",label:"Przed finałem",terrain:"story",icon:"💬"}],[{type:"boss",label:"Strażniczka Pogranicza",terrain:"boss",icon:"👑"}]]},{num:2,title:"Skażony Las",route:[[{type:"battle",label:"Zarośla",terrain:"forest",icon:"🌲"},{type:"event",label:"Leśny szept",terrain:"story",icon:"🪶"}],[{type:"battle",label:"Toksyczne bagno",terrain:"swamp",icon:"☠️"},{type:"elite",label:"Krwawy tropiciel",terrain:"forest",icon:"🕷️"}],[{type:"camp",label:"Leśne ognisko",terrain:"camp",icon:"🔥"}],[{type:"battle",label:"Korzenie",terrain:"forest",icon:"🌿"},{type:"story",label:"Stare łowy",terrain:"ruins",icon:"🗿"}],[{type:"battle",label:"Omszała brama",terrain:"ruins",icon:"🏛️"},{type:"shop",label:"Zielarka",terrain:"shop",icon:"🧪"}],[{type:"battle",label:"Gęstwina",terrain:"forest",icon:"🌲"},{type:"elite",label:"Strażnik cierni",terrain:"swamp",icon:"🛡️"}],[{type:"boss",label:"Królowa Cierni",terrain:"boss",icon:"👑"}]]}];
+function currentAct(){return ACTS[S.act]}
+let S={kaelMaxHp:BASE_KAEL_HP,lyraMaxHp:BASE_LYRA_HP,kaelHp:BASE_KAEL_HP,lyraHp:BASE_LYRA_HP,gold:40,trust:loadTrust(),deck:[...baseDeck],act:0,stage:0,wins:0,level:1,xp:0,pendingLevel:false,startSynergy:0,firstTurnEnergy:0,difficulty:"standard",kaelBlock:0,lyraBlock:0,energy:3,synergy:0,momentum:0,turn:1,draw:[],discard:[],hand:[],enemies:[],target:0,lastActor:null,lastKaelThisTurn:false,battleOver:false,currentNode:null,taunt:0,protectLyra:0,equipment:{armor:"ironArmor",amulet:"arcaneCharm"},inventory:["arcaneCharm"],potions:["heal","ward"],tempRes:{physical:0,magic:0,toxin:0}};
+function difficultyCfg(){return DIFFICULTIES[S.difficulty]||DIFFICULTIES.standard}

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Forbidden Deck — V0.8</title>
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/effects.css">
 </head>
 <body>
 <div class="app">
@@ -75,11 +76,11 @@
       </div>
 
       <div class="panel center">
-        <div class="battlefield-visual">
+        <div class="battlefield-visual" id="battlefieldVisual">
           <div class="duo-figures">
-            <div class="field-hero"><div class="hero-sketch mini kael-sketch"><svg viewBox="0 0 120 120"><circle cx="58" cy="38" r="20"/><path d="M36 40 Q58 12 80 40 L76 26 L42 26Z"/><path d="M39 63 Q58 51 77 63 L88 104 H28Z"/><circle cx="28" cy="78" r="19"/></svg></div><b>Kael</b><span id="incomingKael">Nadchodzące: 0</span></div>
+            <div class="field-hero" id="kaelField"><div class="hero-sketch mini kael-sketch"><svg viewBox="0 0 120 120"><circle cx="58" cy="38" r="20"/><path d="M36 40 Q58 12 80 40 L76 26 L42 26Z"/><path d="M39 63 Q58 51 77 63 L88 104 H28Z"/><circle cx="28" cy="78" r="19"/></svg></div><b>Kael</b><span id="incomingKael">Nadchodzące: 0</span></div>
             <div class="versus">VS</div>
-            <div class="field-hero"><div class="hero-sketch mini lyra-sketch"><svg viewBox="0 0 120 120"><circle cx="60" cy="36" r="18"/><path d="M38 42 Q60 8 82 42 Q71 25 60 24 Q49 25 38 42Z"/><path d="M40 61 Q60 52 80 61 L87 105 H33Z"/><path d="M91 26 Q112 60 91 96 M92 27 Q73 60 92 95" fill="none"/></svg></div><b>Lyra</b><span id="incomingLyra">Nadchodzące: 0</span></div>
+            <div class="field-hero" id="lyraField"><div class="hero-sketch mini lyra-sketch"><svg viewBox="0 0 120 120"><circle cx="60" cy="36" r="18"/><path d="M38 42 Q60 8 82 42 Q71 25 60 24 Q49 25 38 42Z"/><path d="M40 61 Q60 52 80 61 L87 105 H33Z"/><path d="M91 26 Q112 60 91 96 M92 27 Q73 60 92 95" fill="none"/></svg></div><b>Lyra</b><span id="incomingLyra">Nadchodzące: 0</span></div>
           </div>
           <div id="lastAction" class="last-action">Wybierz kartę i rozpocznij starcie.</div>
         </div>
@@ -119,5 +120,6 @@
 <script src="js/04.js"></script>
 <script src="js/05.js"></script>
 <script src="js/06.js"></script>
+<script src="js/07-effects.js"></script>
 </body>
 </html>

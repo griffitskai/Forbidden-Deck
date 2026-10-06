@@ -120,3 +120,8 @@
 
   if(document.getElementById("battleScreen").classList.contains("active"))renderBattle();
 })();
+
+const statusModule=document.createElement("script");
+statusModule.src="js/09-status-effects.js";
+statusModule.async=false;
+document.body.appendChild(statusModule);

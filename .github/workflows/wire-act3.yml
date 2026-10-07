@@ -1,0 +1,38 @@
+name: Wire Act III
+
+on:
+  push:
+    paths:
+      - .github/workflows/wire-act3.yml
+
+permissions:
+  contents: write
+
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add Act III module
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          if 'js/11-act3.js' not in s:
+              s=s.replace('<script src="js/10-persistence.js"></script>', '<script src="js/10-persistence.js"></script>\n<script src="js/11-act3.js"></script>')
+          p.write_text(s,encoding='utf-8')
+          PY
+          grep -n '10-persistence\|11-act3' index.html
+          node --check js/11-act3.js
+
+      - name: Commit wiring
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Wire Act III module into playable build (#4)"
+          git push

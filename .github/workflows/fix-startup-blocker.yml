@@ -1,0 +1,46 @@
+name: Fix startup blocker
+
+on:
+  push:
+    paths:
+      - .github/workflows/fix-startup-blocker.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Rename browser-conflicting top helper
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(js/02.js js/03.js js/04.js js/06.js js/08-deck-control.js)
+          for file in "${files[@]}"; do
+            perl -0pi -e 's/\btop\(\)/renderTopBar()/g' "$file"
+          done
+
+          if grep -RIn --include='*.js' -E '\btop\(\)' js; then
+            echo "Legacy top() reference remains"
+            exit 1
+          fi
+
+          grep -n 'function renderTopBar' js/02.js
+          for file in js/*.js; do
+            node --check "$file"
+          done
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add js/02.js js/03.js js/04.js js/06.js js/08-deck-control.js
+          git commit -m "Fix startup blocker: rename top helper (#9)"
+          git push

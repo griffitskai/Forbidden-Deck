@@ -2,9 +2,15 @@
 
 **Forbidden Deck** to przeglądarkowy roguelike deckbuilder rozwijany iteracyjnie w HTML/CSS/JavaScript.
 
+## 🎮 Zagraj w aktualną wersję
+
+### **[▶️ URUCHOM FORBIDDEN DECK](https://griffitskai.github.io/Forbidden-Deck/)**
+
+Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po każdej zaakceptowanej zmianie.
+
 ## Aktualny stan
 
-Wersja robocza: **V0.8**.
+Wersja robocza: **V0.8+**.
 
 Gra zawiera obecnie:
 
@@ -20,9 +26,11 @@ Gra zawiera obecnie:
 - dwa akty: **Pogranicze** i **Skażony Las**,
 - mapę wyboru trasy, walki, elity, ogniska, sklepy, wydarzenia i bossów,
 - boczny dziennik walki,
-- kolejne karty i buildy oparte o Block, Marked, Momentum oraz Synergy.
+- animacje i feedback trafień,
+- ulepszanie oraz usuwanie kart,
+- statusy: krwawienie, trucizna, podpalenie i osłabienie.
 
-## Uruchomienie
+## Uruchomienie lokalne
 
 Nie jest potrzebna instalacja ani serwer.
 
@@ -40,11 +48,10 @@ Nowe prace prowadzimy przez GitHub Issues i małe, testowalne zmiany.
 
 Priorytetem nadal jest **grywalność**. Kolejne duże obszary:
 
-1. animacje i czytelniejsze efekty walki,
-2. ulepszanie/usuwanie kart,
-3. statusy (krwawienie, trucizna, podpalenie, osłabienie),
-4. trzeci akt i kolejni przeciwnicy,
-5. zapis/progresja pomiędzy sesjami.
+1. trzeci akt i kolejni przeciwnicy,
+2. zapis/progresja pomiędzy sesjami,
+3. dalszy balans kart, statusów i ekwipunku,
+4. kolejne wydarzenia oraz rozwój relacji Kael–Lyra.
 
 Warstwa romantyczna/18+ pozostaje dodatkiem do pełnoprawnej gry i nie jest obecnie priorytetem.
 

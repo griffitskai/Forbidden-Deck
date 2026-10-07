@@ -1,0 +1,7 @@
+.map-panel[data-act="3"]{background:linear-gradient(180deg,rgba(55,34,38,.98),rgba(20,18,24,.99));box-shadow:0 18px 55px rgba(44,12,15,.35)}
+.node.ash .scene{background:linear-gradient(180deg,#725b6a 0%,#5b4d54 42%,#3d3638 68%,#231f21 100%)}
+.node.lava .scene{background:linear-gradient(180deg,#6c4653 0%,#5d3537 42%,#9b4d2e 72%,#391d1b 100%)}
+.node.citadel .scene{background:linear-gradient(180deg,#665769 0%,#514751 40%,#38333a 70%,#211e26 100%)}
+.node.sanctum .scene{background:radial-gradient(circle at 50% 75%,#a34731 0%,#4c2e35 35%,#211b25 78%)}
+.node.ash,.node.lava,.node.citadel,.node.sanctum{border-color:#76535b}
+.node.ash .meta strong,.node.lava .meta strong,.node.citadel .meta strong,.node.sanctum .meta strong{color:#f1d7cf}

@@ -33,3 +33,6 @@ jobs:
 
       - name: Run save and continue smoke test
         run: node tests/persistence-smoke.mjs
+
+      - name: Run Act III smoke test
+        run: node tests/act3-smoke.mjs

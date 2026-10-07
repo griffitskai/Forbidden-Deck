@@ -1,5 +1,5 @@
 function renderMap(){
- top();
+ renderTopBar();
  const act=currentAct(), route=act.route;
  const panel=document.querySelector('.map-panel'); if(panel) panel.dataset.act=String(act.num);
  const mapEl=$("#map"); mapEl.innerHTML="";

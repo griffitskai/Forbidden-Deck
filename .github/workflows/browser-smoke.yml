@@ -30,3 +30,6 @@ jobs:
 
       - name: Run gameplay smoke test
         run: node tests/browser-smoke.mjs
+
+      - name: Run save and continue smoke test
+        run: node tests/persistence-smoke.mjs

@@ -8,6 +8,8 @@
 
 Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po każdej zaakceptowanej zmianie.
 
+> Jeśli link zwraca 404 przy pierwszym uruchomieniu: wejdź w **Settings → Pages → Build and deployment → Source → GitHub Actions**. To jednorazowe ustawienie repozytorium.
+
 ## Aktualny stan
 
 Wersja robocza: **V0.8+**.

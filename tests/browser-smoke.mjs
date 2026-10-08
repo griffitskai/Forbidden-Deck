@@ -17,6 +17,23 @@ function assert(condition, message) {
 try {
   await page.goto('http://127.0.0.1:8000/', { waitUntil: 'networkidle' });
 
+  await page.waitForSelector('#startScreen:not(.hidden)', { timeout: 10000 });
+  assert(await page.locator('#menuNew').count() === 1, 'Ekran startowy nie ma przycisku Nowy run.');
+  assert(await page.locator('#menuCodex').count() === 1, 'Ekran startowy nie ma wejścia do Codexu.');
+
+  await page.locator('#menuCodex').click();
+  await page.waitForSelector('#codexScreen.show');
+  const codexCards = await page.locator('#codexBody .codex-card').count();
+  assert(codexCards >= 10, `Codex powinien pokazywać kolekcję kart, widzi ${codexCards}.`);
+  await page.locator('#codexBack').click();
+  await page.waitForSelector('#startScreen:not(.hidden)');
+
+  await page.locator('#menuNew').click();
+  await page.waitForSelector('#overlay.show');
+  const standard = page.locator('.difficulty-card').filter({ hasText: 'Standard' });
+  assert(await standard.count() === 1, 'Nie znaleziono poziomu trudności Standard.');
+  await standard.click();
+
   await page.waitForSelector('.node:not(.locked)', { timeout: 10000 });
   const activeNodes = await page.locator('.node:not(.locked)').count();
   assert(activeNodes >= 1, 'Mapa nie ma aktywnego pola startowego.');
@@ -42,7 +59,7 @@ try {
   assert(pageErrors.length === 0, `Błędy JavaScript: ${pageErrors.join(' | ')}`);
   assert(consoleErrors.length === 0, `Błędy konsoli: ${consoleErrors.join(' | ')}`);
 
-  console.log(`Smoke test OK: ${activeNodes} aktywne pola, ${enemies} przeciwników, 5 kart, tura ${turn}.`);
+  console.log(`Smoke test OK: menu + Codex, ${activeNodes} aktywne pola, ${enemies} przeciwników, 5 kart, tura ${turn}.`);
 } finally {
   await browser.close();
 }

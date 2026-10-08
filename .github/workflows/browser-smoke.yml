@@ -42,3 +42,6 @@ jobs:
 
       - name: Run meta history smoke test
         run: node tests/meta-history-smoke.mjs
+
+      - name: Run relationship progression smoke test
+        run: node tests/relationship-smoke.mjs

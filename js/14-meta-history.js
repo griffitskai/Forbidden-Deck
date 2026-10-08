@@ -42,6 +42,7 @@
       if(['bleedattack','poisonattack','burnattack','weakattack','cleanse'].includes(d.kind)||['Krwawienie','Trucizna','Podpalenie','Osłabienie','Status'].includes(d.tag))status++;
       if(['block','taunt','cover','intercept','rally','protect','ironwall','guardedadvance','laststand','cinderguard'].includes(d.kind)||['Tank','Block'].includes(d.tag))defense++;
     });
+    if(defense>=6&&defense>=duo+2&&defense>=status)return'Obrona';
     if(status>=5&&status>=duo)return'Statusy';
     if(duo>=Math.max(5,status+1))return'Duo / Synergy';
     if(defense>=6)return'Obrona';

@@ -48,7 +48,9 @@ async function runProfile(name, deck) {
     startBattle(bossEncounter());
   }, deck);
 
-  for (let loop = 0; loop < 24; loop++) {
+  // Tank może wygrać wolniej niż build ofensywny. Limit ma wykrywać stalemate,
+  // a nie wymuszać identyczny czas zabicia dla wszystkich archetypów.
+  for (let loop = 0; loop < 32; loop++) {
     const state = await page.evaluate(() => ({
       over: S.battleOver,
       aliveEnemies: liveEnemies().length,
@@ -147,10 +149,11 @@ try {
   const results = {};
   for (const [name,deck] of Object.entries(profiles)) results[name] = await runProfile(name,deck);
 
+  console.log('Act III build results:', results);
   for (const [name,result] of Object.entries(results)) {
     assert(result.won, `Build ${name} nie pokonał Królowej Popiołu na Standardzie (tura ${result.turn}, K ${result.kaelHp}, L ${result.lyraHp}).`);
   }
-  console.log('Act III build diversity OK:', results);
+  console.log('Act III build diversity OK.');
 } finally {
   await browser.close();
 }

@@ -21,6 +21,8 @@ const profiles = {
 };
 
 const defensive = new Set(['wall','challenge','guard','rally','cover','intercept','evade','laststand','cinderguard','protect','advancecard','purify']);
+const lyraDefense = new Set(['cover','intercept','protect','rally','evade','laststand','advancecard']);
+const protection = new Set(['cover','intercept','protect']);
 const drawCards = new Set(['focus','bond']);
 
 async function runProfile(name, deck) {
@@ -56,19 +58,48 @@ async function runProfile(name, deck) {
     }));
     if (state.over || state.aliveEnemies === 0 || state.kaelHp <= 0 || state.lyraHp <= 0) break;
 
-    await page.evaluate(({defensiveIds, drawIds}) => {
+    await page.evaluate(({defensiveIds, lyraDefenseIds, protectionIds, drawIds}) => {
       const defensiveSet = new Set(defensiveIds);
+      const lyraDefenseSet = new Set(lyraDefenseIds);
+      const protectionSet = new Set(protectionIds);
       const drawSet = new Set(drawIds);
       const live = liveEnemies();
+      const queen = live.find(e => e.pattern === 'ashqueen');
+
+      // Zachowuj się jak rozsądny gracz: w II fazie wykorzystaj miksturę odporności na magię.
+      if (queen && queen.hp / queen.maxHp <= .55 && (S.tempRes?.magic || 0) < 20) {
+        const wardSlot = S.potions.indexOf('ward');
+        if (wardSlot >= 0) usePotion(wardSlot);
+      }
+
+      // Mikstura leczenia ma służyć ratowaniu bohatera, a nie leżeć do końca walki.
+      const lowKael = S.kaelHp / S.kaelMaxHp < .38;
+      const lowLyra = S.lyraHp / S.lyraMaxHp < .38;
+      const healSlot = S.potions.indexOf('heal');
+      if ((lowKael || lowLyra) && healSlot >= 0) {
+        const target = (S.lyraHp / S.lyraMaxHp) < (S.kaelHp / S.kaelMaxHp) ? 'Lyra' : 'Kael';
+        usePotion(healSlot);
+        const button = [...document.querySelectorAll('#modalBody .choice')].find(b => b.textContent.includes(target));
+        if (button) button.click();
+      }
+
       const sealIndex = S.enemies.findIndex(e => e.hp > 0 && e.name.includes('pieczęć'));
       const queenIndex = S.enemies.findIndex(e => e.hp > 0 && e.pattern === 'ashqueen');
       S.target = sealIndex >= 0 ? sealIndex : queenIndex;
 
-      const incoming = live.reduce((sum,e) => {
+      let incomingKael = 0;
+      let incomingLyra = 0;
+      for (const e of liveEnemies()) {
         const it = intentFor(e);
-        return sum + (it.type === 'attack' ? it.v * (it.hits || 1) : 0);
-      }, 0);
+        if (it.type !== 'attack') continue;
+        let target = targetFor(e,it);
+        if (target === 'lyra' && S.protectLyra > 0 && !it.ignoreProtect) target = 'kael';
+        const amount = it.v * (it.hits || 1);
+        if (target === 'lyra') incomingLyra += amount; else incomingKael += amount;
+      }
+      const incoming = incomingKael + incomingLyra;
       const hurt = S.kaelHp < S.kaelMaxHp * .55 || S.lyraHp < S.lyraMaxHp * .55;
+      const lyraThreatened = incomingLyra >= 9 || S.lyraHp < S.lyraMaxHp * .5;
       const hasStatus = S.heroStatus && [S.heroStatus.kael,S.heroStatus.lyra].some(x => x && Object.values(x).some(v => v > 0));
 
       let safety = 0;
@@ -79,7 +110,9 @@ async function runProfile(name, deck) {
           const id = x.c.id.replace(/\+$/,'');
           let score = 20;
           if (id === 'purify' && hasStatus) score += 100;
-          if (defensiveSet.has(id) && (incoming >= 12 || hurt)) score += 65;
+          if (protectionSet.has(id) && lyraThreatened && S.protectLyra <= 0) score += 125;
+          if (lyraDefenseSet.has(id) && lyraThreatened) score += 80;
+          if (defensiveSet.has(id) && (incoming >= 12 || hurt)) score += 55;
           if (id === 'back' && S.synergy >= 100) score += 95;
           if (['executionarrow','snipe','heavy','twin','cross','bloodbond','finish','bloodrush'].includes(id)) score += 45;
           if (['deepcut','venomarrow','firearrow','ashshot','hamstring','expose'].includes(id)) score += 34;
@@ -93,7 +126,12 @@ async function runProfile(name, deck) {
         if (nextSeal >= 0) S.target = nextSeal; else if (nextQueen >= 0) S.target = nextQueen;
       }
       if (!S.battleOver) endTurn();
-    }, {defensiveIds:[...defensive], drawIds:[...drawCards]});
+    }, {
+      defensiveIds:[...defensive],
+      lyraDefenseIds:[...lyraDefense],
+      protectionIds:[...protection],
+      drawIds:[...drawCards]
+    });
   }
 
   return await page.evaluate(() => ({

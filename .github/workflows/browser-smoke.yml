@@ -45,3 +45,6 @@ jobs:
 
       - name: Run relationship progression smoke test
         run: node tests/relationship-smoke.mjs
+
+      - name: Run combat intent preview smoke test
+        run: node tests/intent-preview-smoke.mjs

@@ -39,3 +39,6 @@ jobs:
 
       - name: Run Act III build diversity test
         run: node tests/act3-builds-smoke.mjs
+
+      - name: Run meta history smoke test
+        run: node tests/meta-history-smoke.mjs

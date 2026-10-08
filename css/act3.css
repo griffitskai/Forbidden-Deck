@@ -5,3 +5,5 @@
 .node.sanctum .scene{background:radial-gradient(circle at 50% 75%,#a34731 0%,#4c2e35 35%,#211b25 78%)}
 .node.ash,.node.lava,.node.citadel,.node.sanctum{border-color:#76535b}
 .node.ash .meta strong,.node.lava .meta strong,.node.citadel .meta strong,.node.sanctum .meta strong{color:#f1d7cf}
+.act3-role{margin-top:7px;padding:6px 8px;border:1px solid rgba(239,186,145,.25);border-radius:8px;background:rgba(61,35,39,.55);font-size:11px;line-height:1.35;color:#edcdbd}
+.enemy.selected .act3-role{border-color:rgba(255,211,153,.42)}

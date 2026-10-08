@@ -36,3 +36,6 @@ jobs:
 
       - name: Run Act III smoke test
         run: node tests/act3-smoke.mjs
+
+      - name: Run Act III build diversity test
+        run: node tests/act3-builds-smoke.mjs

@@ -48,3 +48,6 @@ jobs:
 
       - name: Run combat intent preview smoke test
         run: node tests/intent-preview-smoke.mjs
+
+      - name: Run contextual tutorial smoke test
+        run: node tests/tutorial-smoke.mjs

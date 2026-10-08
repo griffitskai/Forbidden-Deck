@@ -56,10 +56,29 @@ try {
   const turn = await page.evaluate(() => S.turn);
   assert(turn >= 2, 'Kliknięcie ZAKOŃCZ TURĘ nie przeszło do kolejnej tury.');
 
+  // Nawigacja: trwający run -> menu -> kontynuuj -> dokładnie ta sama walka.
+  await page.locator('#menuBtn').click();
+  await page.waitForSelector('#startScreen:not(.hidden)');
+  assert(!(await page.locator('#menuContinue').isDisabled()), 'Menu nie pozwala kontynuować trwającego runu.');
+  await page.locator('#menuContinue').click();
+  await page.waitForSelector('#battleScreen.active');
+  const turnAfterMenu = await page.evaluate(() => S.turn);
+  assert(turnAfterMenu === turn, 'Powrót z menu zmienił turę trwającej walki.');
+
+  // Ekran końca runu ma być pełnym podsumowaniem, nie technicznym komunikatem.
+  await page.evaluate(() => window.ForbiddenDeckMenu.endRun(true));
+  await page.waitForSelector('#overlay.show');
+  const summaryTitle = await page.locator('#modalTitle').textContent();
+  const summaryText = await page.locator('#modalText').textContent();
+  const summaryChoices = await page.locator('#modalBody .choice').count();
+  assert(summaryTitle.includes('Run ukończony'), 'Brakuje właściwego tytułu podsumowania runu.');
+  assert(summaryText.includes('Wygrane walki') && summaryText.includes('Trust') && summaryText.includes('Talia'), 'Podsumowanie nie pokazuje kluczowych statystyk runu.');
+  assert(summaryChoices === 3, `Ekran końcowy powinien mieć 3 dalsze akcje, ma ${summaryChoices}.`);
+
   assert(pageErrors.length === 0, `Błędy JavaScript: ${pageErrors.join(' | ')}`);
   assert(consoleErrors.length === 0, `Błędy konsoli: ${consoleErrors.join(' | ')}`);
 
-  console.log(`Smoke test OK: menu + Codex, ${activeNodes} aktywne pola, ${enemies} przeciwników, 5 kart, tura ${turn}.`);
+  console.log(`Smoke test OK: menu + Codex + nawigacja + podsumowanie, ${activeNodes} aktywne pola, ${enemies} przeciwników, tura ${turn}.`);
 } finally {
   await browser.close();
 }

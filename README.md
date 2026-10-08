@@ -8,11 +8,9 @@
 
 Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po każdej zaakceptowanej zmianie.
 
-> Jeśli link zwraca 404 przy pierwszym uruchomieniu: wejdź w **Settings → Pages → Build and deployment → Source → GitHub Actions**. To jednorazowe ustawienie repozytorium.
-
 ## Aktualny stan
 
-Wersja robocza: **V0.8+**.
+Wersja robocza: **V0.9**.
 
 Gra zawiera obecnie:
 
@@ -21,41 +19,49 @@ Gra zawiera obecnie:
 - system **Trust**, który odblokowuje nowe zagrania współpracy,
 - **Momentum** Kaela i **Marked** Lyry,
 - prowokację, ochronę, blok i skrytobójców,
-- trzy typy obrażeń: fizyczne, magiczne i toksyczne,
+- obrażenia fizyczne, magiczne i toksyczne oraz odporności,
 - pancerze, amulety i mikstury,
+- statusy: krwawienie, trucizna, podpalenie i osłabienie,
+- ulepszanie i usuwanie kart,
 - poziomy trudności: Odkrywca / Standard / Weteran,
-- rozwój drużyny w trakcie runu,
-- dwa akty: **Pogranicze** i **Skażony Las**,
-- mapę wyboru trasy, walki, elity, ogniska, sklepy, wydarzenia i bossów,
-- boczny dziennik walki,
-- animacje i feedback trafień,
-- ulepszanie oraz usuwanie kart,
-- statusy: krwawienie, trucizna, podpalenie i osłabienie.
+- zapis bieżącego runu i przycisk **Kontynuuj run**,
+- trzy akty: **Pogranicze**, **Skażony Las** i **Cytadela Popiołu**,
+- mapę wyboru trasy, walki, elity, rzadsze ogniska/sklepy, wydarzenia i bossów,
+- Królową Popiołu z dwiema fazami,
+- wybór przygotowania przed Aktem III,
+- animacje i feedback walki,
+- automatyczne testy gry w Chromium.
+
+## Testy regresji
+
+GitHub Actions uruchamia obecnie prawdziwą przeglądarkę i sprawdza m.in.:
+
+1. start gry → mapa → pierwsza walka → zagranie karty → koniec tury,
+2. zapis → odświeżenie → kontynuację runu,
+3. mechaniki Aktu III i zmianę fazy bossa,
+4. różne archetypy buildów przeciw końcowemu bossowi Aktu III.
 
 ## Uruchomienie lokalne
 
-Nie jest potrzebna instalacja ani serwer.
-
-1. Pobierz repozytorium.
-2. Otwórz `index.html` w przeglądarce.
-3. Rozpocznij nowy run.
+Do zwykłego grania wystarczy otworzyć `index.html`. Do testów automatycznych używamy lokalnego serwera HTTP i Playwright/Chromium.
 
 ## Zasada projektu
 
-`main` ma zawsze zawierać **najlepszą aktualną grywalną wersję**. Nie tworzymy `v0_1.html`, `v0_2.html`, itd. Historia wersji należy do Git/GitHub.
+`main` ma zawsze zawierać **najlepszą aktualną grywalną wersję**. Nie utrzymujemy równoległych plików `v0_1.html`, `v0_2.html` itd. Historia wersji należy do Git/GitHub.
 
 Nowe prace prowadzimy przez GitHub Issues i małe, testowalne zmiany.
 
 ## Najbliższy kierunek
 
-Priorytetem nadal jest **grywalność**. Kolejne duże obszary:
+Najpierw domykamy **balans Aktu III (#10)**. Potem zaczynamy milestone prowadzący do **V1.0**:
 
-1. trzeci akt i kolejni przeciwnicy,
-2. zapis/progresja pomiędzy sesjami,
-3. dalszy balans kart, statusów i ekwipunku,
-4. kolejne wydarzenia oraz rozwój relacji Kael–Lyra.
+- meta-progresja i historia runów,
+- rozwój Trust i scen relacji Kael–Lyra,
+- ekran startowy / Codex / lepsze podsumowanie runu,
+- dalszy balans ekonomii, sprzętu i poziomów trudności,
+- polish oprawy walki.
 
-Warstwa romantyczna/18+ pozostaje dodatkiem do pełnoprawnej gry i nie jest obecnie priorytetem.
+Warstwa romantyczna/18+ pozostaje opcjonalnym dodatkiem do pełnoprawnej gry i nie zastępuje gameplayu.
 
 ## Dokumentacja
 

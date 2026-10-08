@@ -14,6 +14,14 @@ try {
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: 'networkidle' });
 
+  await page.waitForSelector('#startScreen:not(.hidden)');
+  const menuContinueBefore = page.locator('#menuContinue');
+  assert(await menuContinueBefore.isDisabled(), 'Kontynuuj powinno być wyłączone bez zapisu.');
+
+  await page.locator('#menuNew').click();
+  await page.waitForSelector('#overlay.show');
+  await page.locator('.difficulty-card').filter({ hasText: 'Standard' }).click();
+
   await page.waitForSelector('.node:not(.locked)');
   await page.locator('.node:not(.locked)').first().click();
   await page.waitForSelector('#battleScreen.active');
@@ -34,9 +42,10 @@ try {
   assert(before.hasSave, 'Run nie został zapisany po rozpoczęciu walki.');
 
   await page.reload({ waitUntil: 'networkidle' });
-  const continueButton = page.locator('#continueRunBtn');
-  await continueButton.waitFor({ state: 'visible' });
-  await continueButton.click();
+  await page.waitForSelector('#startScreen:not(.hidden)');
+  const menuContinue = page.locator('#menuContinue');
+  assert(!(await menuContinue.isDisabled()), 'Menu główne nie wykryło zapisanego runu.');
+  await menuContinue.click();
   await page.waitForSelector('#battleScreen.active');
 
   const after = await page.evaluate(() => ({
@@ -54,7 +63,7 @@ try {
   assert(after.hand === before.hand, 'Ręka po wczytaniu różni się od zapisu.');
 
   assert(pageErrors.length === 0, `Błędy JavaScript: ${pageErrors.join(' | ')}`);
-  console.log(`Persistence OK: ${after.node}, tura ${after.turn}, ręka ${after.hand}.`);
+  console.log(`Persistence OK z menu głównego: ${after.node}, tura ${after.turn}, ręka ${after.hand}.`);
 } finally {
   await browser.close();
 }

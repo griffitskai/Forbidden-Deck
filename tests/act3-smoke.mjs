@@ -11,6 +11,8 @@ function assert(condition, message) {
 
 try {
   await page.goto('http://127.0.0.1:8000/', { waitUntil: 'networkidle' });
+  // Ten test sprawdza sam Akt III. Menu główne jest osobno testowane w browser-smoke.mjs.
+  await page.evaluate(() => window.ForbiddenDeckMenu?.close());
 
   const moduleState = await page.evaluate(() => ({
     acts: ACTS.length,

@@ -116,6 +116,33 @@
     }
   }
 
+  function summaryText(victory){
+    const actReached=Math.min(ACTS.length,(S.act||0)+1);
+    const outcome=victory?'Trzy akty ukończone.':'Wyprawa zakończyła się przed pokonaniem wszystkich bossów.';
+    return `${outcome}<br><br><b>Dotarłeś do:</b> Akt ${actReached} — ${esc(ACTS[S.act]?.title||'Pogranicze')}<br><b>Wygrane walki:</b> ${S.wins||0}<br><b>Poziom drużyny:</b> ${S.level||1}<br><b>Trust:</b> ${S.trust||0} — ${trustRank(S.trust||0)}<br><b>Talia:</b> ${(S.deck||[]).length} kart<br><b>Złoto:</b> ${S.gold||0}<br><b>HP:</b> Kael ${Math.max(0,S.kaelHp||0)}/${S.kaelMaxHp} • Lyra ${Math.max(0,S.lyraHp||0)}/${S.lyraMaxHp}`;
+  }
+  function endRunScreen(victory){
+    try{window.ForbiddenDeckSave?.clear?.()}catch{}
+    S.battleOver=true;
+    showModal(victory?'Run ukończony':'Run zakończony',summaryText(victory),()=>grid([
+      ['🔁 Nowy run','Wybierz poziom trudności i zacznij od początku.',()=>{hideModal();difficultyChooser()}],
+      ['▦ Codex','Sprawdź odkryte karty i wyposażenie.',()=>{hideModal();renderCodex('cards');codex.classList.add('show')}],
+      ['⌂ Menu główne','Wróć do ekranu tytułowego.',()=>{hideModal();openMenu()}]
+    ]));
+  }
+
+  // Pełne podsumowanie zastępuje stare, techniczne komunikaty końca runu.
+  runComplete=function(){endRunScreen(true)};
+  defeat=function(){endRunScreen(false)};
+
+  // Nawigacja z trwającego runu do menu. Zapis zostaje zachowany przez persistence.
+  const topStats=document.querySelector('.topbar .stats');
+  if(topStats&&!document.getElementById('menuBtn')){
+    const b=document.createElement('button');
+    b.className='btn';b.id='menuBtn';b.textContent='Menu';b.onclick=openMenu;
+    topStats.insertBefore(b,document.getElementById('newRunBtn'));
+  }
+
   document.getElementById('menuContinue').onclick=()=>{if(!hasSave())return;closeMenu();window.ForbiddenDeckSave.load()};
   document.getElementById('menuNew').onclick=()=>{closeMenu();difficultyChooser()};
   document.getElementById('menuCodex').onclick=()=>{renderCodex('cards');codex.classList.add('show')};
@@ -123,5 +150,5 @@
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&codex.classList.contains('show')){codex.classList.remove('show');openMenu()}});
 
   refreshMenu();
-  window.ForbiddenDeckMenu={open:openMenu,close:closeMenu,codex:renderCodex,refresh:refreshMenu};
+  window.ForbiddenDeckMenu={open:openMenu,close:closeMenu,codex:renderCodex,refresh:refreshMenu,endRun:endRunScreen};
 })();

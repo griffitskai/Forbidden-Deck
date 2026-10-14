@@ -22,7 +22,7 @@ Ponowne obejrzenie zachowuje pierwszy zapisany wybór nowej prezentacji. Stary z
 
 Bazowo przechodziło 7/8 dotychczasowych zestawów; tutorial błędnie narzucał kolejność podpowiedzi uruchamianych przez zagnieżdżone zdarzenia. Dostosowano test do kolejki, nadal wymagając wszystkich sześciu podpowiedzi.
 
-Lokalna weryfikacja używa Node 22.22.0, Playwright 1.56.1, systemowego Chromium 154 i zwykłego `python3 -m http.server 8000 --bind 127.0.0.1`, zgodnie ze sposobem serwowania w CI. Chromium 141 pobierane przez Playwright w CI nie zostało lokalnie zweryfikowane, ponieważ domeny jego pobierania blokuje sieć środowiska.
+Lokalna weryfikacja używa Node 22.22.0, Playwright 1.56.1, systemowego Chromium 154 i zwykłego `python3 -m http.server 8000 --bind 127.0.0.1`, zgodnie ze sposobem serwowania w CI. Dodatkowo [GitHub Actions](https://github.com/griffitskai/Forbidden-Deck/actions/runs/38627762066) zaliczył wszystkie 12 zestawów przeglądarkowych na Node 22 i Chromium 141 instalowanym przez Playwright, w tym test uruchomienia offline. Osobny workflow sprawdzania składni również przeszedł.
 
 | Sprawdzenie | Wynik |
 | --- | --- |
@@ -35,8 +35,9 @@ Lokalna weryfikacja używa Node 22.22.0, Playwright 1.56.1, systemowego Chromium
 | Bossowie Aktów I/II i oba przejścia między aktami | zaliczone na deterministycznych konfiguracjach Standard |
 | Boss Aktu III | zaliczony trzema istniejącymi buildami: Obrona, Statusy, Duo |
 | Widoki 1440, 390 i 320 px | testy układu i klikania zaliczone; zrzuty obejrzane w przeglądzie wizualnym |
-| Bezpośrednie uruchomienie `index.html` przez `file://` | lokalnie zablokowane przez politykę administratora Chromium; osobny test dodany do CI |
-| Nowe uruchomienie GitHub Actions, ocena przez graczy, pełny naturalnie rozwinięty run | nieweryfikowane lokalnie |
+| Bezpośrednie uruchomienie `index.html` przez `file://` | zaliczone w GitHub Actions; lokalnie zablokowane polityką administratora Chromium |
+| GitHub Actions | wszystkie 12 zestawów przeglądarkowych i kontrola składni zaliczone |
+| Ocena przez graczy, pełny naturalnie rozwinięty run | nieweryfikowane |
 
 Polecenia CI znajdują się w `.github/workflows/browser-smoke.yml`. W chmurze testy HTTP można uruchomić z przygotowanym preloadem wybierającym systemowe Chromium: `node --import /workspace/forbidden-deck-tools/system-chromium.mjs tests/<nazwa>.mjs`. Wszystkie jedenaście zestawów HTTP jest obowiązkowych; `offline-check.mjs` ma osobny, jawny wynik. Nie wyłączamy polityki przeglądarki, aby go zaliczyć.
 

@@ -15,6 +15,17 @@ async function dismissToast(){
   await page.waitForTimeout(120);
 }
 
+async function waitForTip(id){
+  // Card effects may enqueue Synergy before the card's Marked/Momentum tip.
+  // Dismiss earlier queued tips; still require the intended tip to be shown.
+  for(let i=0;i<6;i++){
+    if(await page.evaluate(id=>ForbiddenTutorial.load().seen.includes(id),id))return;
+    await page.waitForSelector('.tutorial-toast', {timeout:1000});
+    await dismissToast();
+  }
+  throw new Error(`Nie pokazano podpowiedzi ${id}.`);
+}
+
 try {
   await page.goto('http://127.0.0.1:8000/', { waitUntil: 'networkidle' });
   await page.waitForFunction(() => !!window.ForbiddenTutorial);
@@ -37,10 +48,13 @@ try {
   });
   await page.waitForTimeout(100);
   data=await page.evaluate(() => window.ForbiddenTutorial.load());
-  assert(data.seen.includes('damage'), 'Pierwsza walka nie pokazała typów obrażeń.');
+  // renderBattle can enqueue protection before startBattle enqueues damage.
+  // Verify both queued tips without imposing an order on unrelated concepts.
+  assert(data.seen.includes('damage') || data.seen.includes('protect'), 'Pierwsza walka nie uruchomiła podpowiedzi.');
   await dismissToast();
   await page.waitForTimeout(100);
   data=await page.evaluate(() => window.ForbiddenTutorial.load());
+  assert(data.seen.includes('damage'), 'Pierwsza walka nie pokazała typów obrażeń.');
   assert(data.seen.includes('protect'), 'Atak na Lyrę nie uruchomił podpowiedzi Prowokacja/Ochrona.');
   await dismissToast();
 
@@ -49,6 +63,7 @@ try {
     S.hand=[{id:'expose',uid:'t-mark'}];S.energy=3;S.target=0;renderBattle();playCard(0);
   });
   await page.waitForTimeout(100);
+  await waitForTip('marked');
   data=await page.evaluate(() => window.ForbiddenTutorial.load());
   assert(data.seen.includes('marked'), 'Pierwsze użycie Marked nie uruchomiło podpowiedzi.');
   await dismissToast();
@@ -58,6 +73,7 @@ try {
     S.hand=[{id:'strike',uid:'t-mom'}];S.energy=3;S.target=0;renderBattle();playCard(0);
   });
   await page.waitForTimeout(100);
+  await waitForTip('momentum');
   data=await page.evaluate(() => window.ForbiddenTutorial.load());
   assert(data.seen.includes('momentum'), 'Pierwsze budowanie Momentum nie uruchomiło podpowiedzi.');
   await dismissToast();
@@ -65,6 +81,7 @@ try {
   // Pierwsze zwiększenie Synergy.
   await page.evaluate(() => addSyn(10,'test tutoriala'));
   await page.waitForTimeout(100);
+  await waitForTip('synergy');
   data=await page.evaluate(() => window.ForbiddenTutorial.load());
   assert(data.seen.includes('synergy'), 'Pierwsze zwiększenie Synergy nie uruchomiło podpowiedzi.');
   await dismissToast();

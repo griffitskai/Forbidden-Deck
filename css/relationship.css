@@ -1,0 +1,107 @@
+/* W świetle ognia: amber light, cool woods, local painterly illustrations. */
+#startScreen { align-items: flex-start; }
+#startScreen .start-shell { margin: auto; }
+#startScreen .start-hero { background: #111920; }
+#startScreen .start-hero::before {
+  background: linear-gradient(180deg, rgba(8, 14, 20, .86), rgba(8, 14, 20, .72)),
+    url('../assets/scenes/campfire.webp') center / cover;
+}
+#startScreen .start-duo { margin-top: 24px; }
+#startScreen .start-portrait { height: 330px; padding: 0; background: #152027; }
+#startScreen .start-portrait::before { display: none; }
+#startScreen .start-portrait::after {
+  content: ''; position: absolute; inset: 55% 0 0;
+  background: linear-gradient(transparent, rgba(5, 9, 13, .96)); pointer-events: none;
+}
+#startScreen .start-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+#startScreen .start-portrait .caption { z-index: 1; right: 10px; }
+#startScreen .caption small { font-size: 11px; font-weight: 400; color: #ddd0be; }
+.map-portrait { width: 78px; height: 100px; flex-shrink: 0; border: 1px solid #89735a; border-radius: 12px; overflow: hidden; background: #152027; }
+.map-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+.party-card > div:last-child { min-width: 0; }
+.party-card span, .party-card small { display: block; }
+
+.relationship-card { margin-top: 18px; padding: 13px 14px; border: 1px solid #343d4d; border-radius: 13px; background: #121821; color: #aeb5bf; }
+.relationship-card .rel-head { display: flex; justify-content: space-between; gap: 10px; }
+.relationship-card strong { color: #e5d8d2; }
+.relationship-card small { color: #a9a1ad; }
+.rel-track { height: 5px; background: #252d39; border-radius: 999px; overflow: hidden; margin-top: 9px; }
+.rel-track i { display: block; height: 100%; background: linear-gradient(90deg, #6c4855, #b47a83); }
+.relationship-screen { position: fixed; inset: 0; z-index: 1270; background: #0b1017; display: none; overflow: auto; padding: 28px; }
+.relationship-screen.show { display: block; }
+.relationship-shell { max-width: 980px; margin: auto; }
+.relationship-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 24px; }
+.relationship-head h2 { margin: 0; color: #eee4dd; font-size: 28px; }
+.relationship-head p { margin: 6px 0 0; color: #a9b4c4; font-size: 12px; }
+.relationship-overview { border: 1px solid #303948; border-radius: 16px; background: #141a24; padding: 18px; margin-bottom: 16px; }
+.relationship-overview strong { color: #eee4dd; }
+.relationship-overview p { color: #b4bdca; font-size: 12px; line-height: 1.55; margin: 8px 0 0; }
+.relationship-timeline { display: grid; gap: 10px; }
+.relationship-step { display: grid; grid-template-columns: 62px 1fr auto; align-items: center; gap: 14px; border: 1px solid #303948; border-radius: 14px; background: #131a23; padding: 14px; }
+.relationship-step.locked { opacity: .55; }
+.relationship-step .rel-icon { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; background: #202936; font-size: 20px; }
+.relationship-step h3 { margin: 0; color: #e5ddd7; font-size: 14px; }
+.relationship-step p { margin: 5px 0 0; color: #a9b4c4; font-size: 11px; }
+.relationship-step .state { font-size: 10px; color: #d4a7ad; text-align: right; }
+.relation-dialogue { padding: 14px; border: 1px solid #343e4d; border-radius: 12px; background: #111722; line-height: 1.65; color: #c1c5ce; margin-bottom: 14px; }
+.relationship-profiles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.relationship-profile { display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: center; border: 1px solid #655843; background: #131b24; border-radius: 16px; padding: 14px; }
+.relationship-profile img { width: 96px; height: 126px; object-fit: cover; object-position: 50% 22%; border-radius: 10px; background: #152027; }
+.relationship-profile h3 { margin: 0 0 7px; color: #f0debf; }
+.relationship-profile p { margin: 0; color: #b9c1cb; font-size: 12px; line-height: 1.6; }
+.romance-setting { display: flex; align-items: flex-start; gap: 10px; color: #d9d5ce; font-size: 12px; line-height: 1.5; padding: 14px 0; }
+.romance-setting input { margin-top: 3px; accent-color: #c09166; flex-shrink: 0; width: 16px; height: 16px; }
+.romance-setting small { display: block; color: #aeb8c6; margin-top: 3px; }
+.relationship-camp-entry { margin-top: 20px; padding: 18px; border: 1px solid #6e5b41; border-radius: 16px; background: #161b22; }
+.relationship-camp-entry h3 { margin: 0 0 8px; color: #efd8b7; }
+.relationship-camp-entry p { color: #b9c1cb; line-height: 1.5; font-size: 12px; }
+
+.overlay.campfire-overlay { z-index: 1400; background: rgba(3, 8, 12, .94); }
+.campfire-overlay .modal { width: min(900px, 100%); padding: 24px; border-color: #897253; background: #101820; }
+.campfire-overlay #modalTitle { color: #f2d6ac; font-family: Georgia, serif; margin: 0 0 14px; }
+.campfire-overlay #modalText:empty { display: none; }
+.campfire-art { position: relative; height: clamp(150px, 26vh, 270px); border-radius: 12px; overflow: hidden; background: #18222a; }
+.campfire-art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+.campfire-art figcaption { position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 16px 12px; font-size: 10px; letter-spacing: .12em; color: #f3d6ab; background: linear-gradient(transparent, rgba(6, 12, 16, .9)); }
+.campfire-art { margin: 0; }
+.campfire-line { display: grid; grid-template-columns: 76px 1fr; align-items: center; gap: 18px; margin-top: 18px; padding: 16px; border: 1px solid #33404b; border-radius: 12px; background: #141e28; }
+.campfire-line img { width: 76px; height: 96px; object-fit: cover; object-position: 50% 22%; border-radius: 9px; }
+.campfire-speaker { font-size: 11px; color: #e3b77d; text-transform: uppercase; letter-spacing: .1em; }
+.campfire-line p { font-size: 15px; line-height: 1.65; margin: 6px 0 0; color: #e3e1da; }
+.campfire-line em { display: block; margin-top: 8px; color: #b2bfcc; font-size: 12px; line-height: 1.6; }
+.campfire-benefit { color: #c8b58f; font-size: 12px; line-height: 1.5; margin: 14px 0 8px; }
+.campfire-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; }
+.campfire-controls button { min-height: 44px; }
+.campfire-controls .btn { color: #c2cbd5; background: #17222c; }
+.campfire-overlay .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.campfire-overlay .choice { color: #e7e5df; border-color: #75664f; background: #1c2830; line-height: 1.55; }
+.campfire-overlay .choice strong { display: block; margin-bottom: 6px; font-size: 14px; }
+.campfire-overlay .choice span { display: block; color: #c3c9ce; font-size: 12px; }
+.campfire-overlay .choice small { color: #c3c9ce; }
+.campfire-ending .campfire-art { animation: campfireFade .4s ease forwards; }
+@keyframes campfireFade { to { filter: brightness(.3); } }
+:is(.campfire-overlay, .relationship-screen, #startScreen) :is(button, input):focus-visible { outline: 2px solid #ecc38d; outline-offset: 4px; }
+
+@media (max-width: 650px) {
+  .relationship-screen { padding: 14px; }
+  .relationship-head { gap: 10px; }
+  .relationship-head h2 { font-size: 24px; }
+  .relationship-profiles { grid-template-columns: 1fr; }
+  .relationship-step { grid-template-columns: 48px 1fr; }
+  .relationship-step .rel-icon { width: 42px; height: 42px; }
+  .relationship-step .state { grid-column: 2; text-align: left; }
+  .campfire-overlay { padding: 10px; }
+  .campfire-overlay .modal { padding: 16px; max-height: calc(100dvh - 20px); }
+  .campfire-line { gap: 12px; padding: 12px; grid-template-columns: 54px 1fr; }
+  .campfire-line img { width: 54px; height: 76px; }
+  .campfire-line p { font-size: 14px; }
+  .campfire-overlay .choices { grid-template-columns: 1fr; }
+  .campfire-controls { align-items: stretch; flex-direction: column-reverse; }
+  #startScreen .start-duo { grid-template-columns: 1fr 1fr; gap: 10px; }
+  #startScreen .start-portrait { height: 230px; min-height: 230px; }
+  #startScreen .start-portrait .caption { left: 10px; bottom: 12px; }
+  #startScreen .caption b { font-size: 16px; }
+  #startScreen .caption small { display: block; margin: 3px 0; }
+  #startScreen .caption span { font-size: 10px; line-height: 1.4; display: block; }
+}
+@media (prefers-reduced-motion: reduce) { .campfire-ending .campfire-art { animation: none; } }

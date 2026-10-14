@@ -31,15 +31,15 @@
         <div class="start-logo">
           <small>dark fantasy roguelike deckbuilder</small>
           <h1>FORBIDDEN<br>DECK</h1>
-          <p>Kael i Lyra ruszają przez trzy regiony, a każda walka rozwija talię, ekwipunek i ich zdolność do działania jako duet.</p>
+          <p>Dwoje bohaterów. Jedna droga przez mrok.<br>Buduj talię, walcz w duecie i zdecyduj, co połączy Kaela i Lyrę.</p>
         </div>
         <div class="start-duo">
-          <div class="start-portrait"><div class="glyph">⚔️</div><div class="caption"><b>Kael</b><span>Obrona • Momentum • Prowokacja</span></div></div>
-          <div class="start-portrait"><div class="glyph">🏹</div><div class="caption"><b>Lyra</b><span>Marked • Statusy • Precyzja</span></div></div>
+          <div class="start-portrait"><img src="assets/portraits/kael.webp" width="1024" height="1536" alt="Kael, 32 lata — obrońca w bordowym płaszczu"><div class="caption"><b>Kael <small>32 lata</small></b><span>Obrona • Momentum • Prowokacja</span></div></div>
+          <div class="start-portrait"><img src="assets/portraits/lyra.webp" width="1024" height="1536" alt="Lyra, 29 lat — łuczniczka o miedzianych włosach"><div class="caption"><b>Lyra <small>29 lat</small></b><span>Marked • Statusy • Precyzja</span></div></div>
         </div>
       </section>
       <aside class="start-menu">
-        <div class="start-version"><span>BUILD V0.9</span><span>3 AKTY</span></div>
+        <div class="start-version"><span>BUILD V0.9.1</span><span>W ŚWIETLE OGNIA</span></div>
         <div class="start-actions">
           <button class="start-action primary" id="menuContinue"><strong>▶ Kontynuuj run</strong><span>Wróć do zapisanego podejścia.</span></button>
           <button class="start-action" id="menuNew"><strong>✦ Nowy run</strong><span>Wybierz poziom trudności i rozpocznij od Pogranicza.</span></button>

@@ -1,13 +1,13 @@
 (()=>{
   const KEY='forbidden_deck_relationship_v1';
-  const SCHEMA=1;
+  const SCHEMA=2;
+  const PREFS_KEY='forbidden_deck_preferences_v1';
+  const CAMP_EDITION='campfire40';
   const milestones=[
     {id:'trust20',threshold:20,rank:'Towarzysze',title:'Pierwszy rytm',text:'<b>Lyra:</b> „Przestałam liczyć, ile razy wchodzisz mi w linię strzału.”<br><br><b>Kael:</b> „To brzmi prawie jak komplement.”<br><br>Po raz pierwszy planują kolejną walkę jak duet, a nie dwoje ludzi idących w tym samym kierunku.',options:[
       {id:'right-side',label:'🛡️ „Ja biorę prawą stronę. Ty obserwuj resztę.”',desc:'+8 Trust. Następna walka: +6 Block dla obojga.',trust:8,tone:'supportive',boon:'guard'},
       {id:'signals',label:'🤝 „Ustalmy trzy sygnały i żadnych improwizacji.”',desc:'+5 Trust. Następna walka: +15 Synergy.',trust:5,tone:'pragmatic',boon:'synergy'}]},
-    {id:'trust40',threshold:40,rank:'Zgrani',title:'Dlaczego zostałaś?',text:'Przy dogasającym ogniu Kael w końcu zadaje pytanie, które od kilku dni pozostawało między nimi niewypowiedziane.<br><br><b>Kael:</b> „Miałaś już kilka okazji, żeby odejść. Dlaczego nadal tu jesteś?”',options:[
-      {id:'listen',label:'💬 Nie przerywaj. Pozwól Lyrze odpowiedzieć po swojemu.',desc:'+10 Trust i niewielka regeneracja obojga.',trust:10,tone:'supportive',heal:6},
-      {id:'train',label:'⚡ „Odpowiesz jutro. Teraz pokaż mi ten zwód.”',desc:'+6 Trust. Następna walka: +1 energia w pierwszej turze.',trust:6,tone:'pragmatic',boon:'tempo'}]},
+    {id:'trust40',threshold:40,rank:'Zgrani',title:'W świetle ognia'},
     {id:'trust60',threshold:60,rank:'Zaufanie',title:'Bez rozkazu',text:'Coraz częściej reagują, zanim drugie zdąży cokolwiek powiedzieć. To, co wcześniej było planem, zaczyna być odruchem.',options:[
       {id:'no-explanations',label:'🛡️ „Nie musisz mi tłumaczyć wszystkiego. Wystarczy, że dasz znak.”',desc:'+9 Trust. Następna walka: Kael zaczyna z Ochroną i +10 Synergy.',trust:9,tone:'supportive',boon:'protect'},
       {id:'test-it',label:'🎯 „Sprawdźmy, czy działa również pod presją.”',desc:'+6 Trust. Następna walka: pierwszy przeciwnik zaczyna z 1 Marked.',trust:6,tone:'pragmatic',boon:'hunt'}]},
@@ -16,22 +16,42 @@
       {id:'one-look',label:'⚡ „Jedno spojrzenie. Więcej nie będzie potrzebne.”',desc:'+5 Trust. Następna walka: +1 energia i +15 Synergy.',trust:5,tone:'pragmatic',boon:'perfect'}]}
   ];
 
-  const css=document.createElement('style');
-  css.textContent=`
-    .relationship-card{margin-top:18px;padding:13px 14px;border:1px solid #343d4d;border-radius:13px;background:#121821;color:#aeb5bf}.relationship-card .rel-head{display:flex;justify-content:space-between;gap:10px}.relationship-card strong{color:#e5d8d2}.relationship-card small{color:#857f89}.rel-track{height:5px;background:#252d39;border-radius:999px;overflow:hidden;margin-top:9px}.rel-track i{display:block;height:100%;background:linear-gradient(90deg,#6c4855,#b47a83)}
-    .relationship-screen{position:fixed;inset:0;z-index:1270;background:#0b1017;display:none;overflow:auto;padding:28px}.relationship-screen.show{display:block}.relationship-shell{max-width:980px;margin:auto}.relationship-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:24px}.relationship-head h2{margin:0;color:#eee4dd;font-size:28px}.relationship-head p{margin:6px 0 0;color:#8e98a7;font-size:12px}.relationship-overview{border:1px solid #303948;border-radius:16px;background:#141a24;padding:18px;margin-bottom:16px}.relationship-overview strong{color:#eee4dd}.relationship-overview p{color:#9ca5b3;font-size:12px;line-height:1.55;margin:8px 0 0}.relationship-timeline{display:grid;gap:10px}.relationship-step{display:grid;grid-template-columns:62px 1fr auto;align-items:center;gap:14px;border:1px solid #303948;border-radius:14px;background:#131a23;padding:14px}.relationship-step.locked{opacity:.42}.relationship-step .rel-icon{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:#202936;font-size:20px}.relationship-step h3{margin:0;color:#e5ddd7;font-size:14px}.relationship-step p{margin:5px 0 0;color:#8f99a7;font-size:11px}.relationship-step .state{font-size:10px;color:#b88b91;text-align:right}
-    .relation-dialogue{padding:14px;border:1px solid #343e4d;border-radius:12px;background:#111722;line-height:1.65;color:#c1c5ce;margin-bottom:14px}
-    @media(max-width:650px){.relationship-screen{padding:14px}.relationship-step{grid-template-columns:48px 1fr}.relationship-step .rel-icon{width:42px;height:42px}.relationship-step .state{grid-column:2;text-align:left}}
-  `;
-  document.head.appendChild(css);
-
-  function defaults(){return{schema:SCHEMA,seen:[],choices:[],pendingBoon:null,roadSeen:false,stats:{scenes:0,supportive:0,pragmatic:0}}}
+  function defaults(){return{schema:SCHEMA,seen:[],choices:[],pendingBoon:null,roadSeen:false,stats:{scenes:0,supportive:0,pragmatic:0},romance:{campfireChoice:null},campfire:{completed:false}}}
   function load(){
-    try{const raw=JSON.parse(localStorage.getItem(KEY)||'null');if(!raw||raw.schema!==SCHEMA)return defaults();return{...defaults(),...raw,stats:{...defaults().stats,...(raw.stats||{})},seen:Array.isArray(raw.seen)?raw.seen:[],choices:Array.isArray(raw.choices)?raw.choices:[]}}catch{return defaults()}
+    try{
+      const raw=JSON.parse(localStorage.getItem(KEY)||'null');
+      if(!raw||![1,SCHEMA].includes(raw.schema))return defaults();
+      // Keep the existing key and every legacy choice/boon. Trust has its own key.
+      // A supportive legacy choice is never interpreted as romantic consent.
+      const data={...defaults(),...raw,schema:SCHEMA,stats:{...defaults().stats,...(raw.stats||{})},seen:Array.isArray(raw.seen)?raw.seen:[],choices:Array.isArray(raw.choices)?raw.choices:[],romance:{...defaults().romance,...(raw.romance||{})},campfire:{...defaults().campfire,...(raw.campfire||{})}};
+      if(raw.schema===1)save(data);
+      return data;
+    }catch{return defaults()}
   }
   function save(data){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(error){console.warn('Forbidden Deck: nie udało się zapisać relacji',error)}}
   function nextScene(){const data=load();return milestones.find(scene=>S.trust>=scene.threshold&&!data.seen.includes(scene.id))||null}
   function addTrust(n){S.trust=Math.min(100,S.trust+n);saveTrust()}
+  function romanceEnabled(){
+    try{return JSON.parse(localStorage.getItem(PREFS_KEY)||'null')?.romanceEnabled===true}catch{return false}
+  }
+  function setRomanceEnabled(value){
+    try{localStorage.setItem(PREFS_KEY,JSON.stringify({schema:1,romanceEnabled:!!value}))}catch(error){console.warn('Forbidden Deck: nie udało się zapisać ustawienia',error)}
+    document.querySelectorAll('[data-romance-toggle]').forEach(input=>{input.checked=romanceEnabled()});
+    if(campSession){
+      if(!romanceEnabled()&&campSession.choice==='romance'){
+        campSession.choice=null;campSession.phase='choice';campSession.index=0;
+      }
+      renderCampfire();
+    }
+  }
+  function settingMarkup(id){
+    return `<label class="romance-setting" for="${id}"><input type="checkbox" id="${id}" data-romance-toggle ${romanceEnabled()?'checked':''}><span>Romantyczne sceny Kaela i Lyry<small>Opcjonalny flirt i bliskość. Nagrody są takie same również bez romansu.</small></span></label>`;
+  }
+  function wireSettings(root){root.querySelectorAll('[data-romance-toggle]').forEach(input=>{input.onchange=()=>setRomanceEnabled(input.checked)})}
+  const menuSetting=document.createElement('div');
+  menuSetting.innerHTML=settingMarkup('romanceToggle');
+  document.querySelector('#startScreen .start-foot')?.before(menuSetting);
+  wireSettings(menuSetting);
 
   const panel=document.createElement('div');panel.className='relationship-card';panel.id='relationshipCard';
   const foot=document.querySelector('#startScreen .start-foot');if(foot)foot.parentNode.insertBefore(panel,foot);
@@ -48,6 +68,21 @@
     const data=load(),support=data.stats.supportive||0,prag=data.stats.pragmatic||0;
     const tone=support>prag?'opiekuńczy / oparty na zaufaniu':prag>support?'taktyczny / pragmatyczny':'zrównoważony';
     document.getElementById('relationshipBody').innerHTML=`<div class="relationship-overview"><strong>${trustRank(S.trust)} • Trust ${S.trust}/100</strong><p>Dotychczasowy styl współpracy: <b>${tone}</b>. Wybory wpływają na krótkie premie w kolejnych walkach, ale nie zamykają przyszłych scen.</p></div><div class="relationship-timeline">${milestones.map(m=>{const reached=S.trust>=m.threshold,seen=data.seen.includes(m.id);return`<div class="relationship-step ${reached?'':'locked'}"><div class="rel-icon">${seen?'✓':reached?'💬':'🔒'}</div><div><h3>${m.threshold} Trust — ${m.rank}</h3><p>${seen?m.title:reached?'Scena czeka przy następnym ognisku.':'Jeszcze nieosiągnięte.'}</p></div><div class="state">${seen?'PRZEŻYTE':reached?'DOSTĘPNE':'ZABLOKOWANE'}</div></div>`}).join('')}</div>`;
+    const body=document.getElementById('relationshipBody');
+    const profiles=document.createElement('div');
+    profiles.className='relationship-profiles';
+    profiles.innerHTML='<article class="relationship-profile"><img src="assets/portraits/kael.webp" width="1024" height="1536" alt="Portret Kaela"><div><h3>Kael · 32 lata</h3><p>Obrońca. Zwykle pierwszy przy zagrożeniu; przy ogniu uczy się słuchać.</p></div></article><article class="relationship-profile"><img src="assets/portraits/lyra.webp" width="1024" height="1536" alt="Portret Lyry"><div><h3>Lyra · 29 lat</h3><p>Łuczniczka. Celna w walce i w słowach; sama wybiera, komu pozwoli podejść bliżej.</p></div></article>';
+    body.prepend(profiles);
+    const settings=document.createElement('div');settings.innerHTML=settingMarkup('relationshipRomanceToggle');body.appendChild(settings);wireSettings(settings);
+    const unlocked=S.trust>=40||data.seen.includes('trust40');
+    const entry=document.createElement('section');entry.className='relationship-camp-entry';
+    const choice=data.romance.campfireChoice;
+    entry.innerHTML=`<h3>W świetle ognia</h3><p>Trust oznacza współpracę. O bliskości decydują oboje — przyjaźń jest równie ważną drogą.</p><p>${choice==='romance'?'Wybrana chwila bliskości przy ognisku.':choice==='friendship'?'Wybrana przyjaźń i wspólna droga.':choice==='skipped'?'Scena pominięta.':'Kael i Lyra są dorosłymi, fikcyjnymi bohaterami.'}</p>`;
+    if(unlocked&&data.seen.includes('trust40')){
+      const replay=document.createElement('button');replay.className='btn';replay.id='replayCampfire';replay.textContent='Odwiedź ognisko ponownie';replay.onclick=()=>showCampfire(true);entry.appendChild(replay);
+      const note=document.createElement('p');note.textContent='Ponowne obejrzenie nie przyznaje nagród ani nie zmienia wcześniej zapisanej decyzji. Starszy zapis może tu poznać nową scenę i zapisać jej pierwszy wybór.';entry.appendChild(note);
+    }else{const note=document.createElement('p');note.textContent=unlocked?'Rozmowa czeka przy ognisku podczas runu.':'Scena odblokuje się przy 40 Trust.';entry.appendChild(note)}
+    body.appendChild(entry);
   }
   function openRelationship(){window.ForbiddenDeckMenu?.close?.();renderRelationship();screen.classList.add('show')}
   function closeRelationship(){screen.classList.remove('show');window.ForbiddenDeckMenu?.open?.()}
@@ -58,8 +93,113 @@
     addTrust(opt.trust||0);if(opt.heal){S.kaelHp=Math.min(S.kaelMaxHp,S.kaelHp+opt.heal);S.lyraHp=Math.min(S.lyraMaxHp,S.lyraHp+opt.heal)}save(data);refreshCard();hideModal();advance();
   }
   function showRelationshipScene(scene){
+    if(scene.id==='trust40')return showCampfire();
     showModal(scene.title,'',()=>{const w=document.createElement('div'),d=document.createElement('div');d.className='relation-dialogue';d.innerHTML=scene.text;w.appendChild(d);w.appendChild(grid(scene.options.map(opt=>[opt.label,opt.desc,()=>applyChoice(scene,opt)])));return w});
   }
+
+  const opening=[
+    {speaker:'Kael',text:'Miałaś kilka okazji, żeby odejść. Dlaczego zostałaś?',note:'Podaje jej kubek. Ich palce spotykają się na moment; oboje uśmiechają się i cofają dłonie.'},
+    {speaker:'Lyra',text:'Bo pytasz, zamiast mówić mi, gdzie mam stać. I dlatego, że przy tobie nie muszę przez całą noc wypatrywać drogi ucieczki.',note:'W ciepłym świetle znika część ostrożności, którą nosiła jak drugi płaszcz.'}
+  ];
+  const endings={
+    friendship:[
+      {speaker:'Kael',text:'Zostańmy przy tym. Ty pilnujesz mojego lewego boku, ja twojego. A wieczorem dzielimy ogień.',note:'Przesuwa kubek w jej stronę, zostawiając między nimi wygodne miejsce.'},
+      {speaker:'Lyra',text:'I żadnych rozkazów przy kolacji. Umowa?',note:'Śmieją się cicho. Ta noc należy do dwojga przyjaciół, którzy nie muszą niczego udowadniać.'}
+    ],
+    romance:[
+      {speaker:'Kael',text:'Chcę usiąść bliżej. Jeśli nadal tego chcesz.',note:'Nie skraca dystansu, dopóki Lyra sama nie wyciąga dłoni.'},
+      {speaker:'Lyra',text:'Chcę. I na dziś wystarczy mi, że zostaniesz obok.',note:'Przyciąga go do krótkiego pocałunku. Kael odpowiada, po czym opierają czoła o siebie. Rozmowa cichnie; światło ognia powoli przygasa.'}
+    ]
+  };
+  let campSession=null;
+  function persistCampfire(){
+    if(!campSession||campSession.replay)return;
+    S.relationshipScene={id:CAMP_EDITION,phase:campSession.phase,index:campSession.index,choice:campSession.choice};
+    window.ForbiddenDeckSave?.save?.('map');
+  }
+  function showCampfire(replay=false,resume=null){
+    campSession={replay,phase:resume?.phase==='ending'?'ending':resume?.phase==='choice'?'choice':'opening',index:Math.max(0,Math.min(1,resume?.index||0)),choice:['friendship','romance'].includes(resume?.choice)?resume.choice:null};
+    if(campSession.phase==='ending'&&(!campSession.choice||(!romanceEnabled()&&campSession.choice==='romance'))){campSession.phase='choice';campSession.index=0;campSession.choice=null}
+    renderCampfire();
+  }
+  function renderCampfire(){
+    if(!campSession)return;
+    persistCampfire();
+    const session=campSession;
+    const choosing=session.phase==='choice';
+    let line;
+    if(choosing){
+      line=romanceEnabled()
+        ?{speaker:'Lyra',text:'Możesz usiąść bliżej, jeśli chcesz. Ale jeśli wolisz zostać po swojej stronie ognia, nadal chcę iść z tobą.',note:'Kael spotyka jej spojrzenie. Odpowiedź należy do niego, zaproszenie — do niej.'}
+        :{speaker:'Lyra',text:'Dobrze mieć kogoś po swojej stronie ognia. Nawet jeśli każde siedzi na własnym pniu.',note:'Kael uśmiecha się. Na jutro mają wspólny plan i kogoś, kto przypilnuje drugiego.'};
+    }else{line=(session.phase==='ending'?endings[session.choice]:opening)[session.index]}
+    showModal('W świetle ognia','',()=>{
+      const root=document.createElement('div');root.id='campfireScene';
+      root.innerHTML='<figure class="campfire-art"><img src="assets/scenes/campfire.webp" width="1672" height="941" alt="Ognisko wśród ruin, dwa miejsca odpoczynku i chłodny las o zmierzchu"><figcaption>MIEJSCE ODPOCZYNKU · PO ZMROKU</figcaption></figure>';
+      const dialogue=document.createElement('div');dialogue.className='campfire-line';dialogue.setAttribute('aria-live','polite');
+      dialogue.innerHTML=`<img src="assets/portraits/${line.speaker==='Kael'?'kael':'lyra'}.webp" alt="${line.speaker}" width="1024" height="1536"><div><strong class="campfire-speaker">${line.speaker}</strong><p></p><em></em></div>`;
+      dialogue.querySelector('p').textContent=line.text;dialogue.querySelector('em').textContent=line.note;root.appendChild(dialogue);
+      const benefit=document.createElement('p');benefit.className='campfire-benefit';
+      benefit.textContent=session.replay?'Ponowne obejrzenie — bez dodatkowych nagród.':'Każda ścieżka, także pominięcie: +6 Trust i +1 energia w pierwszej turze następnej walki.';root.appendChild(benefit);
+      if(choosing){
+        const options=[['friendship','Zostańmy przyjaciółmi','Wspólna droga i zaufanie, bez romansu.']];
+        if(romanceEnabled())options.push(['romance','Przyjmij zaproszenie do bliskości','Kael odpowiada na zaproszenie Lyry. Oboje wybierają tę chwilę.']);
+        const choices=grid(options.map(([id,label,desc])=>[label,desc,()=>{campSession.choice=id;campSession.phase='ending';campSession.index=0;renderCampfire()}]));
+        choices.querySelectorAll('button').forEach((b,i)=>{b.dataset.campChoice=options[i][0]});root.appendChild(choices);
+      }
+      const controls=document.createElement('div');controls.className='campfire-controls';
+      const skip=document.createElement('button');skip.className='btn';skip.id='campfireSkip';skip.textContent=session.replay?'Zamknij scenę':'Pomiń scenę';skip.onclick=()=>finishCampfire(session.replay?null:'skipped');controls.appendChild(skip);
+      if(!choosing){
+        const next=document.createElement('button');next.className='primary';next.id='campfireNext';next.textContent=session.phase==='ending'&&session.index===1?(session.replay?'Wróć do relacji':'Wróć na szlak'):'Dalej';
+        next.onclick=()=>{
+          if(session.phase==='ending'&&session.index===1)return finishCampfire(session.choice);
+          if(session.index===0)session.index=1;else{session.phase='choice';session.index=0}
+          renderCampfire();
+        };controls.appendChild(next);
+      }
+      root.appendChild(controls);if(session.phase==='ending'&&session.index===1)root.classList.add('campfire-ending');
+      return root;
+    });
+    const overlay=document.getElementById('overlay');overlay.classList.add('campfire-overlay');
+    const modal=overlay.querySelector('.modal');modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','modalTitle');
+    const focusTarget=choosing?document.querySelector('[data-camp-choice]'):document.getElementById('campfireNext');
+    focusTarget?.focus({preventScroll:true});
+  }
+  function finishCampfire(choice){
+    if(!campSession)return;
+    const session=campSession,data=load();
+    const newMilestone=!data.seen.includes('trust40');
+    // Replays never duplicate rewards or rewrite a completed edition's choice.
+    if(!session.replay&&newMilestone){
+      data.seen.push('trust40');data.stats.scenes++;if(choice!=='skipped')data.stats.supportive++;
+      data.choices.push({scene:'trust40',choice:choice||'skipped',at:new Date().toISOString()});
+      data.pendingBoon='tempo';addTrust(6);
+    }
+    if(!data.campfire.completed&&choice){data.campfire.completed=true;data.romance.campfireChoice=choice}
+    save(data);campSession=null;
+    document.getElementById('overlay').classList.remove('campfire-overlay');
+    hideModal();refreshCard();
+    if(session.replay){renderRelationship();screen.classList.add('show');document.getElementById('replayCampfire')?.focus()}
+    else{S.relationshipScene=null;advance()}
+  }
+  document.addEventListener('keydown',event=>{
+    if(!campSession)return;
+    if(event.key==='Escape'){event.preventDefault();finishCampfire(campSession.replay?null:'skipped')}
+    if(event.key==='Tab'){
+      const buttons=[...document.querySelectorAll('#campfireScene button:not([disabled])')];
+      const first=buttons[0],last=buttons.at(-1);
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus()}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}
+    }
+  });
+  const baseRestoreRun=window.ForbiddenDeckSave?.load;
+  if(baseRestoreRun)window.ForbiddenDeckSave.load=function(){
+    baseRestoreRun();
+    if(S.relationshipScene?.id===CAMP_EDITION){
+      if(load().seen.includes('trust40')){S.relationshipScene=null;advance()}
+      else showCampfire(false,S.relationshipScene);
+    }
+  };
 
   const baseCampDialogue=campDialogue;
   campDialogue=function(){const scene=nextScene();if(scene)return showRelationshipScene(scene);return baseCampDialogue()};
@@ -90,10 +230,10 @@
   const baseStartBattleRel=startBattle;
   startBattle=function(enemies){const result=baseStartBattleRel(enemies);consumeBoon();return result};
   const baseNewRunRel=newRun;
-  newRun=function(diff=S.difficulty){const data=load();data.pendingBoon=null;save(data);const result=baseNewRunRel(diff);refreshCard();return result};
+  newRun=function(diff=S.difficulty){const data=load();data.pendingBoon=null;save(data);campSession=null;S.relationshipScene=null;document.getElementById('overlay').classList.remove('campfire-overlay');const result=baseNewRunRel(diff);refreshCard();return result};
   const baseRenderTopBarRel=renderTopBar;
   renderTopBar=function(){const result=baseRenderTopBarRel();refreshCard();return result};
 
   refreshCard();
-  window.ForbiddenDeckRelationship={load,nextScene,open:openRelationship,render:renderRelationship,clear:()=>{localStorage.removeItem(KEY);refreshCard()}};
+  window.ForbiddenDeckRelationship={load,nextScene,open:openRelationship,render:renderRelationship,romanceEnabled,setRomanceEnabled,clear:()=>{localStorage.removeItem(KEY);refreshCard()}};
 })();

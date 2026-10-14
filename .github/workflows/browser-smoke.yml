@@ -46,6 +46,18 @@ jobs:
       - name: Run relationship progression smoke test
         run: node tests/relationship-smoke.mjs
 
+      - name: Run illustrated campfire and save migration smoke test
+        run: node tests/relationship-campfire-smoke.mjs
+
+      - name: Run Standard gameplay and act transitions smoke test
+        run: node tests/gameplay-standard-smoke.mjs
+
+      - name: Run desktop and narrow relationship layout smoke test
+        run: node tests/relationship-layout-smoke.mjs
+
+      - name: Run local file entrypoint smoke test
+        run: node tests/offline-check.mjs
+
       - name: Run combat intent preview smoke test
         run: node tests/intent-preview-smoke.mjs
 

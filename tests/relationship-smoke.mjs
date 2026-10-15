@@ -22,9 +22,17 @@ async function chooseScene(trust, expectedTitle, choiceIndex=0) {
   await page.waitForSelector('#overlay.show');
   const title = await page.locator('#modalTitle').textContent();
   assert(title.includes(expectedTitle), `Oczekiwano sceny „${expectedTitle}”, otrzymano „${title}”.`);
+  if(trust===40){
+    await page.locator('#campfireNext').click();
+    await page.locator('#campfireNext').click();
+  }
   const choices = page.locator('#modalBody .choice');
   assert(await choices.count() === 2, `Scena ${expectedTitle} powinna mieć 2 decyzje.`);
   await choices.nth(choiceIndex).click();
+  if(trust===40){
+    await page.locator('#campfireNext').click();
+    await page.locator('#campfireNext').click();
+  }
 }
 
 try {
@@ -35,6 +43,7 @@ try {
     window.ForbiddenDeckRelationship.clear();
     window.ForbiddenDeckMenu.close();
     newRun('standard');
+    window.ForbiddenDeckRelationship.setRomanceEnabled(true);
   });
 
   assert(await page.locator('#menuRelationship').count() === 1, 'Menu główne nie ma ekranu relacji.');
@@ -53,7 +62,7 @@ try {
   assert(battle.pending === null, 'Premia nie została zużyta po rozpoczęciu walki.');
 
   // 40 Trust — kolejny próg, nie powtarza poprzedniej sceny.
-  await chooseScene(40,'Dlaczego zostałaś?',1);
+  await chooseScene(40,'W świetle ognia',1);
   relation = await page.evaluate(() => window.ForbiddenDeckRelationship.load());
   assert(relation.seen.includes('trust40') && relation.pendingBoon === 'tempo', 'Scena 40 Trust lub premia tempo nie została zapisana.');
   await page.evaluate(() => {
@@ -68,7 +77,8 @@ try {
   await chooseScene(80,'Jedno spojrzenie',0);
   relation = await page.evaluate(() => window.ForbiddenDeckRelationship.load());
   assert(relation.seen.length === 4, `Powinny być 4 przeżyte sceny, są ${relation.seen.length}.`);
-  assert(relation.stats.supportive === 3 && relation.stats.pragmatic === 1, 'Historia wyborów nie rozróżnia stylu współpracy.');
+  assert(relation.stats.supportive === 4 && relation.stats.pragmatic === 0, 'Historia wyborów nie zapisała wspierających decyzji.');
+  assert(relation.romance.campfireChoice === 'romance', 'Romantyczny wybór nie został zapisany oddzielnie od Trust.');
 
   // Wydarzenie na trakcie pojawia się tylko raz po osiągnięciu Zaufania.
   await page.evaluate(() => {

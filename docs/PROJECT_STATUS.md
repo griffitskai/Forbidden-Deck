@@ -1,4 +1,4 @@
-# Project Status — V0.9
+# Project Status — V0.9.1
 
 ## Pętla runu
 
@@ -7,6 +7,7 @@ Ekran tytułowy → wybór runu → mapa → walka / wydarzenie / ognisko / skle
 ## Bohaterowie
 
 ### Kael
+- fikcyjny dorosły bohater, 32 lata,
 - osobne HP,
 - Block,
 - Prowokacja,
@@ -15,6 +16,7 @@ Ekran tytułowy → wybór runu → mapa → walka / wydarzenie / ognisko / skle
 - odporności wynikające z pancerza i amuletu.
 
 ### Lyra
+- fikcyjna dorosła bohaterka, 29 lat,
 - osobne HP,
 - własny Block/unik,
 - Marked,
@@ -27,6 +29,10 @@ Ekran tytułowy → wybór runu → mapa → walka / wydarzenie / ognisko / skle
 - karty współpracy odblokowywane wraz z Trust,
 - cztery kamienie milowe relacji: 20 / 40 / 60 / 80 Trust,
 - trwała pamięć wyborów relacyjnych i krótkie premie taktyczne do kolejnej walki.
+- ilustrowana scena „W świetle ognia” przy 40 Trust: dialog, przyjaźń, opcjonalna wzajemna bliskość i pominięcie,
+- identyczna premia za każdą ścieżkę nowej sceny (+6 Trust, +1 energia w pierwszej turze następnej walki),
+- trwałe ustawienie romansu (domyślnie wyłączone) i osobna flaga wyboru, bez automatycznej zgody wynikającej z Trust,
+- migracja dawnych scen, wznawianie rozmowy po odświeżeniu i odtwarzanie bez dodatkowych nagród.
 
 ## Walka
 
@@ -81,6 +87,7 @@ Własny biom, przygotowanie przed wejściem, nowe archetypy wrogów i Królowa P
 - pełne podsumowanie zwycięstwa/porażki,
 - kontekstowy tutorial pierwszego runu: Trust, typy obrażeń, Prowokacja/Ochrona, Marked, Momentum i Synergy,
 - możliwość wyłączenia/resetu podpowiedzi.
+- lokalne ilustracje w menu, na mapie, w profilach i scenie; scenę można ukończyć również przy braku obrazów.
 
 ## Testy
 
@@ -94,6 +101,11 @@ GitHub Actions uruchamia grę w Chromium i sprawdza regresyjnie:
 - progres relacji Trust,
 - podgląd intencji i obrażeń,
 - tutorial kontekstowy.
+- nagrody i ustawienia sceny ogniska, migrację oraz wznawianie dialogów,
+- mikstury, ekwipunek, bossów Aktów I/II na Standardzie oraz przejścia między aktami,
+- widoki 1440/390/320 px i start gry bez serwera przez `index.html`.
+
+Testy bossów używają jawnych, deterministycznych konfiguracji talii i wyposażenia. Potwierdzają działanie walk i przejść; nie zastępują oceny balansu całego runu przez graczy.
 
 ## Aktualny kierunek do V1.0
 

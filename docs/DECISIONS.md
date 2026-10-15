@@ -17,3 +17,9 @@ Gra ma trzy poziomy trudności. Standard jest docelowym balansem; Odkrywca słu�
 
 ## Repozytorium jako źródło prawdy
 Nie utrzymujemy równolegle kolejnych plików z numerami wersji. `index.html` = aktualna wersja, historia = Git.
+
+## 2026-10 — W świetle ognia
+
+Pierwszy wycinek nowej oprawy obejmuje dwa lokalne portrety i jedną scenę ogniska. Kael ma 32 lata, Lyra 29; są fikcyjni i dorośli. Romantyczna ścieżka wymaga włączenia ustawienia i jawnego wyboru, a dialog pokazuje wzajemne zainteresowanie i zgodę. Trust nie jest zgodą na romans. Wszystkie ścieżki sceny, również pominięcie, dają tę samą premię mechaniczną.
+
+Klucz zapisu relacji pozostaje `forbidden_deck_relationship_v1`, a jego wewnętrzny schemat przechodzi z 1 na 2. Dawne sceny i wybory są zachowane, bez interpretowania ich jako zgody romantycznej. Runy, Trust, kolekcja i historia zachowują dotychczasowe klucze. Ponowne obejrzenie nie daje drugiej nagrody i nie nadpisuje pierwszego wyboru nowej sceny.

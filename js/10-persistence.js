@@ -77,6 +77,7 @@
    S.discard=Array.isArray(saved.discard)?saved.discard:[];
    S.hand=Array.isArray(saved.hand)?saved.hand:[];
    S.enemies=Array.isArray(saved.enemies)?saved.enemies:[];
+   S.relationshipScene=saved.relationshipScene||null;
    S.tempRes=saved.tempRes||{physical:0,magic:0,toxin:0};
    runActive=true;
    saveTrust();

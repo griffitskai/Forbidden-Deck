@@ -58,6 +58,16 @@ jobs:
       - name: Run local file entrypoint smoke test
         run: node tests/offline-check.mjs
 
+      - name: Run self-contained and sandboxed preview smoke test
+        run: node tests/preview-smoke.mjs
+
+      - name: Upload playable single-file preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: forbidden-deck-preview
+          path: dist/Forbidden-Deck-preview.html
+          if-no-files-found: error
+
       - name: Run combat intent preview smoke test
         run: node tests/intent-preview-smoke.mjs
 

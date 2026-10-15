@@ -34,6 +34,27 @@ try {
     assert((await page.locator('.relationship-profiles').textContent()).includes('29 lat'));
     if(screenshotDir) await page.screenshot({ path: `${screenshotDir}/relationship-${width}.png` });
     await page.locator('#relationshipBack').click();
+    await page.locator('#menuNew').click();
+    await page.locator('.difficulty-card').filter({ hasText: 'Standard' }).click();
+    await page.evaluate(() => ForbiddenTutorial.setEnabled(false));
+    await page.locator('.node:not(.locked)').first().click();
+    const battleLayout = await page.evaluate(() => ({
+      viewport: window.innerWidth,
+      document: document.documentElement.scrollWidth,
+      controls: document.querySelector('.battle-actions').getBoundingClientRect().right,
+      headerPosition: getComputedStyle(document.querySelector('.topbar')).position
+    }));
+    assert(battleLayout.document <= battleLayout.viewport + 1, `Battle overflows viewport: ${JSON.stringify(battleLayout)}`);
+    assert(battleLayout.controls <= battleLayout.viewport + 1, 'Battle buttons must fit the viewport');
+    if(width < 650) assert.equal(battleLayout.headerPosition, 'static', 'The mobile header must not cover gameplay');
+    await page.locator('.hand .card:not(.disabled)').first().click();
+    await page.locator('#endTurnBtn').click();
+    assert.equal(await page.evaluate(() => S.turn), 2);
+    if(screenshotDir) {
+      await page.locator('.battlefield-visual').scrollIntoViewIfNeeded();
+      await page.waitForTimeout(500); // Let the played-card feedback finish before capturing review images.
+      await page.screenshot({ path: `${screenshotDir}/battle-${width}.png` });
+    }
     await page.evaluate(() => {
       ForbiddenDeckMenu.close(); newRun('standard'); ForbiddenTutorial.setEnabled(false);
       localStorage.setItem('forbidden_deck_relationship_v1', JSON.stringify({ schema: 1, seen: ['trust20'], choices: [], stats: { scenes: 1, supportive: 1, pragmatic: 0 } }));
@@ -54,7 +75,7 @@ try {
     await context.close();
   }
   assert.deepEqual(errors, []);
-  console.log('Layout OK: loaded portraits, profiles, dialogue choices and return at 1440, 390 and 320 px.');
+  console.log('Layout OK: portraits, profiles, dialogue, battle controls without overflow or covering mobile header at 1440, 390 and 320 px.');
 } finally {
   await browser.close();
 }

@@ -49,6 +49,18 @@ GitHub Actions uruchamia obecnie prawdziwą przeglądarkę i sprawdza m.in.:
 
 Do zwykłego grania wystarczy otworzyć `index.html`. Do testów automatycznych używamy lokalnego serwera HTTP i Playwright/Chromium.
 
+### Podgląd pojedynczego pliku w Codex
+
+`index.html` w repozytorium korzysta z sąsiednich katalogów `css/`, `js/` i `assets/`. Podgląd samego tego pliku w Codex może pokazać surowy HTML bez działającej gry. Dla takiego podglądu wygeneruj samodzielną wersję:
+
+```sh
+node scripts/build-preview.mjs
+```
+
+Otwórz lub pobierz **`dist/Forbidden-Deck-preview.html`**. Zawiera style, wszystkie moduły gry i ilustracje; nie wymaga pozostałych plików. Jest też dostępny jako artefakt `forbidden-deck-preview` w workflow Browser smoke test. `index.html` pozostaje źródłem prawdy, a `dist/` jest generowane i ignorowane przez Git.
+
+W osadzonym podglądzie blokującym pamięć przeglądarki gra korzysta z pamięci bieżącej sesji i wyświetla informację o tym ograniczeniu. Do zachowywania postępu między otwarciami użyj pobranego pliku w zwykłej przeglądarce albo pełnej strony gry.
+
 ## Zasada projektu
 
 `main` ma zawsze zawierać **najlepszą aktualną grywalną wersję**. Nie utrzymujemy równoległych plików `v0_1.html`, `v0_2.html` itd. Historia wersji należy do Git/GitHub.

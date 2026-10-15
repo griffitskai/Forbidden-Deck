@@ -1,5 +1,14 @@
 # Changelog
 
+## V0.9.2 — Szlak i bliskość
+
+- Trzy ilustrowane regiony i regionalne ogniska: Pogranicze o zmierzchu, Skażony Las we mgle oraz Cytadela Popiołu nad żarem.
+- Połączenia miejsc na mapie, rozświetlony dostępny etap i zapis odwiedzonych węzłów, bez zmiany zasad przechodzenia trasy. Powrót na mapę pokazuje bieżący etap.
+- Wspólna ilustracja dorosłego duetu po świadomym wyborze bliskości w scenach 40/60 Trust.
+- Rozbudowana scena „Bez rozkazu” przy 60 Trust. Dialog pamięta wcześniejszą romantyczną decyzję, ale jest samodzielny. Przyjaźń, romans i pominięcie dają +9 Trust, Ochronę i +10 Synergy.
+- Wznawianie obu rozmów każdą ścieżką „Kontynuuj”; stare sceny i premie zachowane. Stara scena 60 Trust jest dostępna w nowej prezentacji przez ekran relacji bez drugiej nagrody.
+- Samodzielny podgląd osadza również nowe obrazy i mapę. Test obejmuje trzy regiony, aktywności ogniska, historię drogi, wąski ekran, pamięć relacji, zapis i ponowne obejrzenie.
+
 ## V0.9.1 — W świetle ognia
 
 - Samodzielny podgląd HTML dla Codex z osadzonym CSS, JavaScript i ilustracjami; działa także w osadzonej ramce bez dostępu do pamięci przeglądarki. Zwykła wersja korzysta nadal z dotychczasowego zapisu.

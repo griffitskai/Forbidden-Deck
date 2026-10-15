@@ -1,0 +1,69 @@
+.map-panel[data-region] { --route-accent: #d6ae72; background: #10191f; position: relative; isolation: isolate; overflow: hidden; }
+.map-panel[data-region]::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(#091219b8,#091219eb), var(--region-art) center / cover; opacity: .75; pointer-events: none; }
+.map-panel[data-region="tainted-forest"] { --route-accent: #a4c9ac; }
+.map-panel[data-region="ash-citadel"] { --route-accent: #dc9b79; }
+.map-panel[data-region] .party-banner { grid-template-columns: minmax(0,1fr) minmax(0,1fr); max-width: 720px; }
+.map-panel[data-region] .act-emblem, .map-panel[data-region] .map-hint { display: none; }
+.map-panel[data-region] .party-card { padding: 10px; }
+.map-panel[data-region] .map-portrait { width: 52px; height: 68px; }
+.journey-vista { position: relative; min-height: 290px; border-radius: 15px; overflow: hidden; margin-top: 22px; background: #19242b; border: 1px solid #52616a; }
+.journey-vista > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 44%; }
+.journey-vista::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(4,12,16,.92), rgba(4,12,16,.18)), linear-gradient(0deg, rgba(4,12,16,.5), transparent); }
+.journey-vista-copy { position: relative; z-index: 1; padding: 32px; max-width: 560px; }
+.journey-eyebrow { color: var(--route-accent); text-transform: uppercase; letter-spacing: .22em; font-size: 10px; }
+.journey-vista h2 { font-family: Georgia, serif; font-size: clamp(28px,4vw,42px); color: #f3e7d6; margin: 10px 0; }
+.journey-vista p { line-height: 1.7; font-size: 13px; color: #c9d0d3; margin-bottom: 18px; }
+.journey-progress { display: inline-block; color: #e9d7bb; border-top: 1px solid #777367; padding-top: 12px; font-size: 11px; }
+.map.journey-map { position: relative; gap: 40px; max-width: 720px; margin: 28px auto; padding: 12px 28px; isolation: isolate; }
+.journey-map .row { position: relative; gap: 22px; }
+.journey-map .node { width: 172px; min-height: 122px; background: #151f27; border-color: #58646a; box-shadow: 0 8px 22px #070c11; padding: 12px; }
+.journey-map .node .scene { height: 35px; border: 0; background: transparent; box-shadow: none; justify-content: flex-start; font-size: 25px; }
+.journey-map .node .meta strong { font-size: 12px; color: #e7e3dc; }
+.journey-map .node .meta span { display: block; margin-top: 5px; font-size: 10px; }
+.journey-map .node.locked { opacity: .66; }
+.journey-map .current-step .node { border-color: var(--route-accent); background: #28313a; box-shadow: 0 0 0 1px #a98b5f55, 0 0 24px #c7985330; }
+.journey-map .node.visited { opacity: .82; border-color: #7f9e8c; background: #152b27; }
+.journey-map .node:disabled:hover { transform: none; }
+.journey-stamp { position: absolute; top: 12px; right: 12px; color: #b9d9c4; font-size: 15px; }
+.journey-step { position: absolute; left: -15px; top: 12px; font-size: 10px; color: #839399; letter-spacing: .12em; }
+.current-step .journey-step { color: var(--route-accent); }
+.journey-paths { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: visible; }
+.journey-paths path { fill: none; stroke: #4b6062; stroke-width: 1.5; stroke-dasharray: 4 6; opacity: .6; }
+.journey-paths path.travelled { stroke: #a9c6b5; stroke-width: 2.5; stroke-dasharray: none; opacity: 1; }
+.journey-paths path.available { stroke: var(--route-accent); stroke-width: 2; opacity: 1; }
+.regional-camp { position: relative; margin: 0 0 18px; height: 230px; border-radius: 12px; overflow: hidden; background: #18232c; }
+.regional-camp img { width: 100%; height: 100%; object-fit: cover; object-position: center 65%; }
+.regional-camp figcaption { position: absolute; inset: auto 0 0; padding: 28px 16px 12px; color: #f1d6ae; background: linear-gradient(transparent,#061016e8); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+.regional-camp-modal { background: #111b22; border-color: #7e6e55; }
+.regional-camp-modal h2 { font-family: Georgia,serif; color: #ead2af; }
+.regional-camp-modal .choice strong, .regional-camp-modal .choice span { display: block; }
+.regional-camp-modal .choice span { font-size: 12px; margin-top: 8px; line-height: 1.5; color: #b9c4cc; }
+.regional-camp-modal .choices { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.campfire-art.moment-art { height: clamp(220px,36vh,380px); }
+.moment-art img { object-position: center 39%; animation: momentReveal .7s ease; }
+.campfire-ending .campfire-art { animation: quietFire 3s ease forwards; }
+.campfire-sequence { font-size: 10px; color: #b5a68f; margin: 12px 0 0; text-transform: uppercase; letter-spacing: .13em; }
+@keyframes momentReveal { from { opacity: .3; } to { opacity: 1; } }
+@keyframes quietFire { to { filter: brightness(.85); } }
+@media(max-width:650px) {
+  .map-panel { padding: 14px; }
+  .map-panel[data-region] .party-banner { gap: 8px; }
+  .map-panel[data-region] .party-card { padding: 8px; gap: 8px; flex-direction: row; text-align: left; }
+  .map-panel[data-region] .party-card span { display: none; }
+  .map-panel[data-region] .party-card strong { font-size: 13px; }
+  .map-panel[data-region] .party-card small { font-size: 10px; }
+  .map-panel[data-region] .map-portrait { width: 36px; height: 50px; }
+  .journey-vista { min-height: 280px; }
+  .journey-vista-copy { padding: 22px 18px; }
+  .journey-vista::after { background: linear-gradient(90deg,#071015e8,#07101555); }
+  .map.journey-map { padding: 8px 14px; gap: 32px; }
+  .journey-map .row { gap: 8px; flex-wrap: nowrap; }
+  .journey-map .node { flex: 1 1 0; width: auto; min-width: 0; min-height: 120px; padding: 10px 8px; }
+  .journey-map .node .meta strong { font-size: 11px; overflow-wrap: anywhere; }
+  .journey-map .node .meta span { font-size: 9px; }
+  .journey-step { left: -13px; font-size: 8px; }
+  .regional-camp { height: 180px; }
+  .regional-camp-modal .choices { grid-template-columns: 1fr; }
+  .campfire-art.moment-art { height: 240px; }
+}
+@media(prefers-reduced-motion:reduce) { .moment-art img, .campfire-ending .campfire-art { animation: none; } }

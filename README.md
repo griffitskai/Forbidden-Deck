@@ -10,7 +10,11 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 ## Aktualny stan
 
-Wersja robocza: **V0.9.1 — W świetle ognia**.
+Wersja robocza: **V0.9.2 — Szlak i bliskość**.
+
+Mapa prowadzi teraz przez trzy ilustrowane krainy: gasnące Pogranicze, mglisty Skażony Las i żarzącą się Cytadelę. Połączenia pokazują możliwe dalsze kroki, a odwiedzone miejsca są zapisywane w bieżącym runie. Ogniska mają regionalny nastrój i zachowują wszystkie cztery czynności.
+
+Przy 60 Trust czeka kolejna ilustrowana rozmowa, „Bez rozkazu”. Pamięta wcześniejszą bliskość, lecz nie wymaga jej. Przyjaźń, romans i pominięcie dają +9 Trust oraz jednorazowo Ochronę i +10 Synergy. Wspólna ilustracja pojawia się po wybraniu romansu; samo Trust jej nie uruchamia. Starsze sceny można odwiedzić ponownie przez ekran relacji, bez drugiej nagrody.
 
 Pierwsza iteracja oprawy dodaje ilustrowane portrety Kaela (32 lata) i Lyry (29 lat), ognisko oraz krótką scenę przy 40 Trust. Romantyczne sceny można włączyć w menu lub ekranie relacji; domyślnie są wyłączone. Przyjaźń, romans i pominięcie dają identyczną korzyść: +6 Trust i +1 energii w pierwszej turze następnej walki. Trust oznacza współpracę, a wybór bliskości jest zapisywany osobno.
 

@@ -61,6 +61,9 @@ jobs:
       - name: Run self-contained and sandboxed preview smoke test
         run: node tests/preview-smoke.mjs
 
+      - name: Run regional journey and next campfire scene smoke test
+        run: node tests/journey-smoke.mjs
+
       - name: Upload playable single-file preview
         uses: actions/upload-artifact@v4
         with:

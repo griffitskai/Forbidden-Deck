@@ -51,6 +51,8 @@ async function css(path) {
 async function js(path) {
   if(scripts.has(path)) return scripts.get(path);
   let source = await readFile(sourcePath(path), 'utf8');
+  // Region and scene images can be selected by data rather than a literal img tag.
+  for(const match of source.matchAll(/['"](assets\/[^'"\s]+\.(?:webp|png|jpg|svg))['"]/g)) await image(match[1]);
   // Modules append their styles dynamically. Convert those links to inline styles.
   source = await replaceAsync(source, /(\w+)\.href\s*=\s*(['"])(css\/[^'"]+\.css)\2/g, async ([, name, , file]) => {
     return `${name}.textContent=${JSON.stringify(await css(file))}`;

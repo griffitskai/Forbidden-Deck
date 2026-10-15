@@ -22,14 +22,14 @@ async function chooseScene(trust, expectedTitle, choiceIndex=0) {
   await page.waitForSelector('#overlay.show');
   const title = await page.locator('#modalTitle').textContent();
   assert(title.includes(expectedTitle), `Oczekiwano sceny „${expectedTitle}”, otrzymano „${title}”.`);
-  if(trust===40){
+  if(trust===40||trust===60){
     await page.locator('#campfireNext').click();
     await page.locator('#campfireNext').click();
   }
   const choices = page.locator('#modalBody .choice');
   assert(await choices.count() === 2, `Scena ${expectedTitle} powinna mieć 2 decyzje.`);
   await choices.nth(choiceIndex).click();
-  if(trust===40){
+  if(trust===40||trust===60){
     await page.locator('#campfireNext').click();
     await page.locator('#campfireNext').click();
   }

@@ -1,4 +1,4 @@
-# Project Status — V0.9.1
+# Project Status — V0.9.2
 
 ## Pętla runu
 
@@ -33,6 +33,8 @@ Ekran tytułowy → wybór runu → mapa → walka / wydarzenie / ognisko / skle
 - identyczna premia za każdą ścieżkę nowej sceny (+6 Trust, +1 energia w pierwszej turze następnej walki),
 - trwałe ustawienie romansu (domyślnie wyłączone) i osobna flaga wyboru, bez automatycznej zgody wynikającej z Trust,
 - migracja dawnych scen, wznawianie rozmowy po odświeżeniu i odtwarzanie bez dodatkowych nagród.
+- druga ilustrowana rozmowa przy 60 Trust, zależna od wcześniejszego wyboru; osobna flaga decyzji i wspólna ilustracja po wyborze bliskości,
+- przyjaźń, romans i pominięcie nowej sceny 60 Trust dają tę samą premię: +9 Trust, Ochrona ×1 i +10 Synergy w następnej walce.
 
 ## Walka
 
@@ -58,6 +60,8 @@ Ekran tytułowy → wybór runu → mapa → walka / wydarzenie / ognisko / skle
 - odporności i sprzęt zdobywany po elitach.
 
 ## Akty
+
+Każdy akt ma własną ilustrację regionu i ogniska, krótki opis nastroju oraz czytelne połączenia etapów. Pamięć wybranych węzłów należy do bieżącego runu; stare zapisy bez tej informacji nie otrzymują wymyślonej historii trasy. Nowy run czyści tylko swoją trasę. Nie zmieniono dostępności kolejnych etapów ani ich nagród.
 
 ### Akt I — Pogranicze
 Boss: Strażniczka Pogranicza + Zaklinaczka.

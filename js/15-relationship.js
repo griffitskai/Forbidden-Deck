@@ -3,6 +3,10 @@
   const SCHEMA=2;
   const PREFS_KEY='forbidden_deck_preferences_v1';
   const CAMP_EDITION='campfire40';
+  const campScenes={
+    campfire40:{milestone:'trust40',title:'W świetle ognia',flag:'campfireChoice',completed:'completed',trust:6,boon:'tempo',benefit:'+6 Trust i +1 energia w pierwszej turze następnej walki.'},
+    campfire60:{milestone:'trust60',title:'Bez rozkazu',flag:'trust60Choice',completed:'trust60Completed',trust:9,boon:'protect',benefit:'+9 Trust. Następna walka: Ochrona ×1 i +10 Synergy.'}
+  };
   const milestones=[
     {id:'trust20',threshold:20,rank:'Towarzysze',title:'Pierwszy rytm',text:'<b>Lyra:</b> „Przestałam liczyć, ile razy wchodzisz mi w linię strzału.”<br><br><b>Kael:</b> „To brzmi prawie jak komplement.”<br><br>Po raz pierwszy planują kolejną walkę jak duet, a nie dwoje ludzi idących w tym samym kierunku.',options:[
       {id:'right-side',label:'🛡️ „Ja biorę prawą stronę. Ty obserwuj resztę.”',desc:'+8 Trust. Następna walka: +6 Block dla obojga.',trust:8,tone:'supportive',boon:'guard'},
@@ -16,7 +20,7 @@
       {id:'one-look',label:'⚡ „Jedno spojrzenie. Więcej nie będzie potrzebne.”',desc:'+5 Trust. Następna walka: +1 energia i +15 Synergy.',trust:5,tone:'pragmatic',boon:'perfect'}]}
   ];
 
-  function defaults(){return{schema:SCHEMA,seen:[],choices:[],pendingBoon:null,roadSeen:false,stats:{scenes:0,supportive:0,pragmatic:0},romance:{campfireChoice:null},campfire:{completed:false}}}
+  function defaults(){return{schema:SCHEMA,seen:[],choices:[],pendingBoon:null,roadSeen:false,stats:{scenes:0,supportive:0,pragmatic:0},romance:{campfireChoice:null,trust60Choice:null},campfire:{completed:false,trust60Completed:false}}}
   function load(){
     try{
       const raw=JSON.parse(localStorage.getItem(KEY)||'null');
@@ -83,6 +87,12 @@
       const note=document.createElement('p');note.textContent='Ponowne obejrzenie nie przyznaje nagród ani nie zmienia wcześniej zapisanej decyzji. Starszy zapis może tu poznać nową scenę i zapisać jej pierwszy wybór.';entry.appendChild(note);
     }else{const note=document.createElement('p');note.textContent=unlocked?'Rozmowa czeka przy ognisku podczas runu.':'Scena odblokuje się przy 40 Trust.';entry.appendChild(note)}
     body.appendChild(entry);
+    if(data.seen.includes('trust60')){
+      const later=document.createElement('section');later.className='relationship-camp-entry';
+      later.innerHTML='<h3>Bez rozkazu</h3><p>Jedna noc bez zbroi złożonej ze słów. Rozmowa pamięta, co wybraliście przy poprzednim ogniu.</p>';
+      const replay=document.createElement('button');replay.className='btn';replay.id='replayCampfire60';replay.textContent='Wróć do tej nocy';replay.onclick=()=>showCampfire(true,null,'campfire60');later.appendChild(replay);
+      const note=document.createElement('p');note.textContent='Ponowne obejrzenie bez dodatkowej nagrody. Przyjaźń i bliskość mają równoważne korzyści.';later.appendChild(note);body.appendChild(later);
+    }
   }
   function openRelationship(){window.ForbiddenDeckMenu?.close?.();renderRelationship();screen.classList.add('show')}
   function closeRelationship(){screen.classList.remove('show');window.ForbiddenDeckMenu?.open?.()}
@@ -94,6 +104,7 @@
   }
   function showRelationshipScene(scene){
     if(scene.id==='trust40')return showCampfire();
+    if(scene.id==='trust60')return showCampfire(false,null,'campfire60');
     showModal(scene.title,'',()=>{const w=document.createElement('div'),d=document.createElement('div');d.className='relation-dialogue';d.innerHTML=scene.text;w.appendChild(d);w.appendChild(grid(scene.options.map(opt=>[opt.label,opt.desc,()=>applyChoice(scene,opt)])));return w});
   }
 
@@ -111,14 +122,32 @@
       {speaker:'Lyra',text:'Chcę. I na dziś wystarczy mi, że zostaniesz obok.',note:'Przyciąga go do krótkiego pocałunku. Kael odpowiada, po czym opierają czoła o siebie. Rozmowa cichnie; światło ognia powoli przygasa.'}
     ]
   };
+  function laterOpening(){
+    const shared=romanceEnabled()&&load().romance.campfireChoice==='romance';
+    return[
+      {speaker:'Kael',text:'W walce czekasz na mój znak. Tutaj nie musisz.',note:'Odpina ciężki naramiennik i kładzie go przy kamieniu. Między nimi zostaje tylko ciepło ognia.'},
+      shared?{speaker:'Lyra',text:'W takim razie powiem pierwsza. Myślę jeszcze o tamtym pocałunku.',note:'Nie odwraca wzroku. Kael uśmiecha się tak, jakby na chwilę zapomniał o całej drodze przed nimi.'}
+        :{speaker:'Lyra',text:'Nie zawsze potrzebuję znaku. Czasem chcę po prostu wiedzieć, że ktoś zostanie.',note:'Przesuwa po kamieniu drugi kubek. To zaproszenie do rozmowy, nie obietnica, której ktokolwiek musi dotrzymać.'}
+    ];
+  }
+  const laterEndings={
+    friendship:[
+      {speaker:'Kael',text:'Zostanę. Ty weźmiesz drugą wartę, ja pierwszą. Tak jak ustaliliśmy.',note:'Rozkłada płaszcz przy ogniu, zostawiając jej własne miejsce.'},
+      {speaker:'Lyra',text:'Dobrze. A jutro przypomnij mi, żebym nie mówiła, że jesteś nie do zniesienia.',note:'Śmieją się pod nosem. Nie potrzebują wyznania, żeby ta cisza była wspólna.'}
+    ],
+    romance:[
+      {speaker:'Kael',text:'Chodź bliżej. Jeśli tego chcesz, jest miejsce dla nas obojga.',note:'Lyra ujmuje jego dłoń i sama przysuwa się pod płaszcz. Kael otula jej ramiona.'},
+      {speaker:'Lyra',text:'Zostań jeszcze chwilę. Potem znowu będziemy odważni.',note:'Opiera głowę na jego ramieniu. Kael splata jej palce ze swoimi. Ogień powoli przygasa, a świat poza kręgiem ciepła cichnie.'}
+    ]
+  };
   let campSession=null;
   function persistCampfire(){
     if(!campSession||campSession.replay)return;
-    S.relationshipScene={id:CAMP_EDITION,phase:campSession.phase,index:campSession.index,choice:campSession.choice};
+    S.relationshipScene={id:campSession.id,phase:campSession.phase,index:campSession.index,choice:campSession.choice};
     window.ForbiddenDeckSave?.save?.('map');
   }
-  function showCampfire(replay=false,resume=null){
-    campSession={replay,phase:resume?.phase==='ending'?'ending':resume?.phase==='choice'?'choice':'opening',index:Math.max(0,Math.min(1,resume?.index||0)),choice:['friendship','romance'].includes(resume?.choice)?resume.choice:null};
+  function showCampfire(replay=false,resume=null,id=CAMP_EDITION){
+    campSession={id:campScenes[resume?.id]?resume.id:id,replay,phase:resume?.phase==='ending'?'ending':resume?.phase==='choice'?'choice':'opening',index:Math.max(0,Math.min(1,resume?.index||0)),choice:['friendship','romance'].includes(resume?.choice)?resume.choice:null};
     if(campSession.phase==='ending'&&(!campSession.choice||(!romanceEnabled()&&campSession.choice==='romance'))){campSession.phase='choice';campSession.index=0;campSession.choice=null}
     renderCampfire();
   }
@@ -126,21 +155,30 @@
     if(!campSession)return;
     persistCampfire();
     const session=campSession;
+    const definition=campScenes[session.id],later=session.id==='campfire60';
     const choosing=session.phase==='choice';
     let line;
     if(choosing){
       line=romanceEnabled()
         ?{speaker:'Lyra',text:'Możesz usiąść bliżej, jeśli chcesz. Ale jeśli wolisz zostać po swojej stronie ognia, nadal chcę iść z tobą.',note:'Kael spotyka jej spojrzenie. Odpowiedź należy do niego, zaproszenie — do niej.'}
         :{speaker:'Lyra',text:'Dobrze mieć kogoś po swojej stronie ognia. Nawet jeśli każde siedzi na własnym pniu.',note:'Kael uśmiecha się. Na jutro mają wspólny plan i kogoś, kto przypilnuje drugiego.'};
-    }else{line=(session.phase==='ending'?endings[session.choice]:opening)[session.index]}
-    showModal('W świetle ognia','',()=>{
+      if(later&&romanceEnabled())line={speaker:'Lyra',text:'Mogę schować się obok ciebie pod tym płaszczem? Chcę być bliżej. Ale możemy też zostać po prostu przy ogniu.',note:'Kael nie odpowiada za nią. Dopiero teraz przychodzi pora na jego wybór.'};
+    }else{line=(session.phase==='ending'?(later?laterEndings:endings)[session.choice]:(later?laterOpening():opening))[session.index]}
+    showModal(definition.title,'',()=>{
       const root=document.createElement('div');root.id='campfireScene';
       root.innerHTML='<figure class="campfire-art"><img src="assets/scenes/campfire.webp" width="1672" height="941" alt="Ognisko wśród ruin, dwa miejsca odpoczynku i chłodny las o zmierzchu"><figcaption>MIEJSCE ODPOCZYNKU · PO ZMROKU</figcaption></figure>';
+      const moment=session.phase==='ending'&&session.choice==='romance'&&romanceEnabled();
+      const sceneArt=root.querySelector('.campfire-art'),sceneImg=sceneArt.querySelector('img');
+      const art=moment?'assets/scenes/shared-cloak.webp':window.ForbiddenDeckJourney?.region().art;
+      if(art)sceneImg.src=globalThis.ForbiddenDeckPreviewAssets?.[art]||art;
+      if(moment){sceneArt.classList.add('moment-art');sceneImg.alt='Kael i Lyra przy ogniu, pod wspólnym płaszczem, ze splecionymi dłońmi.'}
+      sceneArt.querySelector('figcaption').textContent=moment?'Chwila, którą wybierają oboje':(currentAct().title+' · po zmroku');
+      const sequence=document.createElement('p');sequence.className='campfire-sequence';sequence.textContent=`${later?'60':'40'} Trust · ${choosing?'Wasza decyzja':session.phase==='opening'?'Przy ogniu':'Zostań jeszcze chwilę'}`;root.appendChild(sequence);
       const dialogue=document.createElement('div');dialogue.className='campfire-line';dialogue.setAttribute('aria-live','polite');
       dialogue.innerHTML=`<img src="assets/portraits/${line.speaker==='Kael'?'kael':'lyra'}.webp" alt="${line.speaker}" width="1024" height="1536"><div><strong class="campfire-speaker">${line.speaker}</strong><p></p><em></em></div>`;
       dialogue.querySelector('p').textContent=line.text;dialogue.querySelector('em').textContent=line.note;root.appendChild(dialogue);
       const benefit=document.createElement('p');benefit.className='campfire-benefit';
-      benefit.textContent=session.replay?'Ponowne obejrzenie — bez dodatkowych nagród.':'Każda ścieżka, także pominięcie: +6 Trust i +1 energia w pierwszej turze następnej walki.';root.appendChild(benefit);
+      benefit.textContent=session.replay?'Ponowne obejrzenie — bez dodatkowych nagród.':'Każda ścieżka, także pominięcie: '+definition.benefit;root.appendChild(benefit);
       if(choosing){
         const options=[['friendship','Zostańmy przyjaciółmi','Wspólna droga i zaufanie, bez romansu.']];
         if(romanceEnabled())options.push(['romance','Przyjmij zaproszenie do bliskości','Kael odpowiada na zaproszenie Lyry. Oboje wybierają tę chwilę.']);
@@ -168,18 +206,19 @@
   function finishCampfire(choice){
     if(!campSession)return;
     const session=campSession,data=load();
-    const newMilestone=!data.seen.includes('trust40');
+    const definition=campScenes[session.id];
+    const newMilestone=!data.seen.includes(definition.milestone);
     // Replays never duplicate rewards or rewrite a completed edition's choice.
     if(!session.replay&&newMilestone){
-      data.seen.push('trust40');data.stats.scenes++;if(choice!=='skipped')data.stats.supportive++;
-      data.choices.push({scene:'trust40',choice:choice||'skipped',at:new Date().toISOString()});
-      data.pendingBoon='tempo';addTrust(6);
+      data.seen.push(definition.milestone);data.stats.scenes++;if(choice!=='skipped')data.stats.supportive++;
+      data.choices.push({scene:definition.milestone,choice:choice||'skipped',at:new Date().toISOString()});
+      data.pendingBoon=definition.boon;addTrust(definition.trust);
     }
-    if(!data.campfire.completed&&choice){data.campfire.completed=true;data.romance.campfireChoice=choice}
+    if(!data.campfire[definition.completed]&&choice){data.campfire[definition.completed]=true;data.romance[definition.flag]=choice}
     save(data);campSession=null;
     document.getElementById('overlay').classList.remove('campfire-overlay');
     hideModal();refreshCard();
-    if(session.replay){renderRelationship();screen.classList.add('show');document.getElementById('replayCampfire')?.focus()}
+    if(session.replay){renderRelationship();screen.classList.add('show');document.getElementById(session.id==='campfire60'?'replayCampfire60':'replayCampfire')?.focus()}
     else{S.relationshipScene=null;advance()}
   }
   document.addEventListener('keydown',event=>{
@@ -192,14 +231,13 @@
       else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}
     }
   });
-  const baseRestoreRun=window.ForbiddenDeckSave?.load;
-  if(baseRestoreRun)window.ForbiddenDeckSave.load=function(){
-    baseRestoreRun();
-    if(S.relationshipScene?.id===CAMP_EDITION){
-      if(load().seen.includes('trust40')){S.relationshipScene=null;advance()}
+  window.addEventListener('forbidden-deck:restore',()=>{
+    const definition=campScenes[S.relationshipScene?.id];
+    if(definition){
+      if(load().seen.includes(definition.milestone)){S.relationshipScene=null;advance()}
       else showCampfire(false,S.relationshipScene);
     }
-  };
+  });
 
   const baseCampDialogue=campDialogue;
   campDialogue=function(){const scene=nextScene();if(scene)return showRelationshipScene(scene);return baseCampDialogue()};

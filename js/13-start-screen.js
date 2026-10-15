@@ -39,7 +39,7 @@
         </div>
       </section>
       <aside class="start-menu">
-        <div class="start-version"><span>BUILD V0.9.1</span><span>W ŚWIETLE OGNIA</span></div>
+        <div class="start-version"><span>BUILD V0.9.2</span><span>SZLAK I BLISKOŚĆ</span></div>
         <div class="start-actions">
           <button class="start-action primary" id="menuContinue"><strong>▶ Kontynuuj run</strong><span>Wróć do zapisanego podejścia.</span></button>
           <button class="start-action" id="menuNew"><strong>✦ Nowy run</strong><span>Wybierz poziom trudności i rozpocznij od Pogranicza.</span></button>

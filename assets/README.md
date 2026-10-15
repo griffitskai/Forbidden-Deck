@@ -1,12 +1,16 @@
-# Ilustracje — W świetle ognia
+# Ilustracje — W świetle ognia / Szlak i bliskość
 
-Trzy obrazy wygenerowano narzędziem OpenAI Image Generation 14 października 2026 na potrzeby tej iteracji. Nie korzystają z banków zdjęć ani zewnętrznych pakietów graficznych. Portret Lyry powstał z portretem Kaela jako referencją stylu; ognisko z oboma portretami jako referencjami palety. Oryginały PNG pozostają w środowisku roboczym poza repozytorium. Do gry zapisano WebP z jakością 82, bez zmiany kompozycji.
+Obrazy wygenerowano narzędziem OpenAI Image Generation 14 i 15 października 2026 na potrzeby projektu. Nie korzystają z banków zdjęć ani zewnętrznych pakietów graficznych. Portret Lyry powstał z portretem Kaela jako referencją stylu; ognisko i wspólna scena z oboma portretami jako referencjami. Regiony korzystają z pierwszego ogniska jako odniesienia do oprawy. Oryginały PNG pozostają w środowisku roboczym poza repozytorium. Do gry zapisano WebP z jakością 80–82, bez zmiany kompozycji.
 
 | Zasób | Rozmiar obrazu | Rozmiar pliku | Zastosowanie |
 | --- | --- | --- | --- |
 | `portraits/kael.webp` | 1024 × 1536 | około 159 KB | menu, mapa, profil, dialog |
 | `portraits/lyra.webp` | 1024 × 1536 | około 171 KB | menu, mapa, profil, dialog |
 | `scenes/campfire.webp` | 1672 × 941 | około 305 KB | tło menu i scena |
+| `regions/borderlands.webp` | 1672 × 941 | około 314 KB | mapa i ognisko Pogranicza |
+| `regions/tainted-forest.webp` | 1672 × 941 | około 293 KB | mapa i ognisko Skażonego Lasu |
+| `regions/ash-citadel.webp` | 1672 × 941 | około 278 KB | mapa i ognisko Cytadeli |
+| `scenes/shared-cloak.webp` | 1672 × 941 | około 199 KB | wybrane romantyczne zakończenia scen 40/60 Trust |
 
 ## Specyfikacja postaci i oprawy
 
@@ -14,6 +18,7 @@ Trzy obrazy wygenerowano narzędziem OpenAI Image Generation 14 października 20
 - **Lyra, 29 lat**, fikcyjna dorosła łuczniczka: miedziane włosy z warkoczem, piegi, szarozielone oczy, skórzany pancerz i chłodny zielony płaszcz. Samodzielna, przenikliwa, lekko rozbawiona.
 - **Ognisko**: dwa miejsca odpoczynku wśród ruin, ciepły bursztynowy ogień i chłodny las o zmierzchu. Bez postaci, żeby wspólne portrety i dialog mogły opowiadać różne warianty tej samej sceny.
 - Malarskie dark fantasy, czytelne twarze, ciepłe światło na chłodnym tle. Postacie są w pełni ubrane; ilustracje nie przedstawiają czynności seksualnych.
+- Wspólna scena przedstawia Kaela (32 lata) i Lyrę (29 lat), w ubraniu, pod jednym płaszczem, z dłońmi splecionymi przy ogniu. Jest widoczna wyłącznie po opcjonalnym wyborze bliskości.
 
 ## Pochodzenie i warunki użycia
 

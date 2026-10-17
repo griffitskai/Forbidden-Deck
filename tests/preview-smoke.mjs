@@ -67,6 +67,20 @@ try {
   await frame.locator('#campfireNext').click();
   assert.equal(await frame.evaluate(() => ForbiddenDeckRelationship.load().romance.campfireChoice), 'romance');
   assert.equal(await frame.locator('#mapScreen.active').count(), 1);
+  // The new atlas and story scenery are also embedded, including opaque-origin previews.
+  for(const target of [page,frame]) {
+    await target.evaluate(() => ForbiddenDeckCompanions.open());
+    await target.locator('[data-episode="bread"]').click();
+    await target.waitForFunction(() => [...document.querySelectorAll('#companionsScreen img')].every(img => img.complete && img.naturalWidth > 0));
+    await target.locator('#lifeNext').click();
+    await target.locator('#lifeNext').click();
+    await target.locator('#lifeNext').click();
+    await target.locator('[data-life-choice="home"]').click();
+    await target.locator('#lifeNext').click();
+    await target.locator('#lifeNext').click();
+    assert.equal(await target.evaluate(() => ForbiddenDeckCompanions.load().choices.bread), 'home');
+    await target.locator('#companionsClose').click();
+  }
   assert.deepEqual(requests, [], 'The preview must make no requests for sibling files or remote resources');
   assert.deepEqual(errors, [], 'Normal and sandboxed previews must not throw JavaScript errors');
   console.log('Preview OK: embedded CSS/JS/art, lazy modules, gameplay and saves; opaque sandbox gameplay and campfire; zero external resource requests.');

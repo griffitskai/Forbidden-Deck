@@ -10,7 +10,9 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 ## Aktualny stan
 
-Wersja robocza: **V0.9.2 — Szlak i bliskość**.
+Wersja robocza: **V0.9.3 — Wspólne chwile**.
+
+Nowy przycisk **Kael i Lyra · Wspólne chwile** otwiera album pięciu ilustrowanych, opcjonalnych opowieści. Pierwszą poznasz od razu; kolejne odblokowują się po zwycięstwie, przechwyceniu ciosu, przeżyciu ciężkiego trafienia i pokonaniu pierwszego bossa. Bohaterowie mają trzy wyrazy twarzy i reagują na przebieg walki. Sceny używają ruchu kamery i światła; nie są generowanymi filmami ani animacją ust. Ruch i krótkie reakcje można wyłączyć. Rozmowy nie dają bonusów; pierwszy osobisty wybór jest pamiętany, a odświeżenie pozwala wznowić dialog. [Raport V0.9.3](docs/ITERATION_03.md).
 
 Mapa prowadzi teraz przez trzy ilustrowane krainy: gasnące Pogranicze, mglisty Skażony Las i żarzącą się Cytadelę. Połączenia pokazują możliwe dalsze kroki, a odwiedzone miejsca są zapisywane w bieżącym runie. Ogniska mają regionalny nastrój i zachowują wszystkie cztery czynności.
 

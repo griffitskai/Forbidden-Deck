@@ -64,6 +64,9 @@ jobs:
       - name: Run regional journey and next campfire scene smoke test
         run: node tests/journey-smoke.mjs
 
+      - name: Run living companions and event memories
+        run: node tests/companions-smoke.mjs
+
       - name: Upload playable single-file preview
         uses: actions/upload-artifact@v4
         with:

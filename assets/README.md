@@ -25,3 +25,12 @@ Obrazy wygenerowano narzędziem OpenAI Image Generation 14 i 15 października 20
 Zasoby są wynikami generowania dla właściciela projektu, a nie materiałami na licencji stock lub Creative Commons. Korzystanie z wyników generowania podlega [warunkom OpenAI](https://openai.com/policies/terms-of-use/). Nie deklarujemy wyłączności ani odrębnej licencji CC. Repozytorium nie zawiera ogólnego pliku `LICENSE`; ta iteracja nie wprowadza licencji dla całego projektu.
 
 Wszystkie obrazy są lokalne. Ich brak pozostawia czytelny tekst i działające przyciski; załadowanie obrazu nie jest warunkiem ukończenia sceny.
+
+## V0.9.3 — Wspólne chwile (17 października 2026)
+
+- `scenes/bread-at-dawn.webp`: nowa ilustracja przyjacielskiego śniadania Kaela i Lyry na moście (1672 × 941, około 278 KB).
+- `portraits/expressions.webp`: atlas 3 × 2, trzy wyrazy twarzy każdego bohatera (1536 × 1024, około 283 KB). Górny rząd: Kael; dolny: Lyra. Kolumny: skupienie, uśmiech, niepokój. Kadry są wybierane przez CSS, bez dodatkowego przetwarzania twarzy.
+
+Oba obrazy powstały w OpenAI Image Generation z `scenes/shared-cloak.webp` jako referencją tożsamości i stylu. Wykorzystano wbudowane narzędzie, bez wywołań API i bez zasobów stock. PNG przekonwertowano do WebP, bez zmiany kompozycji. [Prompty](living-companions-prompts.md). Warunki użycia i brak deklaracji wyłączności pozostają jak wyżej.
+
+Efekty kamery/światła i przełączanie portretów są prezentacją ilustracji w CSS. Ta iteracja nie zawiera generowanych filmów ani animacji ust.

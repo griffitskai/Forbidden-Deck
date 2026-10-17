@@ -1,4 +1,4 @@
-# Project Status — V0.9.2
+# Project Status — V0.9.3
 
 ## Pętla runu
 
@@ -121,3 +121,7 @@ Testy bossów używają jawnych, deterministycznych konfiguracji talii i wyposa�
 6. accessibility / ergonomia,
 7. dalszy visual/audio polish,
 8. eksport/import zapisu i przygotowanie desktopowe.
+
+## Wspólne chwile — V0.9.3
+
+Pięć opcjonalnych opowieści, trzy wyrazy twarzy każdej postaci, album odblokowywany przez rzeczywiste zdarzenia walki i reakcje bez blokowania sterowania. Osobny klucz `forbidden_deck_companions_v1` nie migruje ani nie zastępuje runów, Trust, historii i relacji. Dialogi mają kamerę i światło w CSS; nie zawierają generowanych klipów wideo. Podgląd offline osadza także ilustrację śniadania i atlas sześciu portretów.

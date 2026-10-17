@@ -1,5 +1,14 @@
 # Changelog
 
+## V0.9.3 — Wspólne chwile
+
+- Album pięciu opowieści o zwyczajach, marzeniach i obawach Kaela i Lyry, z dwiema odpowiedziami w każdej scenie.
+- Pierwsza rozmowa od razu; następne po zwycięstwie, przechwyceniu ataku, przeżyciu ciosu przy niskim HP i bossie Aktu I.
+- Nowa ilustracja śniadania na moście i atlas sześciu portretów: skupienie, uśmiech, niepokój.
+- Kontekstowe reakcje w walce; osobisty wybór z rozmowy wraca w dialogu przed starciem.
+- Wznawianie dialogu, pamięć pierwszej decyzji, odtwarzanie bez nagród, przełączniki ruchu i reakcji, respektowanie reduced-motion.
+- Nowy test wszystkich gałęzi opowieści, zdarzeń bojowych, zapisów i widoków 1440/390/320 px.
+
 ## V0.9.2 — Szlak i bliskość
 
 - Trzy ilustrowane regiony i regionalne ogniska: Pogranicze o zmierzchu, Skażony Las we mgle oraz Cytadela Popiołu nad żarem.

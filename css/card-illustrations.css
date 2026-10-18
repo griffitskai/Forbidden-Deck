@@ -1,0 +1,44 @@
+.illustrated-card{position:relative;isolation:isolate;overflow:hidden;background:#151b25!important;--action-accent:#ce8977}
+.illustrated-card[data-card-role="defense"]{--action-accent:#82b4d2}.illustrated-card[data-card-role="setup"]{--action-accent:#95bd8b}.illustrated-card[data-card-role="teamwork"]{--action-accent:#bb9bdb}
+.card-art{position:absolute;inset:0;overflow:hidden;z-index:-2;pointer-events:none;display:block;container-type:size}
+.card-art-square{display:block;position:absolute;width:max(100cqw,calc(100cqh * var(--art-aspect,1)));aspect-ratio:var(--art-aspect,1);left:50%;top:50%;transform:translate(-50%,-50%) scale(1.025);overflow:hidden}
+.card-art-square>img{position:absolute;width:calc(var(--art-cols)*100%);height:calc(var(--art-rows)*100%);max-width:none;left:calc(var(--art-col)*-100%);top:calc(var(--art-row)*-100%);object-fit:fill}
+.illustrated-card::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#080e19d9 0%,#080e1980 19%,#080e190a 40%,#080e19de 64%,#080e19f7 100%)}
+.hand .illustrated-card{border-color:var(--action-accent);box-shadow:0 0 0 1px #0c121b,0 5px 16px #0005;display:flex;flex-direction:column}
+.hand .illustrated-card h4{color:#fff5e4;text-shadow:0 1px 4px #000,0 0 10px #000;margin-bottom:5px}
+.hand .illustrated-card .actor{color:#ead6af;text-shadow:0 1px 5px #000;font-weight:700}
+.hand .illustrated-card p{margin-top:auto!important;margin-bottom:18px!important;color:#f1eee6!important;text-shadow:0 1px 3px #000;padding-top:5px}
+.hand .illustrated-card .cost{z-index:3;background:#0c1726;border-color:#e9ce97;box-shadow:0 2px 9px #000a;color:#fff2d2}
+.hand .illustrated-card .tag{color:#c1c8d2;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-action-role{position:absolute;bottom:8px;right:9px;font-size:9px;color:var(--action-accent);text-shadow:0 1px 3px #000;max-width:48%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;pointer-events:none}
+.hand .illustrated-card .lock{z-index:5;background:linear-gradient(#080e1955,#080e19e8);font-size:13px;text-shadow:0 1px 3px #000}
+.hand .illustrated-card.disabled{filter:saturate(.55)}
+.deck-card.illustrated-card{padding-top:92px;min-height:230px;border-color:var(--action-accent)}
+.deck-card.illustrated-card .card-art-square{top:25%}.deck-card.illustrated-card::before{background:linear-gradient(180deg,#080e1920 0%,#080e1940 22%,#080e19ee 45%,#080e19 100%)}
+.deck-card.illustrated-card p{color:#e1e1dc}.deck-card.illustrated-card strong{text-shadow:0 1px 5px #000}
+.reward.illustrated-card,.codex-card.illustrated-card{padding-top:116px!important;min-height:260px;border-color:var(--action-accent)}
+.reward.illustrated-card::before,.codex-card.illustrated-card::before{background:linear-gradient(180deg,#080e1910 0%,#080e1930 22%,#080e19e8 45%,#080e19 100%)}
+.reward.illustrated-card p,.codex-card.illustrated-card p{color:#d5d8df}.reward.illustrated-card .card-art-square,.codex-card.illustrated-card .card-art-square{top:28%}
+.codex-card.illustrated-card .codex-icon{position:absolute;top:9px;right:10px;font-size:19px;background:#111a25cc;padding:5px;border-radius:8px}
+#combatCardPreview.illustrated-card{overflow:hidden}
+#combatCardPreview.illustrated-card::before{display:none}
+#combatCardPreview.illustrated-card>.card-art{position:relative;height:138px;inset:auto;z-index:0;margin-bottom:12px;border-radius:7px;border:1px solid #e0bd7955}
+#combatCardPreview.illustrated-card .card-art-square{top:50%}
+#combatCardPreview.illustrated-card h3{color:#f5e8d0}
+@media(min-width:1000px) and (min-height:560px){
+ #battleScreen .card.illustrated-card p{padding-top:4px;-webkit-line-clamp:4;flex:0 1 auto}
+ #battleScreen .card.illustrated-card h4{flex:0 0 auto;margin-bottom:5px}
+ #battleScreen .card.illustrated-card .actor{flex:0 0 auto}
+ #battleScreen .card.illustrated-card::before{background:linear-gradient(180deg,#080e19eb 0%,#080e196b 22%,#080e1910 37%,#080e19de 57%,#080e19fa 100%)}
+}
+@media(min-width:1000px) and (min-height:560px) and (max-height:640px){
+ #battleScreen .card.illustrated-card p{-webkit-line-clamp:2;padding-top:3px}
+ #battleScreen .card.illustrated-card .actor{font-size:8px}
+ #battleScreen .card.illustrated-card h4{margin-bottom:3px}
+ #battleScreen .card-action-role{font-size:8px;bottom:7px}
+ #combatCardPreview.illustrated-card>.card-art{height:105px}
+}
+/* The whole card is one hit target, including its picture, caption and lock. */
+.hand .card.illustrated-card>*{pointer-events:none}
+#combatCardPreview.illustrated-card{position:fixed}
+.card-ghost.illustrated-card{position:fixed;pointer-events:none}

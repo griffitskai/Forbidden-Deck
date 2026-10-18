@@ -38,3 +38,7 @@ Efekty kamery/światła i przełączanie portretów są prezentacją ilustracji 
 ## V0.9.4
 
 Atlasy przeciwników i przedmiotów oraz most: [pochodzenie, ścieżki i pełne prompty](bilingual-world-prompts.md). Wbudowany imagegen, referencja panoramy Pogranicza, WebP quality=83.
+
+## V0.9.6
+
+38 ilustracji działań kart, trzy atlasy; [pełne prompty, ścieżki i pochodzenie](card-art-prompts.md). Wbudowany imagegen, referencja tożsamości Kaela i Lyry, WebP quality=85.

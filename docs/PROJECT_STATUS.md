@@ -1,4 +1,4 @@
-# Project Status — V0.9.5
+# Project Status — V0.9.6
 
 ## Pętla runu
 
@@ -133,3 +133,7 @@ Trwały wybór polski/angielski, lokalizacja widoków i opowieści bez zmiany da
 ## Wspólny stół — V0.9.5
 
 Tryb walki bez przewijania na komputerze od 1000×560 px CSS. Bohaterowie i przeciwnicy obok siebie, HP/Block przy portretach, zasoby nad ręką, stały pasek akcji. Duża ręka tworzy wachlarz, pełny opis w podglądzie, Tab/Enter/Spacja dla kart. Odporności i zasady pod Szczegóły; niskie okna przenoszą tam również krótkie kwestie. [Zakres i testy](ITERATION_05.md).
+
+## Ilustrowane zagrania — V0.9.6
+
+38 ilustrowanych kart bazowych / 76 wariantów. Cztery nowe karty w nagrodach: Zaprzyj się, Zatruty trop, Zmiana warty i Wspólny nacisk, każda z ulepszeniem. Startowe 19 kart i stare zapisy zachowane. [Reguły, analiza i testy](ITERATION_06.md).

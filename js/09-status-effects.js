@@ -4,18 +4,18 @@
  const STATUS_META={bleed:{icon:"🩸",label:"Krwawienie"},poison:{icon:"☠️",label:"Trucizna"},burn:{icon:"🔥",label:"Podpalenie"},weak:{icon:"⬇️",label:"Osłabienie"}};
  const blankStatus=()=>({bleed:0,poison:0,burn:0,weak:0});
  function ensureEnemyStatus(e){if(!e.status)e.status=blankStatus();return e.status}
- function ensureHeroStatus(){if(!S.heroStatus)S.heroStatus={kael:blankStatus(),lyra:blankStatus()};return S.heroStatus}
+ function ensureHeroStatus(){return Object.fromEntries(S.party.members.map(h=>[h.id,h.status]))}
  function addEnemyStatus(e,type,amount){const st=ensureEnemyStatus(e);st[type]=Math.min(12,(st[type]||0)+amount);log(STATUS_META[type].icon+" "+e.name+": "+STATUS_META[type].label+" +"+amount,"combo")}
  function addHeroStatus(target,type,amount){const st=ensureHeroStatus()[target];st[type]=Math.min(12,(st[type]||0)+amount);log(STATUS_META[type].icon+" "+(target==="kael"?"Kael":"Lyra")+": "+STATUS_META[type].label+" +"+amount,"bad")}
- function clearHeroStatus(type=null){const hs=ensureHeroStatus();["kael","lyra"].forEach(h=>{if(type)hs[h][type]=0;else Object.keys(hs[h]).forEach(k=>hs[h][k]=0)})}
+ function clearHeroStatus(type=null){const hs=ensureHeroStatus();S.party.members.map(h=>h.id).forEach(h=>{if(type)hs[h][type]=0;else Object.keys(hs[h]).forEach(k=>hs[h][k]=0)})}
  function statusBadges(st){return Object.entries(STATUS_META).filter(([k])=>st&&st[k]>0).map(([k,m])=>'<span class="status-badge '+k+'" title="'+m.label+'">'+m.icon+' '+st[k]+'</span>').join("")}
 
  Object.assign(cards,{
-  deepcut:{name:"Głębokie cięcie",actor:"Kael",cost:1,text:"4 dmg i +2 Krwawienie.",kind:"bleedattack",dmg:4,statusAmount:2,tag:"Krwawienie"},
-  venomarrow:{name:"Jadowita strzała",actor:"Lyra",cost:1,text:"4 dmg i +3 Trucizna.",kind:"poisonattack",dmg:4,statusAmount:3,tag:"Trucizna"},
-  firearrow:{name:"Płonąca strzała",actor:"Lyra",cost:2,text:"7 dmg i +2 Podpalenie.",kind:"burnattack",dmg:7,statusAmount:2,tag:"Podpalenie"},
-  hamstring:{name:"Podcięcie",actor:"Kael",cost:1,text:"5 dmg i +2 Osłabienie.",kind:"weakattack",dmg:5,statusAmount:2,tag:"Osłabienie"},
-  purify:{name:"Oczyszczająca więź",actor:"Duo",cost:1,text:"Usuń negatywne statusy z obojga. +4 Block dla Kaela i Lyry.",kind:"cleanse",blockEach:4,trust:20,tag:"Oczyszczenie"}
+  deepcut:{name:"Głębokie cięcie",ownerId:"kael",actor:"Kael",cost:1,text:"4 dmg i +2 Krwawienie.",kind:"bleedattack",dmg:4,statusAmount:2,tag:"Krwawienie"},
+  venomarrow:{name:"Jadowita strzała",ownerId:"lyra",actor:"Lyra",cost:1,text:"4 dmg i +3 Trucizna.",kind:"poisonattack",dmg:4,statusAmount:3,tag:"Trucizna"},
+  firearrow:{name:"Płonąca strzała",ownerId:"lyra",actor:"Lyra",cost:2,text:"7 dmg i +2 Podpalenie.",kind:"burnattack",dmg:7,statusAmount:2,tag:"Podpalenie"},
+  hamstring:{name:"Podcięcie",ownerId:"kael",actor:"Kael",cost:1,text:"5 dmg i +2 Osłabienie.",kind:"weakattack",dmg:5,statusAmount:2,tag:"Osłabienie"},
+  purify:{name:"Oczyszczająca więź",duoId:"kael+lyra",actor:"Duo",cost:1,text:"Usuń negatywne statusy z obojga. +4 Block dla Kaela i Lyry.",kind:"cleanse",blockEach:4,trust:20,tag:"Oczyszczenie"}
  });
  Object.assign(UPGRADES,{
   deepcut:{dmg:6,statusAmount:3,text:"6 dmg i +3 Krwawienie."},
@@ -41,7 +41,7 @@
 
  const baseStartBattle=startBattle;
  startBattle=function(enemies){
-  enemies.forEach(ensureEnemyStatus);S.heroStatus={kael:blankStatus(),lyra:blankStatus()};S.activeActor=null;
+  enemies.forEach(ensureEnemyStatus);ForbiddenDeckParty.resetCombat();
   return baseStartBattle(enemies);
  };
 
@@ -57,10 +57,7 @@
 
  const baseDmgEnemyStatus=dmgEnemy;
  dmgEnemy=function(e,amount){
-  const hs=ensureHeroStatus();let weak=0;
-  if(S.activeActor==="Kael")weak=hs.kael.weak||0;
-  else if(S.activeActor==="Lyra")weak=hs.lyra.weak||0;
-  else if(S.activeActor==="Duo")weak=Math.max(hs.kael.weak||0,hs.lyra.weak||0);
+  const weak=ForbiddenDeckParty.actorWeakness(S.activeActor);
   const adjusted=weak>0?Math.max(1,Math.round(amount*.75)):amount;
   return baseDmgEnemyStatus(e,adjusted);
  };
@@ -68,31 +65,31 @@
  function playStatusCard(i,d,c,t){
   if(!playable(c))return;
   S.energy-=d.cost;
-  const prev=S.lastActor;if(d.actor!=="Duo"&&prev&&prev!=="Duo"&&prev!==d.actor)addSyn(10,prev+" → "+d.actor);
-  S.activeActor=d.actor;
-  if(d.actor==="Kael")S.lastKaelThisTurn=true;
+  const prev=S.lastActor;if(!d.duoId&&prev&&!prev.startsWith("duo:")&&prev!==ForbiddenDeckParty.actorId(d))addSyn(10,prev+" → "+ForbiddenDeckParty.actorId(d));
+  S.activeActor=ForbiddenDeckParty.actorId(d);
+  if(d.ownerId==="kael")S.lastKaelThisTurn=true;
   if(d.kind==="bleedattack"){log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.dmg)+" dmg.","good");addEnemyStatus(t,"bleed",d.statusAmount)}
   if(d.kind==="poisonattack"){log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.dmg)+" dmg.","good");addEnemyStatus(t,"poison",d.statusAmount)}
   if(d.kind==="burnattack"){log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.dmg)+" dmg.","good");addEnemyStatus(t,"burn",d.statusAmount)}
   if(d.kind==="weakattack"){log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.dmg)+" dmg.","good");addEnemyStatus(t,"weak",d.statusAmount)}
-  if(d.kind==="cleanse"){clearHeroStatus();S.kaelBlock+=d.blockEach;S.lyraBlock+=d.blockEach;addSyn(8,"oczyszczenie duetu");log("<b>"+d.name+"</b>: statusy usunięte, +"+d.blockEach+" Block dla obojga.","combo")}
-  S.activeActor=null;S.lastActor=d.actor;S.discard.push(S.hand.splice(i,1)[0]);if(liveEnemies().length===0){victory();return}renderBattle();
+  if(d.kind==="cleanse"){clearHeroStatus();ForbiddenDeckParty.addBlockAll(d.blockEach);addSyn(8,"oczyszczenie duetu");log("<b>"+d.name+"</b>: statusy usunięte, +"+d.blockEach+" Block dla obojga.","combo")}
+  S.activeActor=null;S.lastActor=ForbiddenDeckParty.actorId(d);S.discard.push(S.hand.splice(i,1)[0]);if(liveEnemies().length===0){victory();return}renderBattle();
  }
  const baseStatusPlayCard=playCard;
  playCard=function(i){
   const c=S.hand[i];if(!c)return;const d=cards[c.id];
   if(["bleedattack","poisonattack","burnattack","weakattack","cleanse"].includes(d.kind)){const t=selected();if(!t)return;return playStatusCard(i,d,c,t)}
-  S.activeActor=d.actor;const result=baseStatusPlayCard(i);S.activeActor=null;return result;
+  S.activeActor=ForbiddenDeckParty.actorId(d);const result=baseStatusPlayCard(i);S.activeActor=null;return result;
  };
 
  function tickEnemyStatus(e,type,mult=1){const st=ensureEnemyStatus(e),amount=st[type]||0;if(amount<=0||e.hp<=0)return 0;const dealt=dmgEnemy(e,amount*mult);log(STATUS_META[type].icon+" "+e.name+" otrzymuje "+dealt+" obrażeń od statusu.","combo");st[type]=Math.max(0,amount-1);return dealt}
- function heroStatusDamage(target,type,mult=1){const hs=ensureHeroStatus()[target],amount=hs[type]||0;if(amount<=0)return 0;const dtype=type==="poison"?"toxin":type==="burn"?"magic":"physical",res=totalRes(target)[dtype]||0;const raw=amount*mult,dmg=Math.max(1,Math.round(raw*(1-res/100)));if(target==="kael")S.kaelHp=Math.max(0,S.kaelHp-dmg);else S.lyraHp=Math.max(0,S.lyraHp-dmg);hs[type]=Math.max(0,amount-1);log(STATUS_META[type].icon+" "+(target==="kael"?"Kael":"Lyra")+" otrzymuje "+dmg+" obrażeń od "+STATUS_META[type].label.toLowerCase()+".","bad");return dmg}
+ function heroStatusDamage(target,type,mult=1){const hs=ensureHeroStatus()[target],amount=hs[type]||0;if(amount<=0)return 0;const dtype=type==="poison"?"toxin":type==="burn"?"magic":"physical",res=totalRes(target)[dtype]||0;const raw=amount*mult,dmg=Math.max(1,Math.round(raw*(1-res/100)));const hero=ForbiddenDeckParty.member(target);hero.hp=Math.max(0,hero.hp-dmg);hs[type]=Math.max(0,amount-1);log(STATUS_META[type].icon+" "+(target==="kael"?"Kael":"Lyra")+" otrzymuje "+dmg+" obrażeń od "+STATUS_META[type].label.toLowerCase()+".","bad");return dmg}
 
  endTurn=function(){
   if(S.battleOver)return;S.hand.splice(0).forEach(c=>S.discard.push(c));
-  heroStatusDamage("kael","poison");heroStatusDamage("lyra","poison");
+  S.party.members.forEach(h=>heroStatusDamage(h.id,"poison"));
   liveEnemies().forEach(e=>tickEnemyStatus(e,"poison"));
-  if(S.kaelHp<=0||S.lyraHp<=0){defeat();return}if(liveEnemies().length===0){victory();return}
+  if(ForbiddenDeckParty.defeated()){defeat();return}if(liveEnemies().length===0){victory();return}
   for(const e of [...liveEnemies()]){
    if(e.hp<=0)continue;const it=intentFor(e);
    if(it.type==="attack"){
@@ -104,13 +101,13 @@
    else if(it.type==="shield"){const ally=liveEnemies().slice().sort((a,b)=>a.hp-b.hp)[0];if(ally){ally.block+=it.v;log(e.name+" osłania "+ally.name+" (+"+it.v+" Block).","bad")}}
    else if(it.type==="heal"){const ally=liveEnemies().slice().sort((a,b)=>(a.hp/a.maxHp)-(b.hp/b.maxHp))[0];if(ally){ally.hp=Math.min(ally.maxHp,ally.hp+it.v);log(e.name+" leczy "+ally.name+" o "+it.v+".","bad")}}
    tickEnemyStatus(e,"bleed");
-   if(S.kaelHp<=0||S.lyraHp<=0){defeat();return}
+   if(ForbiddenDeckParty.defeated()){defeat();return}
   }
   liveEnemies().forEach(e=>tickEnemyStatus(e,"burn",2));
-  heroStatusDamage("kael","bleed");heroStatusDamage("lyra","bleed");heroStatusDamage("kael","burn",2);heroStatusDamage("lyra","burn",2);
-  if(S.kaelHp<=0||S.lyraHp<=0){defeat();return}if(liveEnemies().length===0){victory();return}
+  S.party.members.forEach(h=>heroStatusDamage(h.id,"bleed"));S.party.members.forEach(h=>heroStatusDamage(h.id,"burn",2));
+  if(ForbiddenDeckParty.defeated()){defeat();return}if(liveEnemies().length===0){victory();return}
   liveEnemies().forEach(e=>{if(e.marked>0)e.marked--;if(e.status&&e.status.weak>0)e.status.weak--});
-  const hs=ensureHeroStatus();["kael","lyra"].forEach(h=>{if(hs[h].weak>0)hs[h].weak--});
+  const hs=ensureHeroStatus();S.party.members.map(h=>h.id).forEach(h=>{if(hs[h].weak>0)hs[h].weak--});
   S.kaelBlock=0;S.lyraBlock=0;S.taunt=0;S.energy=3;S.turn++;S.lastActor=null;S.lastKaelThisTurn=false;draw(5,false);log("— Tura "+S.turn+" —","info");renderBattle();
  };
 

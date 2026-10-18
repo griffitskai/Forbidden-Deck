@@ -43,6 +43,7 @@
    vista.querySelector('p').textContent=scene.description;
    vista.dataset.scenery=scene.id||'';panel.style.setProperty('--region-art',`url("${new URL(asset(scene.art),document.baseURI).href}")`);
   }
+  let focusedNode=null;
   preview(first);
   document.querySelectorAll('#map .row').forEach(row=>{
    const step=Number(row.dataset.step);
@@ -50,7 +51,7 @@
     const node=route[step]?.[index];if(!node)return;const scene=resolve(node);
     const img=document.createElement('img');img.className='route-location-thumb';img.alt='';img.setAttribute('aria-hidden','true');img.loading='lazy';img.src=asset(scene.art);img.onerror=()=>img.remove();button.prepend(img);
     button.dataset.scenery=scene.id||'';
-    if(step===S.stage){button.addEventListener('pointerenter',()=>preview(node));button.addEventListener('focus',()=>preview(node));button.addEventListener('pointerleave',()=>preview(first));button.addEventListener('blur',()=>preview(first))}
+    if(step===S.stage){button.addEventListener('pointerenter',()=>preview(focusedNode||node));button.addEventListener('focus',()=>{focusedNode=node;preview(node)});button.addEventListener('pointerleave',()=>preview(focusedNode||first));button.addEventListener('blur',()=>{focusedNode=null;preview(first)})}
    });
   });
  }

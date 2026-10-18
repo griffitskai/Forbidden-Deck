@@ -1,4 +1,8 @@
-# Project Status — V0.9.7
+# Project Status — V0.9.8
+
+## Fundament drużyny
+
+Definicje postaci i duetów są oddzielone od bieżącego stanu członków drużyny. Karty mają ID właściciela/duetu, a talia startowa i nagrody korzystają z tych danych. Nowy zapis schema 2 automatycznie odczytuje schema 1, bez utraty walki. Dostępna zawartość nadal dotyczy Kaela i Lyry; wybór nowych postaci, dynamiczny HUD i rozdzielenie pamięci relacji są kolejnymi etapami. [Szczegóły i granice](PARTY_ARCHITECTURE.md).
 
 ## Scenerie miejsc
 

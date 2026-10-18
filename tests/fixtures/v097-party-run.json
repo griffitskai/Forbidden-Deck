@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "savedAt": "2026-10-18T19:31:17.139Z",
+  "screen": "battle",
+  "state": {
+    "kaelMaxHp": 60,
+    "lyraMaxHp": 43,
+    "kaelHp": 31,
+    "lyraHp": 19,
+    "gold": 40,
+    "trust": 60,
+    "deck": [
+      "strike",
+      "strike",
+      "strike",
+      "guard",
+      "guard",
+      "challenge",
+      "heavy",
+      "finish",
+      "shot",
+      "shot",
+      "shot",
+      "expose",
+      "expose",
+      "focus",
+      "evade",
+      "cover",
+      "intercept",
+      "opening",
+      "rally",
+      "shot+",
+      "brace"
+    ],
+    "act": 1,
+    "stage": 3,
+    "wins": 0,
+    "level": 1,
+    "xp": 0,
+    "pendingLevel": false,
+    "startSynergy": 0,
+    "firstTurnEnergy": 0,
+    "difficulty": "standard",
+    "kaelBlock": 9,
+    "lyraBlock": 5,
+    "energy": 2,
+    "synergy": 42,
+    "momentum": 3,
+    "turn": 4,
+    "draw": [
+      {
+        "id": "heavy",
+        "uid": "heavy_6_0.6052232052752411"
+      },
+      {
+        "id": "cover",
+        "uid": "cover_15_0.4123350426507325"
+      },
+      {
+        "id": "shot",
+        "uid": "shot_8_0.8228469708551264"
+      },
+      {
+        "id": "challenge",
+        "uid": "challenge_5_0.8191102049254556"
+      },
+      {
+        "id": "expose",
+        "uid": "expose_11_0.9172537158575287"
+      },
+      {
+        "id": "guard",
+        "uid": "guard_3_0.7837653754842527"
+      },
+      {
+        "id": "shot",
+        "uid": "shot_10_0.31344162098042627"
+      },
+      {
+        "id": "rally",
+        "uid": "rally_18_0.26023116523600187"
+      },
+      {
+        "id": "intercept",
+        "uid": "intercept_16_0.21861411981450474"
+      },
+      {
+        "id": "finish",
+        "uid": "finish_7_0.9023201082028042"
+      },
+      {
+        "id": "evade",
+        "uid": "evade_14_0.4765597795025429"
+      },
+      {
+        "id": "shot",
+        "uid": "shot_9_0.3796922366235741"
+      },
+      {
+        "id": "guard",
+        "uid": "guard_4_0.45278091527487174"
+      },
+      {
+        "id": "focus",
+        "uid": "focus_13_0.10119387456550077"
+      }
+    ],
+    "discard": [],
+    "hand": [
+      {
+        "id": "shot+",
+        "uid": "legacy-shot"
+      },
+      {
+        "id": "brace",
+        "uid": "legacy-brace"
+      }
+    ],
+    "enemies": [
+      {
+        "name": "Strażnik",
+        "emo": "🛡️",
+        "maxHp": 153,
+        "hp": 153,
+        "block": 0,
+        "marked": 0,
+        "pattern": "guard",
+        "atk": 9,
+        "str": 0,
+        "dtype": "physical",
+        "status": {
+          "bleed": 0,
+          "poison": 0,
+          "burn": 0,
+          "weak": 0
+        }
+      }
+    ],
+    "target": 0,
+    "lastActor": "Kael",
+    "lastKaelThisTurn": false,
+    "battleOver": false,
+    "currentNode": {
+      "type": "battle",
+      "label": "Korzenie",
+      "terrain": "forest",
+      "icon": "🌿"
+    },
+    "taunt": 1,
+    "protectLyra": 1,
+    "equipment": {
+      "armor": "paddedArmor",
+      "amulet": "serpentCharm"
+    },
+    "inventory": [
+      "arcaneCharm"
+    ],
+    "potions": [
+      "heal",
+      "ward"
+    ],
+    "tempRes": {
+      "physical": 0,
+      "magic": 0,
+      "toxin": 0
+    },
+    "companionMoment": {
+      "bark": "start",
+      "used": []
+    },
+    "routeHistory": {
+      "0": {
+        "0": 1
+      },
+      "1": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "relationshipScene": null,
+    "heroStatus": {
+      "kael": {
+        "bleed": 2,
+        "poison": 1,
+        "burn": 0,
+        "weak": 0
+      },
+      "lyra": {
+        "bleed": 0,
+        "poison": 2,
+        "burn": 1,
+        "weak": 1
+      }
+    },
+    "activeActor": null
+  }
+}

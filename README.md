@@ -10,7 +10,9 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 ## Aktualny stan
 
-Wersja robocza: **V0.9.7 — Miejsca na szlaku**.
+Wersja robocza: **V0.9.8 — Fundament wyboru bohaterów**.
+
+Model postaci i drużyny jest oddzielony od nazw w interfejsie. Każdy bohater ma własne statystyki, statusy, zasób i pancerz, a karty należą do postaci lub konkretnego duetu. Starsze zapisy są migrowane do nowego formatu. Dostępni bohaterowie to nadal Kael i Lyra; jest to pierwszy etap przygotowania swobodnego wyboru składu. [Raport V0.9.8](docs/ITERATION_08.md) i [architektura](docs/PARTY_ARCHITECTURE.md).
 
 Tło całego pola walki odpowiada miejscu wybranemu na mapie: trakt, most, ruiny, las, bagno, mury Cytadeli, kuźnia lub sala tronowa. Miniatury na trasie i podgląd po najechaniu lub wybraniu klawiszem Tab zapowiadają scenerię. Cztery nowe panoramy uzupełniają istniejące ilustracje; zapis, język i układ walki w jednym oknie pozostają zgodne. [Raport V0.9.7](docs/ITERATION_07.md).
 

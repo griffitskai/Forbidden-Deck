@@ -81,8 +81,7 @@
     S.stage=0;
     S.act3Prep=kind;
     const heal=(n)=>{
-      S.kaelHp=Math.min(S.kaelMaxHp,S.kaelHp+n);
-      S.lyraHp=Math.min(S.lyraMaxHp,S.lyraHp+n);
+      ForbiddenDeckParty.healAll(n);
     };
     if(kind==="supplies"){
       heal(20);

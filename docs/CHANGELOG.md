@@ -1,5 +1,14 @@
 # Changelog
 
+## V0.9.8 — Fundament wyboru bohaterów
+
+- Rejestry postaci i duetów oraz osobny stan każdego członka drużyny.
+- Własność kart po ID, składanie talii startowej i filtrowanie nagród według składu.
+- Wspólne operacje obrażeń, odporności, leczenia, Blocku i statusów.
+- Migracja zapisów do schema 2 i adaptery zgodności istniejącej kampanii.
+- Dwa nowe testy modelu i migracji z zapisu V0.9.7.
+- Bez nowych grywalnych postaci na tym etapie.
+
 ## V0.9.7 — Miejsca na szlaku
 
 - Tło całej areny dopasowane do miejsca na mapie; osiem scenerii zamiast jednego mostu dla całego aktu I.

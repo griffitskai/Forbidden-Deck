@@ -10,7 +10,9 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 ## Aktualny stan
 
-Wersja robocza: **V0.9.6 — Ilustrowane zagrania**.
+Wersja robocza: **V0.9.7 — Miejsca na szlaku**.
+
+Tło całego pola walki odpowiada miejscu wybranemu na mapie: trakt, most, ruiny, las, bagno, mury Cytadeli, kuźnia lub sala tronowa. Miniatury na trasie i podgląd po najechaniu lub wybraniu klawiszem Tab zapowiadają scenerię. Cztery nowe panoramy uzupełniają istniejące ilustracje; zapis, język i układ walki w jednym oknie pozostają zgodne. [Raport V0.9.7](docs/ITERATION_07.md).
 
 Każda z 38 kart bazowych ma teraz własną ilustrację działania, także w talii, nagrodach i podglądzie. Cztery nowe zagrania rozwijają wydawanie Momentum, Marked i Synergy oraz ochronę Lyry. Talia startowa pozostaje bez zmian; nowe karty zdobędziesz w nagrodach. [Analiza kart i raport V0.9.6](docs/ITERATION_06.md).
 

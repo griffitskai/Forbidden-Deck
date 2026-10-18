@@ -1,4 +1,8 @@
-# Project Status — V0.9.6
+# Project Status — V0.9.7
+
+## Scenerie miejsc
+
+Osiem scenerii dopasowanych do kanonicznej etykiety lub terenu węzła mapy, z regionalnym tłem awaryjnym dla starszych zapisów. Cztery nowe panoramy: ruiny opactwa, toksyczne mokradła, kuźnia i sala tronowa. Tło obejmuje całą arenę, a mapa pokazuje miniatury oraz podgląd dostępnych miejsc przez mysz i klawiaturę. Sceneria jest deterministyczna i nie zmienia stanu gry. Szczegóły: [ITERATION_07.md](ITERATION_07.md).
 
 ## Pętla runu
 

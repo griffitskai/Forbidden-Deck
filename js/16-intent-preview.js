@@ -14,7 +14,7 @@
     if(target==='lyra'&&protect>0&&!it.ignoreProtect){target='kael';intercepted=true}
     return{target,intercepted};
   }
-  function targetName(target){return target==='lyra'?'🏹 Lyra':'⚔️ Kael'}
+  function targetName(target){return (target===ForbiddenDeckParty.member('lead').id?'⚔️ ':'🏹 ')+ForbiddenDeckParty.characters[target].name}
 
   function previewIntent(e){
     const it=intentFor(e);
@@ -22,8 +22,8 @@
     const resolved=intendedTarget(e,it),target=resolved.target;
     const reduced=afterResistance(it.v,it.dtype||'physical',target);
     const total=reduced.perHit*(it.hits||1);
-    const block=target==='lyra'?S.lyraBlock:S.kaelBlock;
-    const absorbed=Math.min(block,total);
+    const block=ForbiddenDeckParty.member(target).block;
+    const absorbed=ForbiddenDeckParty.damagePreview(it.v,reduced.res,block,it.hits||1).absorbed;
     return{it,target,hp:Math.max(0,total-absorbed),afterRes:total,absorbed,res:reduced.res,intercepted:resolved.intercepted};
   }
 

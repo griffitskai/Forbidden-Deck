@@ -12,6 +12,8 @@ for(const [act,stage,index,id] of expected){
  await page.evaluate(({act,stage})=>{hideModal();S.act=act;S.stage=stage;renderMap()}, {act,stage});
  const node=page.locator('.current-step .node').nth(index);
  const before=await page.evaluate(()=>JSON.stringify(S));await node.focus();
+ await page.locator('.current-step .node').first().dispatchEvent('pointerenter');
+ await page.locator('.current-step .node').first().dispatchEvent('pointerleave');
  assert.equal(await page.locator('#journeyVista').getAttribute('data-scenery'),id);
  assert.equal(await page.evaluate(()=>JSON.stringify(S)),before,'Preview cannot choose or mutate a node');
  await node.click();assert.equal(await page.locator('#battleScreen .center').getAttribute('data-scenery'),id);

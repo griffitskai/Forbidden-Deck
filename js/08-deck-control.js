@@ -37,7 +37,7 @@ function canUpgradeCard(id){return !isUpgradedCard(id)&&!!UPGRADES[id]}
 function cardButton(id,index,onClick){
  const d=cards[id];
  const b=document.createElement("button");
- b.className="deck-card "+(d.actor==="Kael"?"kael":d.actor==="Lyra"?"lyra":"duo")+(isUpgradedCard(id)?" upgraded":"");
+ b.className="deck-card "+(d.ownerId==="kael"?"kael":d.ownerId==="lyra"?"lyra":"duo")+(isUpgradedCard(id)?" upgraded":"");
  b.innerHTML='<div class="deck-card-head"><strong>'+d.name+'</strong><span>'+d.cost+'⚡</span></div><small>'+d.actor+' • '+d.tag+'</small><p>'+d.text+'</p>';
  if(onClick)b.onclick=()=>onClick(id,index);
  return b;
@@ -79,7 +79,7 @@ function removeCardAtShop(cost=45){
 
 camp=function(){
  showModal("Ognisko","Wybierz jedną czynność. Ognisko jest teraz głównym miejscem kontroli talii.",()=>grid([
-  ["🛏️ Odpoczynek","+14 HP Kaela i Lyry.",()=>{S.kaelHp=Math.min(S.kaelMaxHp,S.kaelHp+14);S.lyraHp=Math.min(S.lyraMaxHp,S.lyraHp+14);hideModal();advance()}],
+  ["🛏️ Odpoczynek","+14 HP Kaela i Lyry.",()=>{ForbiddenDeckParty.healAll(14);hideModal();advance()}],
   ["🔨 Ulepsz kartę","Wzmocnij jedną kartę na resztę runu.",()=>{hideModal();upgradeAtCamp()}],
   ["💬 Rozmowa","+8 Trust i scena relacji.",()=>campDialogue()],
   ["🧪 Warzenie","Dodaj losową miksturę do pustego slotu.",()=>{const e=S.potions.findIndex(x=>!x);if(e>=0)S.potions[e]=pick(["heal","ward","antidote","tonic"]);hideModal();advance()}]
@@ -100,8 +100,8 @@ shop=function(){
 playCard=function(i){
  const c=S.hand[i];if(!c||!playable(c))return;const d=cards[c.id],t=selected();if(!t)return;
  S.energy-=d.cost;
- const prev=S.lastActor;if(d.actor!=="Duo"&&prev&&prev!=="Duo"&&prev!==d.actor)addSyn(10,prev+" → "+d.actor);
- if(d.actor==="Kael"){S.lastKaelThisTurn=true;if(d.mom)S.momentum=Math.min(5,S.momentum+d.mom)}
+ const prev=S.lastActor;if(!d.duoId&&prev&&!prev.startsWith("duo:")&&prev!==ForbiddenDeckParty.actorId(d))addSyn(10,prev+" → "+ForbiddenDeckParty.actorId(d));
+ if(d.ownerId==="kael"){S.lastKaelThisTurn=true;if(d.mom)S.momentum=Math.min(5,S.momentum+d.mom)}
  if(d.kind==="attack"){log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.dmg)+" dmg.","good")}
  else if(d.kind==="block"){S.kaelBlock+=d.block;log("<b>"+d.name+"</b>: +"+d.block+" Block Kaela.","good")}
  else if(d.kind==="taunt"){S.kaelBlock+=d.block;S.taunt=1;log("<b>"+d.name+"</b>: +"+d.block+" Block Kaela i Prowokacja.","combo")}
@@ -113,9 +113,9 @@ playCard=function(i){
  else if(d.kind==="cover"){S.kaelBlock+=d.block;S.protectLyra+=d.protect;log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.damage)+" dmg, +"+d.block+" Block Kaela i "+d.protect+" Ochrona.","combo");addSyn(d.synGain,d.name)}
  else if(d.kind==="intercept"){S.kaelBlock+=d.block;S.protectLyra+=d.protect;log("<b>"+d.name+"</b>: +"+d.block+" Block Kaela i "+d.protect+" Ochrona.","combo");addSyn(d.synGain,d.name)}
  else if(d.kind==="opening"){if(t.marked>0){log("<b>"+d.name+"!</b> "+dmgEnemy(t,d.preparedDamage)+" dmg.","combo");addSyn(d.synGain,"idealne otwarcie")}else log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.unpreparedDamage)+" dmg.","info")}
- else if(d.kind==="rally"){S.kaelBlock+=d.blockEach;S.lyraBlock+=d.blockEach;addSyn(d.synGain,d.name);log("<b>"+d.name+"</b>: +"+d.blockEach+" Block dla obojga.","combo")}
+ else if(d.kind==="rally"){ForbiddenDeckParty.addBlockAll(d.blockEach);addSyn(d.synGain,d.name);log("<b>"+d.name+"</b>: +"+d.blockEach+" Block dla obojga.","combo")}
  else if(d.kind==="twin"){const a=t.marked>=2?d.markedDamage:d.baseDamage;log("<b>"+d.name+"</b>: "+dmgEnemy(t,a)+" dmg.","combo");addSyn(d.synGain,"atak duetu")}
- else if(d.kind==="back"){S.synergy=0;S.kaelBlock+=d.blockEach;S.lyraBlock+=d.blockEach;let total=0;liveEnemies().forEach(e=>total+=dmgEnemy(e,d.aoeDamage));log("<b>"+d.name+"!</b> "+total+" łącznych dmg, +"+d.blockEach+" Block dla obojga.","combo");pop("BACK TO BACK!")}
+ else if(d.kind==="back"){S.synergy=0;ForbiddenDeckParty.addBlockAll(d.blockEach);let total=0;liveEnemies().forEach(e=>total+=dmgEnemy(e,d.aoeDamage));log("<b>"+d.name+"!</b> "+total+" łącznych dmg, +"+d.blockEach+" Block dla obojga.","combo");pop("BACK TO BACK!")}
  else if(d.kind==="protect"){S.kaelBlock+=d.block;S.protectLyra+=d.protect;const live=liveEnemies().slice().sort((a,b)=>(intentFor(b).v||0)-(intentFor(a).v||0));if(live[0])dmgEnemy(live[0],d.counterDamage);log("<b>"+d.name+"</b>: +"+d.block+" Block Kaela, "+d.protect+" Ochrony i kontratak.","combo");addSyn(d.synGain,"ochrona partnera")}
  else if(d.kind==="cross"){let a=dmgEnemy(t,d.hitDamage);if(S.lastKaelThisTurn&&t.hp>0)a+=dmgEnemy(t,d.hitDamage);log("<b>"+d.name+"</b>: "+a+" dmg.","combo");addSyn(d.synGain,d.name)}
  else if(d.kind==="shieldbash"){const amt=d.baseDamage+Math.floor(S.kaelBlock*d.blockRatio);log("<b>"+d.name+"</b>: "+dmgEnemy(t,amt)+" dmg.","good")}
@@ -123,8 +123,8 @@ playCard=function(i){
  else if(d.kind==="snipe"){const amt=t.marked>0?d.markedDamage:d.baseDamage;log("<b>"+d.name+"</b>: "+dmgEnemy(t,amt)+" dmg.","good");if(t.marked>0)addSyn(d.synGain,"idealny strzał")}
  else if(d.kind==="volley"){let total=0;liveEnemies().forEach(e=>total+=dmgEnemy(e,d.aoeDamage));log("<b>"+d.name+"</b>: "+total+" łącznych obrażeń.","good")}
  else if(d.kind==="duodraw"){draw(d.draw,false);addSyn(d.synGain,d.name);log("<b>"+d.name+"</b>: dobierz "+d.draw+".","combo")}
- else if(d.kind==="guardedadvance"){S.kaelBlock+=d.blockEach;S.lyraBlock+=d.blockEach;log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.damage)+" dmg, +"+d.blockEach+" Block dla obojga.","combo");addSyn(d.synGain,"wspólny napór")}
- S.lastActor=d.actor;S.discard.push(S.hand.splice(i,1)[0]);if(liveEnemies().length===0){victory();return}renderBattle();
+ else if(d.kind==="guardedadvance"){ForbiddenDeckParty.addBlockAll(d.blockEach);log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.damage)+" dmg, +"+d.blockEach+" Block dla obojga.","combo");addSyn(d.synGain,"wspólny napór")}
+ S.lastActor=ForbiddenDeckParty.actorId(d);S.discard.push(S.hand.splice(i,1)[0]);if(liveEnemies().length===0){victory();return}renderBattle();
 };
 
 const deckControlRenderHand=renderHand;

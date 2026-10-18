@@ -28,6 +28,12 @@ jobs:
           echo $! > /tmp/forbidden-deck-http.pid
           sleep 1
 
+      - name: Run party model rules and combination fixtures
+        run: node tests/party-model.mjs
+
+      - name: Run party save migration and integration test
+        run: node tests/party-foundation-smoke.mjs
+
       - name: Run gameplay smoke test
         run: node tests/browser-smoke.mjs
 

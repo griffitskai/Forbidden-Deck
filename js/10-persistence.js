@@ -1,7 +1,8 @@
 (()=>{
  const SAVE_KEY="forbidden_deck_run_v1";
  const META_KEY="forbidden_deck_meta_v1";
- const SAVE_SCHEMA=1;
+ const SAVE_SCHEMA=2;
+ const META_SCHEMA=1;
  let restoring=false;
  let runActive=false;
 
@@ -10,14 +11,16 @@
  }
  function loadPayload(){
   const data=safeParse(localStorage.getItem(SAVE_KEY));
-  if(!data||data.schema!==SAVE_SCHEMA||!data.state||typeof data.state!=="object")return null;
+  if(!data||![1,SAVE_SCHEMA].includes(data.schema)||!data.state||typeof data.state!=="object")return null;
   if(!Array.isArray(data.state.deck)||!Array.isArray(data.state.potions))return null;
+  if(data.schema===SAVE_SCHEMA&&!data.state.party)return null;
+  try{ForbiddenDeckParty.hydrate(data.state)}catch{return null}
   return data;
  }
  function hasValidSave(){return !!loadPayload()}
  function loadMeta(){
   const data=safeParse(localStorage.getItem(META_KEY));
-  return data&&data.schema===SAVE_SCHEMA?data:{schema:SAVE_SCHEMA,cards:[],gear:[]};
+  return data&&data.schema===META_SCHEMA?data:{schema:META_SCHEMA,cards:[],gear:[]};
  }
  function discoverFromState(){
   const meta=loadMeta();
@@ -25,12 +28,12 @@
   const gearSet=new Set(meta.gear||[]);
   (S.deck||[]).forEach(id=>cardsSet.add(id));
   (S.inventory||[]).forEach(id=>gearSet.add(id));
-  Object.values(S.equipment||{}).filter(Boolean).forEach(id=>gearSet.add(id));
-  localStorage.setItem(META_KEY,JSON.stringify({schema:SAVE_SCHEMA,cards:[...cardsSet],gear:[...gearSet]}));
+  [...S.party.members.flatMap(h=>Object.values(h.equipment)),...Object.values(S.party.equipment)].filter(Boolean).forEach(id=>gearSet.add(id));
+  localStorage.setItem(META_KEY,JSON.stringify({schema:META_SCHEMA,cards:[...cardsSet],gear:[...gearSet]}));
  }
  function currentScreen(){return document.getElementById("battleScreen")?.classList.contains("active")?"battle":"map"}
  function serializeState(){
-  return JSON.parse(JSON.stringify(S));
+  return JSON.parse(JSON.stringify({...S,activeActor:null}));
  }
  function updateContinueButton(){
   const btn=document.getElementById("continueRunBtn");
@@ -62,14 +65,15 @@
  function restoreRun(){
   const payload=loadPayload();
   if(!payload){
-   clearRunSave();
    showModal("Brak zapisu","Nie znaleziono poprawnego zapisu runu.",()=>grid([["OK","Wróć do mapy.",hideModal]]),true);
    return;
   }
   restoring=true;
   try{
    const saved=payload.state;
-   S={...S,...saved};
+   S=ForbiddenDeckParty.hydrate(saved,S);
+   // Pre-foundation saves stored display labels for actor identity.
+   if(payload.schema===1){const actors={Kael:"kael",Lyra:"lyra",Duo:"duo:kael+lyra"};S.lastActor=actors[saved.lastActor]||saved.lastActor||null;S.activeActor=actors[saved.activeActor]||saved.activeActor||null}
    S.deck=Array.isArray(saved.deck)?saved.deck:[...baseDeck];
    S.inventory=Array.isArray(saved.inventory)?saved.inventory:[];
    S.potions=Array.isArray(saved.potions)?saved.potions:[null,null];
@@ -83,7 +87,7 @@
    runActive=true;
    saveTrust();
    hideModal();
-   if(payload.screen==="battle"&&S.enemies.length&&S.kaelHp>0&&S.lyraHp>0&&!S.battleOver){
+   if(payload.screen==="battle"&&S.enemies.length&&!ForbiddenDeckParty.defeated()&&!S.battleOver){
     showScreen("battleScreen");
     const logEl=document.getElementById("log");if(logEl)logEl.innerHTML="";
     log("Wczytano zapis bieżącej walki.","info");

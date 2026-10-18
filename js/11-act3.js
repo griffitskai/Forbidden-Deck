@@ -15,12 +15,12 @@
  }
 
  const ACT3_CARDS={
-  cinderguard:{name:"Straż Żaru",actor:"Kael",cost:1,text:"+8 Block Kaela. Jeśli Kael ma negatywny status: dodatkowe +5 Block.",kind:"cinderguard",block:8,bonusBlock:5,tag:"Odporność"},
-  bloodrush:{name:"Krwawy Szturm",actor:"Kael",cost:1,text:"7 dmg i +1 Momentum. Jeśli Kael krwawi: 13 dmg.",kind:"bloodrush",dmg:7,bleedDmg:13,mom:1,tag:"Momentum"},
-  executionarrow:{name:"Strzała Egzekucyjna",actor:"Lyra",cost:2,text:"8 dmg +4 za każdy aktywny status na celu.",kind:"executionarrow",dmg:8,statusBonus:4,tag:"Statusy"},
-  ashshot:{name:"Popielna Strzała",actor:"Lyra",cost:1,text:"6 dmg i +2 Podpalenie.",kind:"ashshot",dmg:6,burn:2,tag:"Podpalenie"},
-  bloodbond:{name:"Krwawa Więź",actor:"Duo",cost:2,text:"12 dmg, +2 Krwawienie i +12 Synergy.",kind:"bloodbond",dmg:12,bleed:2,synGain:12,trust:20,tag:"Trust 20"},
-  laststand:{name:"Ostatnia Linia",actor:"Duo",cost:1,text:"+8 Block dla obojga. Jeśli ktoś ma mniej niż 50% HP: ulecz oboje o 5.",kind:"laststand",blockEach:8,heal:5,trust:40,tag:"Trust 40"}
+  cinderguard:{name:"Straż Żaru",ownerId:"kael",actor:"Kael",cost:1,text:"+8 Block Kaela. Jeśli Kael ma negatywny status: dodatkowe +5 Block.",kind:"cinderguard",block:8,bonusBlock:5,tag:"Odporność"},
+  bloodrush:{name:"Krwawy Szturm",ownerId:"kael",actor:"Kael",cost:1,text:"7 dmg i +1 Momentum. Jeśli Kael krwawi: 13 dmg.",kind:"bloodrush",dmg:7,bleedDmg:13,mom:1,tag:"Momentum"},
+  executionarrow:{name:"Strzała Egzekucyjna",ownerId:"lyra",actor:"Lyra",cost:2,text:"8 dmg +4 za każdy aktywny status na celu.",kind:"executionarrow",dmg:8,statusBonus:4,tag:"Statusy"},
+  ashshot:{name:"Popielna Strzała",ownerId:"lyra",actor:"Lyra",cost:1,text:"6 dmg i +2 Podpalenie.",kind:"ashshot",dmg:6,burn:2,tag:"Podpalenie"},
+  bloodbond:{name:"Krwawa Więź",duoId:"kael+lyra",actor:"Duo",cost:2,text:"12 dmg, +2 Krwawienie i +12 Synergy.",kind:"bloodbond",dmg:12,bleed:2,synGain:12,trust:20,tag:"Trust 20"},
+  laststand:{name:"Ostatnia Linia",duoId:"kael+lyra",actor:"Duo",cost:1,text:"+8 Block dla obojga. Jeśli ktoś ma mniej niż 50% HP: ulecz oboje o 5.",kind:"laststand",blockEach:8,heal:5,trust:40,tag:"Trust 40"}
  };
  const ACT3_UPGRADES={
   cinderguard:{block:11,bonusBlock:7,text:"+11 Block Kaela. Przy negatywnym statusie: dodatkowe +7 Block."},
@@ -37,11 +37,7 @@
   if(!target.status)target.status={bleed:0,poison:0,burn:0,weak:0};
   return target.status;
  }
- function heroBag(hero){
-  if(!S.heroStatus)S.heroStatus={kael:{bleed:0,poison:0,burn:0,weak:0},lyra:{bleed:0,poison:0,burn:0,weak:0}};
-  if(!S.heroStatus[hero])S.heroStatus[hero]={bleed:0,poison:0,burn:0,weak:0};
-  return S.heroStatus[hero];
- }
+ function heroBag(hero){return ForbiddenDeckParty.member(hero).status}
  function addStatus(target,type,amount){const s=statusBag(target);s[type]=Math.min(12,(s[type]||0)+amount)}
  function negativeCount(target){const s=statusBag(target);return ["bleed","poison","burn","weak"].filter(k=>(s[k]||0)>0).length}
  function hasHeroNegative(hero){const s=heroBag(hero);return Object.values(s).some(v=>v>0)}
@@ -109,22 +105,22 @@
  const basePlay=playCard;
  playCard=function(i){
   const c=S.hand[i];if(!c)return;const d=cards[c.id];if(!act3Kinds.has(d.kind))return basePlay(i);if(!playable(c))return;const t=selected();if(!t)return;
-  S.energy-=d.cost;const prev=S.lastActor;if(d.actor!=="Duo"&&prev&&prev!=="Duo"&&prev!==d.actor)addSyn(10,prev+" → "+d.actor);
-  if(d.actor==="Kael")S.lastKaelThisTurn=true;
+  S.energy-=d.cost;const prev=S.lastActor;if(!d.duoId&&prev&&!prev.startsWith("duo:")&&prev!==ForbiddenDeckParty.actorId(d))addSyn(10,prev+" → "+ForbiddenDeckParty.actorId(d));
+  if(d.ownerId==="kael")S.lastKaelThisTurn=true;
   if(d.kind==="cinderguard"){const block=d.block+(hasHeroNegative("kael")?d.bonusBlock:0);S.kaelBlock+=block;log("<b>"+d.name+"</b>: +"+block+" Block Kaela.","good")}
   if(d.kind==="bloodrush"){S.momentum=Math.min(5,S.momentum+d.mom);const amt=(heroBag("kael").bleed||0)>0?d.bleedDmg:d.dmg;log("<b>"+d.name+"</b>: "+dmgEnemy(t,amt)+" dmg, +"+d.mom+" Momentum.","good")}
   if(d.kind==="executionarrow"){const amt=d.dmg+negativeCount(t)*d.statusBonus;log("<b>"+d.name+"</b>: "+dmgEnemy(t,amt)+" dmg.","good")}
   if(d.kind==="ashshot"){log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.dmg)+" dmg, Podpalenie +"+d.burn+".","good");addStatus(t,"burn",d.burn)}
   if(d.kind==="bloodbond"){log("<b>"+d.name+"</b>: "+dmgEnemy(t,d.dmg)+" dmg, Krwawienie +"+d.bleed+".","combo");addStatus(t,"bleed",d.bleed);addSyn(d.synGain,d.name)}
-  if(d.kind==="laststand"){S.kaelBlock+=d.blockEach;S.lyraBlock+=d.blockEach;const danger=S.kaelHp<S.kaelMaxHp*.5||S.lyraHp<S.lyraMaxHp*.5;if(danger){S.kaelHp=Math.min(S.kaelMaxHp,S.kaelHp+d.heal);S.lyraHp=Math.min(S.lyraMaxHp,S.lyraHp+d.heal)}log("<b>"+d.name+"</b>: +"+d.blockEach+" Block dla obojga"+(danger?", +"+d.heal+" HP.":"."),"combo")}
-  S.lastActor=d.actor;S.discard.push(S.hand.splice(i,1)[0]);if(liveEnemies().length===0){victory();return}renderBattle();
+  if(d.kind==="laststand"){ForbiddenDeckParty.addBlockAll(d.blockEach);const danger=S.kaelHp<S.kaelMaxHp*.5||S.lyraHp<S.lyraMaxHp*.5;if(danger){ForbiddenDeckParty.healAll(d.heal)}log("<b>"+d.name+"</b>: +"+d.blockEach+" Block dla obojga"+(danger?", +"+d.heal+" HP.":"."),"combo")}
+  S.lastActor=ForbiddenDeckParty.actorId(d);S.discard.push(S.hand.splice(i,1)[0]);if(liveEnemies().length===0){victory();return}renderBattle();
  };
 
  const baseReward=reward;
  reward=function(tg,gold){
   if(S.act!==2)return baseReward(tg,gold);
-  const themed=shuffle([...act3RewardIds]).filter(id=>(cards[id].trust||0)<=Math.max(S.trust,20)).slice(0,2);
-  const normal=shuffle([...rewards]).filter(id=>!act3RewardIds.includes(id)&&(cards[id].trust||0)<=Math.max(S.trust,20)).slice(0,1);
+  const themed=shuffle(ForbiddenDeckParty.availableRewards(act3RewardIds)).filter(id=>(cards[id].trust||0)<=Math.max(S.trust,20)).slice(0,2);
+  const normal=shuffle(ForbiddenDeckParty.availableRewards(rewards)).filter(id=>!act3RewardIds.includes(id)&&(cards[id].trust||0)<=Math.max(S.trust,20)).slice(0,1);
   const pool=[...themed,...normal];
   showModal("Zwycięstwo — Cytadela Popiołu","Trust +"+tg+" • Złoto +"+gold+". Wybierz kartę — dwie nagrody są związane z tym aktem.",()=>{const wrap=document.createElement("div"),g=document.createElement("div");g.className="reward-grid";pool.forEach(id=>{const d=cards[id],b=document.createElement("button");b.className="reward";b.innerHTML='<div class="meta">'+d.actor+' • koszt '+d.cost+'</div><h3>'+d.name+'</h3><p>'+d.text+'</p>';b.onclick=()=>{S.deck.push(id);hideModal();completeBattleNode()};g.appendChild(b)});wrap.appendChild(g);wrap.appendChild(choiceBtn("Pomiń","+10 złota zamiast karty.",()=>{S.gold+=10;hideModal();completeBattleNode()}));return wrap});
  };

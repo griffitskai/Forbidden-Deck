@@ -1,5 +1,13 @@
 # Changelog
 
+## V0.9.4 — Świat w dwóch językach
+
+- Wybór PL/EN w menu i podczas gry, osobne trwałe ustawienie.
+- Angielskie menu, opisy, dialogi, tutorial i komunikaty walki; zmiana języka zachowuje trwającą decyzję.
+- Atlasy 16 portretów przeciwników i 10 przedmiotów; panorama mostu i regionalne tła walk.
+- Nowy test języków, stanu walki, oferty nagród, wznawiania dialogu i układu telefonu.
+
+
 ## V0.9.3 — Wspólne chwile
 
 - Album pięciu opowieści o zwyczajach, marzeniach i obawach Kaela i Lyry, z dwiema odpowiedziami w każdej scenie.

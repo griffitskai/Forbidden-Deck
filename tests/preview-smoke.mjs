@@ -81,6 +81,15 @@ try {
     assert.equal(await target.evaluate(() => ForbiddenDeckCompanions.load().choices.bread), 'home');
     await target.locator('#companionsClose').click();
   }
+  // New language and world art also work without an origin or adjacent files.
+  for(const target of [page,frame]) {
+    await target.evaluate(() => {ForbiddenDeckLanguage.set('en');ForbiddenDeckMenu.close();S.act=2;startBattle(bossEncounter());});
+    await target.waitForFunction(() => [...document.querySelectorAll('#enemies .world-atlas img')].every(img=>img.complete&&img.naturalWidth>0));
+    assert.match(await target.locator('#enemies').innerText(),/Queen of Ash/);
+    await target.evaluate(() => showEquipment());
+    await target.waitForFunction(() => [...document.querySelectorAll('#modalBody .world-atlas img')].every(img=>img.complete&&img.naturalWidth>0));
+    assert.match(await target.locator('#modalBody').innerText(),/Iron Breastplate/);
+  }
   assert.deepEqual(requests, [], 'The preview must make no requests for sibling files or remote resources');
   assert.deepEqual(errors, [], 'Normal and sandboxed previews must not throw JavaScript errors');
   console.log('Preview OK: embedded CSS/JS/art, lazy modules, gameplay and saves; opaque sandbox gameplay and campfire; zero external resource requests.');

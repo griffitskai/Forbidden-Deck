@@ -10,7 +10,9 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 ## Aktualny stan
 
-Wersja robocza: **V0.9.3 — Wspólne chwile**.
+Wersja robocza: **V0.9.4 — Świat w dwóch językach**.
+
+W menu wybierzesz **Polski / English**, a na pasku gry przełączysz język bez utraty miejsca w wyprawie. Nowe ilustracje pokazują 16 archetypów przeciwników, 10 przedmiotów i most na Pograniczu; walka ma tło swojej krainy. [Raport V0.9.4](docs/ITERATION_04.md).
 
 Nowy przycisk **Kael i Lyra · Wspólne chwile** otwiera album pięciu ilustrowanych, opcjonalnych opowieści. Pierwszą poznasz od razu; kolejne odblokowują się po zwycięstwie, przechwyceniu ciosu, przeżyciu ciężkiego trafienia i pokonaniu pierwszego bossa. Bohaterowie mają trzy wyrazy twarzy i reagują na przebieg walki. Sceny używają ruchu kamery i światła; nie są generowanymi filmami ani animacją ust. Ruch i krótkie reakcje można wyłączyć. Rozmowy nie dają bonusów; pierwszy osobisty wybór jest pamiętany, a odświeżenie pozwala wznowić dialog. [Raport V0.9.3](docs/ITERATION_03.md).
 

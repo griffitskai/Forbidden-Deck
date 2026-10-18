@@ -34,3 +34,7 @@ Wszystkie obrazy są lokalne. Ich brak pozostawia czytelny tekst i działające 
 Oba obrazy powstały w OpenAI Image Generation z `scenes/shared-cloak.webp` jako referencją tożsamości i stylu. Wykorzystano wbudowane narzędzie, bez wywołań API i bez zasobów stock. PNG przekonwertowano do WebP, bez zmiany kompozycji. [Prompty](living-companions-prompts.md). Warunki użycia i brak deklaracji wyłączności pozostają jak wyżej.
 
 Efekty kamery/światła i przełączanie portretów są prezentacją ilustracji w CSS. Ta iteracja nie zawiera generowanych filmów ani animacji ust.
+
+## V0.9.4
+
+Atlasy przeciwników i przedmiotów oraz most: [pochodzenie, ścieżki i pełne prompty](bilingual-world-prompts.md). Wbudowany imagegen, referencja panoramy Pogranicza, WebP quality=83.

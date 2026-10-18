@@ -1,4 +1,4 @@
-# Project Status — V0.9.4
+# Project Status — V0.9.5
 
 ## Pętla runu
 
@@ -129,3 +129,7 @@ Pięć opcjonalnych opowieści, trzy wyrazy twarzy każdej postaci, album odblok
 ## Świat w dwóch językach — V0.9.4
 
 Trwały wybór polski/angielski, lokalizacja widoków i opowieści bez zmiany danych gry. 16 portretów archetypów, 10 ilustracji wyposażenia/mikstur, panorama mostu, regionalne tła walk. [Zakres i testy](ITERATION_04.md).
+
+## Wspólny stół — V0.9.5
+
+Tryb walki bez przewijania na komputerze od 1000×560 px CSS. Bohaterowie i przeciwnicy obok siebie, HP/Block przy portretach, zasoby nad ręką, stały pasek akcji. Duża ręka tworzy wachlarz, pełny opis w podglądzie, Tab/Enter/Spacja dla kart. Odporności i zasady pod Szczegóły; niskie okna przenoszą tam również krótkie kwestie. [Zakres i testy](ITERATION_05.md).

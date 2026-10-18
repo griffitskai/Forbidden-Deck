@@ -39,7 +39,7 @@
         </div>
       </section>
       <aside class="start-menu">
-        <div class="start-version"><span>BUILD V0.9.4</span><span>ŚWIAT W DWÓCH JĘZYKACH</span></div>
+        <div class="start-version"><span>BUILD V0.9.5</span><span>WSPÓLNY STÓŁ</span></div>
         <div class="start-actions">
           <button class="start-action primary" id="menuContinue"><strong>▶ Kontynuuj run</strong><span>Wróć do zapisanego podejścia.</span></button>
           <button class="start-action" id="menuNew"><strong>✦ Nowy run</strong><span>Wybierz poziom trudności i rozpocznij od Pogranicza.</span></button>

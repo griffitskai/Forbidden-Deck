@@ -10,7 +10,9 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 ## Aktualny stan
 
-Wersja robocza: **V0.9.4 — Świat w dwóch językach**.
+Wersja robocza: **V0.9.5 — Wspólny stół**.
+
+Walka na komputerze mieści bohaterów, przeciwników, rękę i akcje w jednym oknie. HP i Block są przy portretach, energia nad kartami, a koniec tury zawsze po prawej. Szczegóły zasad otworzysz osobno; pełny opis karty zobaczysz po najechaniu lub wybraniu klawiszem Tab. [Raport V0.9.5](docs/ITERATION_05.md).
 
 W menu wybierzesz **Polski / English**, a na pasku gry przełączysz język bez utraty miejsca w wyprawie. Nowe ilustracje pokazują 16 archetypów przeciwników, 10 przedmiotów i most na Pograniczu; walka ma tło swojej krainy. [Raport V0.9.4](docs/ITERATION_04.md).
 

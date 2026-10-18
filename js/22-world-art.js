@@ -49,7 +49,7 @@
  function backdrop(){
   const field=document.getElementById('battlefieldVisual');if(!field)return;
   let image=field.querySelector('.world-battle-art');if(!image){image=document.createElement('div');image.className='world-battle-art';image.setAttribute('aria-hidden','true');field.prepend(image)}
-  const path=S.act===0?bridge:window.ForbiddenDeckJourney?.region().art;
+  const path=window.ForbiddenDeckLocations?.current().art||(S.act===0?bridge:window.ForbiddenDeckJourney?.region().art);
   image.style.backgroundImage=path?`url("${asset(path)}")`:'';
   let caption=document.getElementById('battleLocation');if(!caption){caption=document.createElement('p');caption.id='battleLocation';caption.className='location-caption';field.after(caption)}
   caption.textContent=currentAct().title+' · '+(S.currentNode?.label||'Na szlaku');
@@ -59,7 +59,7 @@
   const title=document.getElementById('modalTitle').textContent;
   if(!['Wędrowny kupiec','Traveling Merchant','Zawalony most','Collapsed Bridge'].includes(title))return;
   const figure=document.createElement('figure');figure.className='world-location';
-  const img=document.createElement('img');img.src=asset(bridge);img.alt='';img.width=1672;img.height=941;img.onerror=()=>figure.remove();
+  const img=document.createElement('img');img.src=asset(/Zawalony most|Collapsed Bridge/.test(title)?bridge:(window.ForbiddenDeckLocations?.current().art||bridge));img.alt='';img.width=1672;img.height=941;img.onerror=()=>figure.remove();
   const caption=document.createElement('figcaption');caption.textContent=title;figure.append(img,caption);document.getElementById('modalBody').prepend(figure);
  }
  const baseEnemies=renderEnemies;renderEnemies=function(...args){const result=baseEnemies(...args);decorateEnemies();return result};

@@ -960,5 +960,22 @@ window.ForbiddenDeckEnglish={
   "Zużyj 20 Synergy: 15 dmg i +3 Marked na celu.": "Spend 20 Synergy: 15 dmg and +3 Marked on the target.",
   "ILUSTROWANE ZAGRANIA": "ILLUSTRATED PLAYS",
   "Atak": "Attack",
-  "Współpraca": "Teamwork"
+  "Współpraca": "Teamwork",
+  "Pograniczny trakt": "Borderland Road",
+  "Kamienny most": "Stone Bridge",
+  "Zapomniane ruiny": "Forgotten Ruins",
+  "Ciernisty las": "Thornwood",
+  "Toksyczne mokradła": "Toxic Marsh",
+  "Mury Cytadeli": "Citadel Walls",
+  "Kuźnie żaru": "Ember Forges",
+  "Sala popielnego tronu": "Hall of the Ash Throne",
+  "Wiatr niesie zapach wrzosu. Za ostatnim światłem domów zaczyna się otwarta droga.": "The wind carries the scent of heather. Beyond the last lit windows, the open road begins.",
+  "Pod spękanym łukiem szumi rzeka. Na wąskim moście nie ma gdzie zejść z drogi.": "A river rushes beneath the cracked arch. On the narrow bridge, there is nowhere to step aside.",
+  "Przez puste okna wpada chłodne światło. Każdy krok odbija się pod złamanymi sklepieniami.": "Cold light falls through empty windows. Every footstep echoes beneath the broken vaults.",
+  "Korzenie zamykają ścieżkę za plecami. Między drzewami zalega ciężka, zielona mgła.": "Roots close the path behind you. Heavy green mist hangs between the trees.",
+  "Czarna woda drży pod spróchniałymi kładkami. W oparach migoczą blade ogniki.": "Black water trembles beneath rotten boardwalks. Pale lights flicker in the fumes.",
+  "Popiół osiada na kamieniu. Nad drogą wyrastają mury rozświetlone żarem.": "Ash settles on the stone. Ember-lit walls rise above the road.",
+  "Łańcuchy giną w dymie. Strugi płynnego metalu rozcinają ciemność podziemnej kuźni.": "Chains disappear into smoke. Streams of molten metal cut through the darkness of the underground forge.",
+  "Za szeregiem czarnych kolumn czeka tron. Ciszę przerywa tylko trzask dogasających palenisk.": "Beyond the black columns, a throne awaits. Only the crackle of dying braziers breaks the silence.",
+  "MIEJSCA NA SZLAKU": "PLACES ALONG THE ROAD"
 };

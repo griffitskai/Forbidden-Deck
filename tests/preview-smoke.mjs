@@ -95,6 +95,11 @@ try {
     await target.waitForFunction(()=>[...document.querySelectorAll('#hand .card-art img')].length===3&&[...document.querySelectorAll('#hand .card-art img')].every(i=>i.complete&&i.naturalWidth>0&&i.src.startsWith('data:')));
     assert.equal(await target.locator('#hand .illustrated-card').count(),3);
   }
+  // Each new panorama must also decode inside the opaque sandbox, without an origin.
+  for(const target of [page,frame]) for(const [act,label] of [[0,'Ruiny'],[1,'Toksyczne bagno'],[2,'Kuźnie'],[2,'Królowa Popiołu']]) {
+    await target.evaluate(({act,label})=>{hideModal();S.act=act;S.currentNode=currentAct().route.flat().find(n=>n.label===label);startBattle(encounter(false))},{act,label});
+    await target.waitForFunction(()=>{const i=document.querySelector('.combat-scenery img');return i.complete&&i.naturalWidth>0&&i.src.startsWith('data:')});
+  }
   assert.deepEqual(requests, [], 'The preview must make no requests for sibling files or remote resources');
   assert.deepEqual(errors, [], 'Normal and sandboxed previews must not throw JavaScript errors');
   console.log('Preview OK: embedded CSS/JS/art, lazy modules, gameplay and saves; opaque sandbox gameplay and campfire; zero external resource requests.');

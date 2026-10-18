@@ -42,3 +42,7 @@ Atlasy przeciwników i przedmiotów oraz most: [pochodzenie, ścieżki i pełne 
 ## V0.9.6
 
 38 ilustracji działań kart, trzy atlasy; [pełne prompty, ścieżki i pochodzenie](card-art-prompts.md). Wbudowany imagegen, referencja tożsamości Kaela i Lyry, WebP quality=85.
+
+## V0.9.7
+
+Cztery panoramy środowiskowe wygenerowane narzędziem imagegen: `locations/abbey-ruins.webp`, `locations/toxic-marsh.webp`, `locations/ember-forge.webp`, `locations/ash-throne.webp`. Oryginały 1672×941, konwersja WebP quality 86. [Pełne prompty](location-art-prompts.md). Pozostałe cztery scenerie wykorzystują wcześniejsze lokalne ilustracje krain i mostu. Brak pobierania obrazów w czasie gry.

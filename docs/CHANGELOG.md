@@ -1,5 +1,13 @@
 # Changelog
 
+## V0.9.7 — Miejsca na szlaku
+
+- Tło całej areny dopasowane do miejsca na mapie; osiem scenerii zamiast jednego mostu dla całego aktu I.
+- Cztery nowe lokalne panoramy WebP: ruiny, bagno, kuźnia i sala tronowa.
+- Miniatury węzłów i podgląd aktualnego etapu myszą lub klawiaturą.
+- Regionalny fallback starych zapisów i bezpieczne ukrycie brakującej grafiki.
+- Pełna zgodność PL/EN i samodzielnego podglądu offline.
+
 ## V0.9.6 — Ilustrowane zagrania
 
 - Osobne ilustracje 38 kart bazowych, wspólne dla wariantów ulepszonych.

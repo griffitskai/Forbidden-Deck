@@ -79,6 +79,9 @@ jobs:
       - name: Run card artwork and presentation test
         run: node tests/card-art-smoke.mjs
 
+      - name: Run stage scenery and map preview test
+        run: node tests/location-scenes-smoke.mjs
+
       - name: Run translation coverage audit
         run: node tests/translation-audit.mjs
 

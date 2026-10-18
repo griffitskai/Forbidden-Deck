@@ -1,5 +1,14 @@
 # Changelog
 
+## V0.9.5 — Wspólny stół
+
+- Ekran walki mieszczący karty, cele i akcje w oknie komputera.
+- HP i Block przy portretach, zasoby blisko ręki, stałe miejsce końca tury.
+- Szczegóły zasad w dialogu, pełne opisy kart w podglądzie, obsługa kart klawiaturą.
+- Wachlarz dużej ręki, PL/EN i zachowanie istniejących zapisów.
+- Test wymiarów okna, faz bossów, dużych rąk i działania przycisków.
+
+
 ## V0.9.4 — Świat w dwóch językach
 
 - Wybór PL/EN w menu i podczas gry, osobne trwałe ustawienie.

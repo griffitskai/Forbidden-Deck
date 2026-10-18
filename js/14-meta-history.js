@@ -65,7 +65,7 @@
       id:`${Date.now()}-${Math.random().toString(36).slice(2,7)}`,
       date:new Date().toISOString(),
       result:victory?'victory':'defeat',
-      version:'V0.9.4',
+      version:'V0.9.5',
       difficulty:S.difficulty||'standard',
       act:actReached,
       actTitle:ACTS[actIndex]?.title||'Pogranicze',

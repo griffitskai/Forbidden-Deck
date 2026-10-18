@@ -936,5 +936,14 @@ window.ForbiddenDeckEnglish={
   "Prowokacja / Ochrona": "Taunt / Intercept",
   "etap": "stage",
   "odwiedzone": "visited",
-  "W tym podglądzie zapis działa do odświeżenia. Pobierz plik HTML i otwórz go w przeglądarce, aby zachowywać postęp.": "In this preview, saves last until you refresh. Download the HTML file and open it in a browser to keep your progress."
+  "W tym podglądzie zapis działa do odświeżenia. Pobierz plik HTML i otwórz go w przeglądarce, aby zachowywać postęp.": "In this preview, saves last until you refresh. Download the HTML file and open it in a browser to keep your progress.",
+  "Zasoby drużyny": "Party Resources",
+  "POLE WALKI": "BATTLEFIELD",
+  "Drużyna i zasady": "Party and Rules",
+  "Zamknij szczegóły": "Close Details",
+  "Szczegóły": "Details",
+  "Najedź lub wybierz kartę klawiszem Tab, aby zobaczyć jej pełny opis.": "Hover or focus a card with Tab to see its full description.",
+  "WSPÓLNY STÓŁ": "THE SHARED TABLE",
+  "FAZA II • magia • priorytet: Lyra": "PHASE II • magic • priority: Lyra",
+  "Ulepszona karta": "Upgraded Card"
 };

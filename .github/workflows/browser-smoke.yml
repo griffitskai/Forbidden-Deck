@@ -70,6 +70,9 @@ jobs:
       - name: Run bilingual world and illustration smoke test
         run: node tests/bilingual-world-smoke.mjs
 
+      - name: Run desktop combat table and large hand test
+        run: node tests/combat-table-smoke.mjs
+
       - name: Run translation coverage audit
         run: node tests/translation-audit.mjs
 

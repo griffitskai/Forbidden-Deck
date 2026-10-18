@@ -73,6 +73,12 @@ jobs:
       - name: Run desktop combat table and large hand test
         run: node tests/combat-table-smoke.mjs
 
+      - name: Run tactical card resource and combo tests
+        run: node tests/tactical-cards-smoke.mjs
+
+      - name: Run card artwork and presentation test
+        run: node tests/card-art-smoke.mjs
+
       - name: Run translation coverage audit
         run: node tests/translation-audit.mjs
 

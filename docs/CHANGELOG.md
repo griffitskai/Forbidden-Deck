@@ -1,5 +1,14 @@
 # Changelog
 
+## V0.9.6 — Ilustrowane zagrania
+
+- Osobne ilustracje 38 kart bazowych, wspólne dla wariantów ulepszonych.
+- Obrazy w ręce, podglądzie, talii, nagrodach, ulepszeniach i odkrytym Codexie.
+- Cztery nowe karty z kosztami i kompromisami: Zaprzyj się, Zatruty trop, Zmiana warty, Wspólny nacisk.
+- Ulepszenia i nagrody dla nowych kart; startowy zestaw bez zmian.
+- Pełne PL/EN, awaryjne wyświetlanie bez grafiki i podgląd offline.
+
+
 ## V0.9.5 — Wspólny stół
 
 - Ekran walki mieszczący karty, cele i akcje w oknie komputera.

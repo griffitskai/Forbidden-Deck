@@ -38,7 +38,7 @@
   preview.replaceChildren();
   const h=document.createElement('h3'),meta=document.createElement('small'),text=document.createElement('p');
   h.textContent=definition.name;meta.textContent=definition.actor+' · '+definition.cost+' ⚡';text.textContent=definition.text;
-  preview.append(h,meta,text);preview.hidden=false;
+  preview.append(h,meta,text);window.ForbiddenDeckCardArt?.decorate(preview);preview.hidden=false;
   const r=card.getBoundingClientRect(),width=preview.offsetWidth;
   preview.style.left=Math.max(10,Math.min(innerWidth-width-10,r.left+r.width/2-width/2))+'px';
   preview.style.top=Math.max(60,r.top-preview.offsetHeight-12)+'px';

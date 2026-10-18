@@ -10,7 +10,9 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 ## Aktualny stan
 
-Wersja robocza: **V0.9.5 — Wspólny stół**.
+Wersja robocza: **V0.9.6 — Ilustrowane zagrania**.
+
+Każda z 38 kart bazowych ma teraz własną ilustrację działania, także w talii, nagrodach i podglądzie. Cztery nowe zagrania rozwijają wydawanie Momentum, Marked i Synergy oraz ochronę Lyry. Talia startowa pozostaje bez zmian; nowe karty zdobędziesz w nagrodach. [Analiza kart i raport V0.9.6](docs/ITERATION_06.md).
 
 Walka na komputerze mieści bohaterów, przeciwników, rękę i akcje w jednym oknie. HP i Block są przy portretach, energia nad kartami, a koniec tury zawsze po prawej. Szczegóły zasad otworzysz osobno; pełny opis karty zobaczysz po najechaniu lub wybraniu klawiszem Tab. [Raport V0.9.5](docs/ITERATION_05.md).
 

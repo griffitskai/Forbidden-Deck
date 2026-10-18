@@ -67,6 +67,12 @@ jobs:
       - name: Run living companions and event memories
         run: node tests/companions-smoke.mjs
 
+      - name: Run bilingual world and illustration smoke test
+        run: node tests/bilingual-world-smoke.mjs
+
+      - name: Run translation coverage audit
+        run: node tests/translation-audit.mjs
+
       - name: Upload playable single-file preview
         uses: actions/upload-artifact@v4
         with:

@@ -31,7 +31,7 @@
         <div class="start-logo">
           <small>dark fantasy roguelike deckbuilder</small>
           <h1>FORBIDDEN<br>DECK</h1>
-          <p>Dwoje bohaterów. Jedna droga przez mrok.<br>Buduj talię, walcz w duecie i zdecyduj, co połączy Kaela i Lyrę.</p>
+          <p>Dwoje bohaterów. Jedna droga przez mrok.<br>Wybierz bohaterów. Zbuduj własny duet i zdecyduj, co ich połączy.</p>
         </div>
         <div class="start-duo">
           <div class="start-portrait"><img src="assets/portraits/kael.webp" width="1024" height="1536" alt="Kael, 32 lata — obrońca w bordowym płaszczu"><div class="caption"><b>Kael <small>32 lata</small></b><span>Obrona • Momentum • Prowokacja</span></div></div>
@@ -39,10 +39,10 @@
         </div>
       </section>
       <aside class="start-menu">
-        <div class="start-version"><span>BUILD V0.9.8</span><span>MIEJSCA NA SZLAKU</span></div>
+        <div class="start-version"><span>BUILD V0.10.0</span><span>WYBIERZ SWÓJ DUET</span></div>
         <div class="start-actions">
           <button class="start-action primary" id="menuContinue"><strong>▶ Kontynuuj run</strong><span>Wróć do zapisanego podejścia.</span></button>
-          <button class="start-action" id="menuNew"><strong>✦ Nowy run</strong><span>Wybierz poziom trudności i rozpocznij od Pogranicza.</span></button>
+          <button class="start-action" id="menuNew"><strong>✦ Nowy run</strong><span>Wybierz bohaterów, poziom trudności i rozpocznij od Pogranicza.</span></button>
           <button class="start-action" id="menuCodex"><strong>▦ Kolekcja / Codex</strong><span>Odkryte karty, wyposażenie, statusy i bossowie.</span></button>
         </div>
         <div class="start-meta" id="startMeta"></div>
@@ -119,7 +119,7 @@
   function summaryText(victory){
     const actReached=Math.min(ACTS.length,(S.act||0)+1);
     const outcome=victory?'Trzy akty ukończone.':'Wyprawa zakończyła się przed pokonaniem wszystkich bossów.';
-    return `${outcome}<br><br><b>Dotarłeś do:</b> Akt ${actReached} — ${esc(ACTS[S.act]?.title||'Pogranicze')}<br><b>Wygrane walki:</b> ${S.wins||0}<br><b>Poziom drużyny:</b> ${S.level||1}<br><b>Trust:</b> ${S.trust||0} — ${trustRank(S.trust||0)}<br><b>Talia:</b> ${(S.deck||[]).length} kart<br><b>Złoto:</b> ${S.gold||0}<br><b>HP:</b> Kael ${Math.max(0,S.kaelHp||0)}/${S.kaelMaxHp} • Lyra ${Math.max(0,S.lyraHp||0)}/${S.lyraMaxHp}`;
+    return `${outcome}<br><br><b>Dotarłeś do:</b> Akt ${actReached} — ${esc(ACTS[S.act]?.title||'Pogranicze')}<br><b>Wygrane walki:</b> ${S.wins||0}<br><b>Poziom drużyny:</b> ${S.level||1}<br><b>Trust:</b> ${S.trust||0} — ${trustRank(S.trust||0)}<br><b>Talia:</b> ${(S.deck||[]).length} kart<br><b>Złoto:</b> ${S.gold||0}<br><b>HP:</b> ${S.party.members.map(h=>ForbiddenDeckParty.characters[h.id].name+' '+Math.max(0,h.hp)+'/'+h.maxHp).join(' • ')}`;
   }
   function endRunScreen(victory){
     try{window.ForbiddenDeckSave?.clear?.()}catch{}

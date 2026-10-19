@@ -76,8 +76,7 @@ try {
     await target.locator('#lifeNext').click();
     await target.locator('#lifeNext').click();
     await target.locator('[data-life-choice="home"]').click();
-    await target.locator('#lifeNext').click();
-    await target.locator('#lifeNext').click();
+    while(await target.locator('#lifeNext').isVisible())await target.locator('#lifeNext').click();
     assert.equal(await target.evaluate(() => ForbiddenDeckCompanions.load().choices.bread), 'home');
     await target.locator('#companionsClose').click();
   }
@@ -99,6 +98,12 @@ try {
   for(const target of [page,frame]) for(const [act,label] of [[0,'Ruiny'],[1,'Toksyczne bagno'],[2,'Kuźnie'],[2,'Królowa Popiołu']]) {
     await target.evaluate(({act,label})=>{hideModal();S.act=act;S.currentNode=currentAct().route.flat().find(n=>n.label===label);startBattle(encounter(false))},{act,label});
     await target.waitForFunction(()=>{const i=document.querySelector('.combat-scenery img');return i.complete&&i.naturalWidth>0&&i.src.startsWith('data:')});
+  }
+  for(const target of [page,frame]){
+    await target.evaluate(()=>{hideModal();ForbiddenDeckRoster.start(['varyn','selene']);S.currentNode={type:'battle',label:'Patrol'};startBattle(encounter(false));S.trust=40;S.hand=['eclipse','detonate','ambush'].map((id,i)=>({id,uid:'offline-roster-'+i}));renderBattle()});
+    await target.waitForFunction(()=>[...document.querySelectorAll('#hand .card-art img,.roster-portrait')].every(i=>i.complete&&i.naturalWidth>0&&i.src.startsWith('data:')));
+    await target.evaluate(()=>{S.stage=3;S.currentNode=currentAct().route[3][0];campDialogue()});
+    await target.waitForFunction(()=>document.querySelector('.roster-scene-art')?.naturalWidth>0);
   }
   assert.deepEqual(requests, [], 'The preview must make no requests for sibling files or remote resources');
   assert.deepEqual(errors, [], 'Normal and sandboxed previews must not throw JavaScript errors');

@@ -121,8 +121,8 @@
   if(S.act!==2)return baseReward(tg,gold);
   const themed=shuffle(ForbiddenDeckParty.availableRewards(act3RewardIds)).filter(id=>(cards[id].trust||0)<=Math.max(S.trust,20)).slice(0,2);
   const normal=shuffle(ForbiddenDeckParty.availableRewards(rewards)).filter(id=>!act3RewardIds.includes(id)&&(cards[id].trust||0)<=Math.max(S.trust,20)).slice(0,1);
-  const pool=[...themed,...normal];
-  showModal("Zwycięstwo — Cytadela Popiołu","Trust +"+tg+" • Złoto +"+gold+". Wybierz kartę — dwie nagrody są związane z tym aktem.",()=>{const wrap=document.createElement("div"),g=document.createElement("div");g.className="reward-grid";pool.forEach(id=>{const d=cards[id],b=document.createElement("button");b.className="reward";b.innerHTML='<div class="meta">'+d.actor+' • koszt '+d.cost+'</div><h3>'+d.name+'</h3><p>'+d.text+'</p>';b.onclick=()=>{S.deck.push(id);hideModal();completeBattleNode()};g.appendChild(b)});wrap.appendChild(g);wrap.appendChild(choiceBtn("Pomiń","+10 złota zamiast karty.",()=>{S.gold+=10;hideModal();completeBattleNode()}));return wrap});
+  const pool=[...new Set([...themed,...normal,...shuffle(ForbiddenDeckParty.availableRewards(rewards)).filter(id=>(cards[id].trust||0)<=Math.max(S.trust,20))])].slice(0,3);
+  showModal("Zwycięstwo — Cytadela Popiołu","Trust +"+tg+" • Złoto +"+gold+". Wybierz kartę dla swojej drużyny.",()=>{const wrap=document.createElement("div"),g=document.createElement("div");g.className="reward-grid";pool.forEach(id=>{const d=cards[id],b=document.createElement("button");b.className="reward";b.innerHTML='<div class="meta">'+d.actor+' • koszt '+d.cost+'</div><h3>'+d.name+'</h3><p>'+d.text+'</p>';b.onclick=()=>{S.deck.push(id);hideModal();completeBattleNode()};g.appendChild(b)});wrap.appendChild(g);wrap.appendChild(choiceBtn("Pomiń","+10 złota zamiast karty.",()=>{S.gold+=10;hideModal();completeBattleNode()}));return wrap});
  };
 
  const baseEvent=eventNode;
@@ -145,6 +145,6 @@
  const baseRenderEnemies=renderEnemies;
  renderEnemies=function(){
   baseRenderEnemies();
-  S.enemies.forEach((e,i)=>{if(e.pattern!=="ashqueen")return;const el=document.querySelectorAll(".enemy")[i];if(!el)return;const phase=document.createElement("div");phase.className="mark";phase.textContent=e.hp/e.maxHp>.5?"Faza I: nacisk na Kaela":"Faza II: magia i polowanie na Lyrę";el.appendChild(phase)});
+  S.enemies.forEach((e,i)=>{if(e.pattern!=="ashqueen")return;const el=document.querySelectorAll(".enemy")[i];if(!el)return;const phase=document.createElement("div");phase.className="mark";phase.textContent=e.hp/e.maxHp>.5?"Faza I: nacisk na drużynę":"Faza II: magia i polowanie";el.appendChild(phase)});
  };
 })();

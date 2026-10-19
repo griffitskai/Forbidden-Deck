@@ -1,5 +1,5 @@
 (()=>{
-  const KEY='forbidden_deck_relationship_v1';
+  const KEY=()=>ForbiddenDeckParty.pairKey('forbidden_deck_relationship_v1');
   const SCHEMA=2;
   const PREFS_KEY='forbidden_deck_preferences_v1';
   const CAMP_EDITION='campfire40';
@@ -23,7 +23,7 @@
   function defaults(){return{schema:SCHEMA,seen:[],choices:[],pendingBoon:null,roadSeen:false,stats:{scenes:0,supportive:0,pragmatic:0},romance:{campfireChoice:null,trust60Choice:null},campfire:{completed:false,trust60Completed:false}}}
   function load(){
     try{
-      const raw=JSON.parse(localStorage.getItem(KEY)||'null');
+      const raw=JSON.parse(localStorage.getItem(KEY())||'null');
       if(!raw||![1,SCHEMA].includes(raw.schema))return defaults();
       // Keep the existing key and every legacy choice/boon. Trust has its own key.
       // A supportive legacy choice is never interpreted as romantic consent.
@@ -32,8 +32,8 @@
       return data;
     }catch{return defaults()}
   }
-  function save(data){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(error){console.warn('Forbidden Deck: nie udało się zapisać relacji',error)}}
-  function nextScene(){const data=load();return milestones.find(scene=>S.trust>=scene.threshold&&!data.seen.includes(scene.id))||null}
+  function save(data){try{localStorage.setItem(KEY(),JSON.stringify(data))}catch(error){console.warn('Forbidden Deck: nie udało się zapisać relacji',error)}}
+  function nextScene(){if(!ForbiddenDeckParty.isLegacy())return window.ForbiddenDeckRoster?.nextScene()||null;const data=load();return milestones.find(scene=>S.trust>=scene.threshold&&!data.seen.includes(scene.id))||null}
   function addTrust(n){S.trust=Math.min(100,S.trust+n);saveTrust()}
   function romanceEnabled(){
     try{return JSON.parse(localStorage.getItem(PREFS_KEY)||'null')?.romanceEnabled===true}catch{return false}
@@ -49,7 +49,7 @@
     }
   }
   function settingMarkup(id){
-    return `<label class="romance-setting" for="${id}"><input type="checkbox" id="${id}" data-romance-toggle ${romanceEnabled()?'checked':''}><span>Romantyczne sceny Kaela i Lyry<small>Opcjonalny flirt i bliskość. Nagrody są takie same również bez romansu.</small></span></label>`;
+    return `<label class="romance-setting" for="${id}"><input type="checkbox" id="${id}" data-romance-toggle ${romanceEnabled()?'checked':''}><span>Romantyczne sceny<small>Opcjonalny romans: flirt, pocałunki i intymność zakończona wygaszeniem sceny. Bez graficznych opisów seksu i nagości. Nagrody są takie same również bez romansu.</small></span></label>`;
   }
   function wireSettings(root){root.querySelectorAll('[data-romance-toggle]').forEach(input=>{input.onchange=()=>setRomanceEnabled(input.checked)})}
   const menuSetting=document.createElement('div');
@@ -68,7 +68,7 @@
   const actions=document.querySelector('#startScreen .start-actions');
   if(actions&&!document.getElementById('menuRelationship')){const b=document.createElement('button');b.className='start-action';b.id='menuRelationship';b.innerHTML='<strong>🤝 Relacja Kael–Lyra</strong><span>Kamienie milowe Trust i historia wspólnych decyzji.</span>';actions.appendChild(b)}
 
-  function renderRelationship(){
+  function renderRelationship(){if(!ForbiddenDeckParty.isLegacy())return window.ForbiddenDeckRoster?.renderRelationship();
     const data=load(),support=data.stats.supportive||0,prag=data.stats.pragmatic||0;
     const tone=support>prag?'opiekuńczy / oparty na zaufaniu':prag>support?'taktyczny / pragmatyczny':'zrównoważony';
     document.getElementById('relationshipBody').innerHTML=`<div class="relationship-overview"><strong>${trustRank(S.trust)} • Trust ${S.trust}/100</strong><p>Dotychczasowy styl współpracy: <b>${tone}</b>. Wybory wpływają na krótkie premie w kolejnych walkach, ale nie zamykają przyszłych scen.</p></div><div class="relationship-timeline">${milestones.map(m=>{const reached=S.trust>=m.threshold,seen=data.seen.includes(m.id);return`<div class="relationship-step ${reached?'':'locked'}"><div class="rel-icon">${seen?'✓':reached?'💬':'🔒'}</div><div><h3>${m.threshold} Trust — ${m.rank}</h3><p>${seen?m.title:reached?'Scena czeka przy następnym ognisku.':'Jeszcze nieosiągnięte.'}</p></div><div class="state">${seen?'PRZEŻYTE':reached?'DOSTĘPNE':'ZABLOKOWANE'}</div></div>`}).join('')}</div>`;
@@ -109,8 +109,8 @@
   }
 
   const opening=[
-    {speaker:'Kael',text:'Miałaś kilka okazji, żeby odejść. Dlaczego zostałaś?',note:'Podaje jej kubek. Ich palce spotykają się na moment; oboje uśmiechają się i cofają dłonie.'},
-    {speaker:'Lyra',text:'Bo pytasz, zamiast mówić mi, gdzie mam stać. I dlatego, że przy tobie nie muszę przez całą noc wypatrywać drogi ucieczki.',note:'W ciepłym świetle znika część ostrożności, którą nosiła jak drugi płaszcz.'}
+    {speaker:'Kael',text:'Kiedy wróciłem z drewnem i nie było cię przy ogniu, pomyślałem, że odeszłaś. Zdążyłem nawet ułożyć sobie rozsądne wyjaśnienie. Żadnego nie polubiłem.',note:'Podaje jej kubek. Ich palce spotykają się na moment; oboje uśmiechają się i cofają dłonie.'},
+    {speaker:'Lyra',text:'Byłam po wodę, Kael. Mogłeś mnie zawołać. Wiesz, co mnie męczy? Że potrafisz przyjąć na tarczę cios, ale zapytać, czy ktoś chce zostać, to już za dużo. Zostałam, bo chciałam.',note:'W ciepłym świetle znika część ostrożności, którą nosiła jak drugi płaszcz.'}
   ];
   const endings={
     friendship:[
@@ -118,16 +118,16 @@
       {speaker:'Lyra',text:'I żadnych rozkazów przy kolacji. Umowa?',note:'Śmieją się cicho. Ta noc należy do dwojga przyjaciół, którzy nie muszą niczego udowadniać.'}
     ],
     romance:[
-      {speaker:'Kael',text:'Chcę usiąść bliżej. Jeśli nadal tego chcesz.',note:'Nie skraca dystansu, dopóki Lyra sama nie wyciąga dłoni.'},
-      {speaker:'Lyra',text:'Chcę. I na dziś wystarczy mi, że zostaniesz obok.',note:'Przyciąga go do krótkiego pocałunku. Kael odpowiada, po czym opierają czoła o siebie. Rozmowa cichnie; światło ognia powoli przygasa.'}
+      {speaker:'Kael',text:'Nie chcę spędzić całej nocy, udając, że patrzę tylko na ogień. Podobasz mi się, Lyro. Chciałbym cię pocałować.',note:'Nie skraca dystansu, dopóki Lyra sama nie wyciąga dłoni.'},
+      {speaker:'Lyra',text:'Nareszcie coś, czego nie próbujesz powiedzieć za pomocą tarczy. Chodź. Tak, chcę tego pocałunku.',note:'Przyciąga go do krótkiego pocałunku. Kael odpowiada, po czym opierają czoła o siebie. Rozmowa cichnie; światło ognia powoli przygasa.'}
     ]
   };
   function laterOpening(){
     const shared=romanceEnabled()&&load().romance.campfireChoice==='romance';
     return[
-      {speaker:'Kael',text:'W walce czekasz na mój znak. Tutaj nie musisz.',note:'Odpina ciężki naramiennik i kładzie go przy kamieniu. Między nimi zostaje tylko ciepło ognia.'},
-      shared?{speaker:'Lyra',text:'W takim razie powiem pierwsza. Myślę jeszcze o tamtym pocałunku.',note:'Nie odwraca wzroku. Kael uśmiecha się tak, jakby na chwilę zapomniał o całej drodze przed nimi.'}
-        :{speaker:'Lyra',text:'Nie zawsze potrzebuję znaku. Czasem chcę po prostu wiedzieć, że ktoś zostanie.',note:'Przesuwa po kamieniu drugi kubek. To zaproszenie do rozmowy, nie obietnica, której ktokolwiek musi dotrzymać.'}
+      {speaker:'Kael',text:'Dzisiaj powiedziałem „za mną”, zanim pomyślałem. Widziałem twoją twarz. Nie chcę, żebyś musiała walczyć ze mną o miejsce obok.',note:'Odpina ciężki naramiennik i kładzie go przy kamieniu. Między nimi zostaje tylko ciepło ognia.'},
+      shared?{speaker:'Lyra',text:'Złościłam się. I nadal myślałam o tym, żeby cię pocałować. To dość niewygodne połączenie. Jedno nie załatwia drugiego, Kael.',note:'Nie odwraca wzroku. Kael uśmiecha się tak, jakby na chwilę zapomniał o całej drodze przed nimi.'}
+        :{speaker:'Lyra',text:'Nie potrzebuję dowódcy przy kolacji. Potrzebuję kogoś, komu mogę powiedzieć, że się boję, bez oglądania następnego dnia jego pleców przez całą walkę.',note:'Przesuwa po kamieniu drugi kubek. To zaproszenie do rozmowy, nie obietnica, której ktokolwiek musi dotrzymać.'}
     ];
   }
   const laterEndings={
@@ -136,8 +136,8 @@
       {speaker:'Lyra',text:'Dobrze. A jutro przypomnij mi, żebym nie mówiła, że jesteś nie do zniesienia.',note:'Śmieją się pod nosem. Nie potrzebują wyznania, żeby ta cisza była wspólna.'}
     ],
     romance:[
-      {speaker:'Kael',text:'Chodź bliżej. Jeśli tego chcesz, jest miejsce dla nas obojga.',note:'Lyra ujmuje jego dłoń i sama przysuwa się pod płaszcz. Kael otula jej ramiona.'},
-      {speaker:'Lyra',text:'Zostań jeszcze chwilę. Potem znowu będziemy odważni.',note:'Opiera głowę na jego ramieniu. Kael splata jej palce ze swoimi. Ogień powoli przygasa, a świat poza kręgiem ciepła cichnie.'}
+      {speaker:'Kael',text:'Jutro zapytam, zamiast rozkazywać. Dziś też spróbuję: zostaniesz przy mnie? Nie chcę już udawać, że chodzi tylko o zimno.',note:'Lyra ujmuje jego dłoń i sama przysuwa się pod płaszcz. Kael otula jej ramiona.'},
+      {speaker:'Lyra',text:'Zostanę. Ale jutro przypomnę ci tę obietnicę. Teraz mnie pocałuj — nareszcie mamy chwilę, której nie trzeba nikomu oddawać.',note:'Opiera głowę na jego ramieniu. Kael splata jej palce ze swoimi. Ogień powoli przygasa, a świat poza kręgiem ciepła cichnie.'}
     ]
   };
   let campSession=null;
@@ -240,10 +240,10 @@
   });
 
   const baseCampDialogue=campDialogue;
-  campDialogue=function(){const scene=nextScene();if(scene)return showRelationshipScene(scene);return baseCampDialogue()};
+  campDialogue=function(){if(!ForbiddenDeckParty.isLegacy())return window.ForbiddenDeckRoster?.campDialogue();const scene=nextScene();if(scene)return showRelationshipScene(scene);return baseCampDialogue()};
 
   const baseStoryNode=storyNode;
-  storyNode=function(){
+  storyNode=function(){if(!ForbiddenDeckParty.isLegacy())return window.ForbiddenDeckRoster?.roadScene();
     const data=load();
     if(S.trust>=60&&!data.roadSeen){
       showModal('Zasadzka bez rozkazu','Kael dostrzega ruch po lewej stronie traktu. Lyra już naciąga cięciwę — patrzy jednak nie na zagrożenie, lecz na niego. Czeka tylko na jeden sygnał.',()=>grid([
@@ -273,5 +273,5 @@
   renderTopBar=function(){const result=baseRenderTopBarRel();refreshCard();return result};
 
   refreshCard();
-  window.ForbiddenDeckRelationship={load,nextScene,open:openRelationship,render:renderRelationship,romanceEnabled,setRomanceEnabled,clear:()=>{localStorage.removeItem(KEY);refreshCard()}};
+  window.ForbiddenDeckRelationship={load,nextScene,open:openRelationship,render:renderRelationship,romanceEnabled,setRomanceEnabled,clear:()=>{localStorage.removeItem(KEY());refreshCard()}};
 })();

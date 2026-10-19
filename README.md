@@ -10,9 +10,13 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 ## Aktualny stan
 
-Wersja robocza: **V0.9.8 — Fundament wyboru bohaterów**.
+Wersja robocza: **V0.10.0 — Wybierz swój duet**.
 
-Model postaci i drużyny jest oddzielony od nazw w interfejsie. Każdy bohater ma własne statystyki, statusy, zasób i pancerz, a karty należą do postaci lub konkretnego duetu. Starsze zapisy są migrowane do nowego formatu. Dostępni bohaterowie to nadal Kael i Lyra; jest to pierwszy etap przygotowania swobodnego wyboru składu. [Raport V0.9.8](docs/ITERATION_08.md) i [architektura](docs/PARTY_ARCHITECTURE.md).
+Wybierz jednego bohatera (**Kael / Varyn**) i jedną bohaterkę (**Lyra / Selene**). Każdy z czterech duetów ma własną talię współpracy i niezależny postęp relacji. Selene przygotowuje Runy, Varyn buduje Cień, a nowe duety łączą te zasoby z obroną i Marked. Dodano 18 kart bazowych z ulepszeniami, portrety, ilustracje kart oraz 12 rozmów dla nowych par. [Raport V0.10.0](docs/ITERATION_09.md).
+
+Dialogi rozwijają osobiste konflikty wszystkich czterech bohaterów. Opcjonalny romans zawiera flirt, pocałunki i intymność zakończoną wygaszeniem sceny; nie zawiera graficznych opisów seksu ani nagości.
+
+Model postaci i drużyny jest oddzielony od nazw w interfejsie. Każdy bohater ma własne statystyki, statusy, zasób i pancerz, a karty należą do postaci lub konkretnego duetu. Starsze zapisy są migrowane do nowego formatu. W V0.10.0 model obsługuje wszystkie cztery grywalne postacie i duety. [Raport V0.9.8](docs/ITERATION_08.md) i [architektura](docs/PARTY_ARCHITECTURE.md).
 
 Tło całego pola walki odpowiada miejscu wybranemu na mapie: trakt, most, ruiny, las, bagno, mury Cytadeli, kuźnia lub sala tronowa. Miniatury na trasie i podgląd po najechaniu lub wybraniu klawiszem Tab zapowiadają scenerię. Cztery nowe panoramy uzupełniają istniejące ilustracje; zapis, język i układ walki w jednym oknie pozostają zgodne. [Raport V0.9.7](docs/ITERATION_07.md).
 
@@ -34,8 +38,8 @@ Starsze zapisy zachowują postęp. Po przeżyciu dawnej sceny 40 Trust nową pre
 
 Gra zawiera obecnie:
 
-- duet **Kael + Lyra** z osobnymi punktami życia,
-- talie Kaela, Lyry i karty **Duo / Synergy**,
+- czterech bohaterów i cztery duety: **Kael / Varyn + Lyra / Selene**, z osobnymi punktami życia,
+- osobiste talie czterech postaci oraz karty duetów **Duo / Synergy**,
 - system **Trust**, który odblokowuje nowe zagrania współpracy,
 - **Momentum** Kaela i **Marked** Lyry,
 - prowokację, ochronę, blok i skrytobójców,

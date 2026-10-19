@@ -27,7 +27,7 @@
   }
 
   function heroElement(target){
-    return document.getElementById(target==="lyra"?"lyraField":"kaelField");
+    return document.getElementById((target==="lyra"||target===ForbiddenDeckParty.member("partner").id)?"lyraField":"kaelField");
   }
 
   function animateCard(uid){

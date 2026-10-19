@@ -66,7 +66,7 @@ try{
     assert.equal(await page.locator('#modalTitle').textContent(),'Bez rozkazu');
     await page.locator('#campfireNext').click();
     const line=await page.locator('.campfire-line').textContent();
-    assert.equal(line.includes('tamtym pocałunku'),scenario.enabled,'Previous romance is remembered only with the setting enabled');
+    assert.equal(line.includes('nadal myślałam o tym, żeby cię pocałować'),scenario.enabled,'Previous romance is remembered only with the setting enabled');
     await page.locator('#campfireNext').click();
     assert.equal(await page.locator('.moment-art').count(),0,'Trust alone must not display romantic artwork');
     if(scenario.choice==='skipped')await page.locator('#campfireSkip').click();
@@ -119,7 +119,7 @@ try{
   await legacy.evaluate(()=>{ForbiddenDeckRelationship.setRomanceEnabled(true);ForbiddenDeckRelationship.open()});
   await legacy.locator('#replayCampfire60').click();
   await legacy.locator('#campfireNext').click();
-  assert(!(await legacy.locator('.campfire-line').textContent()).includes('tamtym pocałunku'),'A legacy supportive/pragmatic choice does not imply earlier romance');
+  assert(!(await legacy.locator('.campfire-line').textContent()).includes('nadal myślałam o tym, żeby cię pocałować'),'A legacy supportive/pragmatic choice does not imply earlier romance');
   await legacy.locator('#campfireNext').click();await finish(legacy,'romance');
   const preserved=await legacy.evaluate(()=>({trust:S.trust,relation:ForbiddenDeckRelationship.load()}));
   assert.equal(preserved.trust,80);assert.equal(preserved.relation.pendingBoon,'hunt');

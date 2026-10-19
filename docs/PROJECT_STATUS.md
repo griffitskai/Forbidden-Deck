@@ -1,8 +1,8 @@
-# Project Status — V0.9.8
+# Project Status — V0.10.0
 
-## Fundament drużyny
+## Grywalny wybór postaci
 
-Definicje postaci i duetów są oddzielone od bieżącego stanu członków drużyny. Karty mają ID właściciela/duetu, a talia startowa i nagrody korzystają z tych danych. Nowy zapis schema 2 automatycznie odczytuje schema 1, bez utraty walki. Dostępna zawartość nadal dotyczy Kaela i Lyry; wybór nowych postaci, dynamiczny HUD i rozdzielenie pamięci relacji są kolejnymi etapami. [Szczegóły i granice](PARTY_ARCHITECTURE.md).
+Cztery postacie i cztery duety, osobne zasoby i osobiste wyposażenie. Selene: Runy i jedno leczenie w walce. Varyn: Cień, zasadzka i trucizna. Nowe duety: 18 kart bazowych z ulepszeniami, 12 rozmów, trzy sceny i osobne zapisy Trust, wyborów oraz albumów. Stary postęp Kaela i Lyry pozostaje przypisany wyłącznie do nich. Wszystkie duety ukończyły deterministyczną trasę Aktu I na Standardzie. [Architektura i granice testów](PARTY_ARCHITECTURE.md).
 
 ## Scenerie miejsc
 

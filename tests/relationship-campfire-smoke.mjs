@@ -46,7 +46,7 @@ async function finishChoice(page, choice) {
   await page.locator('#campfireNext').click();
   if(choice === 'romance') {
     const text = await page.locator('.campfire-line').textContent();
-    assert(text.includes('Chcę.') && text.includes('Kael odpowiada'), 'The ending must express both characters choosing closeness');
+    assert(text.includes('chcę tego pocałunku') && text.includes('Kael odpowiada'), 'The ending must express both characters choosing closeness');
   }
   await page.locator('#campfireNext').click();
   await page.waitForSelector('#mapScreen.active');
@@ -76,7 +76,7 @@ try {
         assert.equal(await page.locator('#romanceToggle').isChecked(), true);
         await page.locator('#menuContinue').click();
         await page.waitForSelector('#campfireScene');
-        assert((await page.locator('.campfire-line').textContent()).includes('Jeśli nadal tego chcesz'));
+        assert((await page.locator('.campfire-line').textContent()).includes('Chciałbym cię pocałować'));
         await page.locator('#campfireNext').click();
         await page.locator('#campfireNext').click();
       } else await finishChoice(page, scenario.choice);

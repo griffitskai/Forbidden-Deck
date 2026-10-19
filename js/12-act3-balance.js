@@ -124,9 +124,9 @@
       const el=document.querySelectorAll(".enemy")[i];
       if(!el||e.hp<=0)return;
       let role="";
-      if(e.pattern==="ashassassin")role="🎯 Poluje na Lyrę • ciężki cios omija Ochronę";
+      if(e.pattern==="ashassassin")role="🎯 Poluje na partnerkę • ciężki cios omija Ochronę";
       if(e.pattern==="emberpriest")role="🕯️ Wsparcie • leczy i osłania sojuszników";
-      if(e.pattern==="ashqueen"&&e.hp/e.maxHp<=.5)role="🔥 FAZA II • magia • priorytet: Lyra";
+      if(e.pattern==="ashqueen"&&e.hp/e.maxHp<=.5)role="🔥 FAZA II • magia • priorytet: partnerka";
       if(role){
         const tag=document.createElement("div");
         tag.className="act3-role";

@@ -9,7 +9,7 @@ function showModal(title,text,build,closable=false){$("#modalTitle").textContent
 function hideModal(){$("#overlay").classList.remove("show");$("#modalClose").classList.remove("show")}
 function choiceBtn(t,d,fn){const b=document.createElement("button");b.className="choice";b.innerHTML="<strong>"+t+"</strong><span>"+d+"</span>";b.onclick=fn;return b}
 function grid(items){const g=document.createElement("div");g.className="choices";items.forEach(x=>g.appendChild(choiceBtn(x[0],x[1],x[2])));return g}
-function newRun(diff=S.difficulty){S.difficulty=diff;const cfg=difficultyCfg();ForbiddenDeckParty.reset();S.gold=cfg.startGold;S.deck=ForbiddenDeckParty.startingDeck();S.act=0;S.stage=0;S.wins=0;S.level=1;S.xp=0;S.pendingLevel=false;S.startSynergy=0;S.firstTurnEnergy=0;S.battleOver=false;S.kaelBlock=0;S.lyraBlock=0;S.taunt=0;S.protectLyra=0;S.equipment={armor:"ironArmor",amulet:"arcaneCharm"};S.inventory=["arcaneCharm"];S.potions=[...cfg.startPotions];renderMap()}
+function newRun(diff=S.difficulty){S.difficulty=diff;const cfg=difficultyCfg();ForbiddenDeckParty.reset();S.gold=cfg.startGold;S.deck=ForbiddenDeckParty.startingDeck(S.party.members.map(h=>h.id));S.act=0;S.stage=0;S.wins=0;S.level=1;S.xp=0;S.pendingLevel=false;S.startSynergy=0;S.firstTurnEnergy=0;S.battleOver=false;S.kaelBlock=0;S.lyraBlock=0;S.taunt=0;S.protectLyra=0;S.inventory=["arcaneCharm"];S.potions=[...cfg.startPotions];renderMap()}
 $("#endTurnBtn").onclick=endTurn;
 function openLog(){$("#combatDrawer").classList.add("open")}function closeLog(){$("#combatDrawer").classList.remove("open")}
 $("#logToggle").onclick=openLog;$("#logToggleInline").onclick=openLog;$("#logClose").onclick=closeLog;

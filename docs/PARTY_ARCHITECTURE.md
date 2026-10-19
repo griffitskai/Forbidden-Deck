@@ -1,71 +1,75 @@
-# Model postaci i drużyny — etap 1, V0.9.8
+# Postacie i drużyny — V0.10.0
 
-## Źródło prawdy
+## Definicje i stan
 
-`js/00-party.js` ładuje się przed danymi gry. `ForbiddenDeckParty.characters` zawiera niezmienne definicje postaci: ID, imię, płeć, pełnoletniość, klasę, bazowe HP, portret, zasób, początkowy pancerz i osobistą talię. Osobny katalog `duos` przechowuje skład, wspólne karty startowe i identyfikator relacji. Jedyny wydany zestaw to nadal Kael + Lyra.
+Moduł js/00-party.js zawiera niezmienne definicje czterech dorosłych, fikcyjnych postaci oraz czterech duetów. Postać określa bazowe HP, klasę, portret, zasoby, pancerz i osobistą talię. Duet określa wspólne karty i trwały identyfikator relacji.
 
-Bieżące dane bohaterów są w jednym miejscu:
+| Postać | Wiek | Klasa | Bazowe HP | Zasób |
+| --- | --- | --- | --- | --- |
+| Kael | 32 | Wojownik | 48 | Momentum 0–5 |
+| Lyra | 29 | Łuczniczka | 38 | Marked na przeciwnikach |
+| Varyn | 34 | Skrytobójca | 44 | Cień 0–3 |
+| Selene | 31 | Magini run | 38 | Runy 0–3, jedno leczenie na walkę |
 
-```js
-S.party = {
-  schema: 1,
-  relationshipId: 'kael+lyra',
-  members: [
-    {id: 'kael', hp: 48, maxHp: 48, block: 0,
-     status: {bleed: 0, poison: 0, burn: 0, weak: 0},
-     resources: {momentum: 0}, equipment: {armor: 'ironArmor'}},
-    {id: 'lyra', hp: 38, maxHp: 38, block: 0,
-     status: {bleed: 0, poison: 0, burn: 0, weak: 0},
-     resources: {}, equipment: {armor: null}}
-  ],
-  equipment: {amulet: 'arcaneCharm'}
-};
-```
+Kanoniczny stan członka drużyny to S.party.members: id, hp, maxHp, block, status, resources, equipment. Nie kopiujemy statystyk do widoków. Pancerz należy do konkretnej postaci, amulet do drużyny. Przeniesienie jednego posiadanego pancerza usuwa go z poprzedniego nosiciela.
 
-Pancerz jest przypisany do postaci, amulet nadal chroni całą drużynę. Energia, Synergy, Trust, historia trasy i talia runu pozostają wspólne. Nie zmieniono ekonomii ani reguł istniejącego wyposażenia: Lyra rozpoczyna bez pancerza, a ekran ekwipunku nadal obsługuje dotychczasowe sloty.
+Skład wymaga dwóch różnych, znanych, pełnoletnich postaci: mężczyzny i kobiety. Model ustawia mężczyznę w pierwszym slocie, kobietę w drugim. To porządek interfejsu, nie premia ani deklaracja romansu. pairId sortuje ID, więc kolejność kliknięć nie tworzy drugiej kopii relacji.
 
-## Reguły składu i talii
+## Cele i zdolności
 
-- Dwie różne, znane, pełnoletnie postacie: jedna męska, jedna żeńska.
-- Kanoniczna kolejność modelu to mężczyzna, kobieta, niezależnie od kolejności wyboru. Nie jest to bonus statystyk ani automatyczna deklaracja romansu.
-- `pairId(ids)` sortuje stabilne ID; `kael+lyra` jest tym samym duetem niezależnie od kolejności kliknięć. Ten identyfikator jest podstawą przyszłego rozdzielenia historii relacji.
-- Talia startowa składa się z dwóch osobistych talii oraz kart danego duetu. Obecny skład daje dokładnie te same 19 kart w tej samej kolejności.
-- Każda z 76 definicji kart ma `ownerId` albo `duoId`. `actor` pozostaje etykietą prezentacji; nie służy do własności, Osłabienia i naprzemiennego budowania Synergy.
-- `playable()` i obie ścieżki nagród (zwykła i Akt III) sprawdzają zgodność karty ze składem. Niezgodne karty nie stają się grywalne ani nie trafiają do puli nagród.
-- Talia dla nieopisanego duetu kończy się jawnym błędem, zamiast otrzymać karty Kaela i Lyry.
+S.party.combat przechowuje:
+- acted: ID postaci, które zagrały w tej turze;
+- taunt: jawne ID źródła i liczbę ładunków;
+- guard: jawne ID osłaniającego, ID chronionej postaci i ładunki.
 
-## Zintegrowane operacje
+protect(source, target, charges) nie zależy od imion Kaela i Lyry. Podgląd intencji i faktyczne przechwycenie czytają te same cele. „Tarcza i runa” chroni Selene przez Kaela. Zmiana tury czyści listę zagrań; początek walki resetuje statusy, zasoby i zdolności bojowe.
 
-`member(id)`, `heal`, `healAll`, `addBlock`, `addBlockAll`, `defeated`, `resistance`, `damage` i `damagePreview` korzystają z danych członków drużyny. Leczenie miksturą buduje wybór z członków drużyny. Regeneracja po walce, obozy i przejścia aktów korzystają ze wspólnego API. Statusy są przypisane do postaci i rozpatrywane dla członków drużyny. Obrażenia zachowują dotychczasową kolejność: odporność zaokrąglana osobno dla każdego trafienia → Block → HP.
+Operacje heal, healAll, addBlock, addBlockAll, resistance, damage i defeated korzystają z identyfikatorów członków drużyny. Odporność jest zaokrąglana osobno dla każdego trafienia, następnie działa Block, potem HP. Osłabienie dotyczy właściciela karty lub obu członków konkretnego duetu.
 
-`lastActor` i `activeActor` przechowują ID postaci albo `duo:<pairId>`. Stare etykiety `Kael`, `Lyra`, `Duo` są zamieniane podczas migracji. `activeActor` jest chwilowym kontekstem obliczeń; zapisywany jest jako `null`, aby nie odtworzyć przerwanego efektu karty.
+## Karty
 
-## Migracja i zgodność
+Każda karta ma ownerId albo duoId; actor to wyłącznie etykieta. Talia startowa składa się z 8 kart mężczyzny, 7 kart kobiety i 4 kart współpracy. Własność jest sprawdzana przy zagrywaniu i w nagrodach, również w Akcie III.
 
-Klucz `forbidden_deck_run_v1` pozostaje ten sam, ale payload otrzymuje `schema: 2`. Odczyt akceptuje stare `schema: 1` i nowy format. Płaskie HP, Block, statusy, Momentum i wyposażenie starego zapisu trafiają do `party`; pozostała talia, trasa i stan walki są zachowane. Zapis po wczytaniu jest już w formacie 2.
+Dodano 18 kart bazowych i 18 ulepszonych: 5 Varyna, 4 Selene i po 3 dla każdego nowego duetu. Łącznie jest 56 kart bazowych / 112 wariantów. Każda baza ma własną ilustrację działania; ulepszenie zachowuje ilustrację. Opis ulepszenia podaje aktualne liczby efektów.
 
-Stare nazwy `S.kaelHp`, `S.lyraBlock`, `S.heroStatus`, `S.momentum` i `S.equipment` są nieenumerowalnymi accessorami, a nie kopią wartości. Sceny, animacje i obecny HUD czytają te same dane co nowy model. Zapis JSON zawiera wyłącznie stan kanoniczny. Reset runu podmienia drużynę, a accessory nadal wskazują nową drużynę.
+Selene leczy tylko raz podczas walki. Splot odnowy nadal daje Block po zużyciu leczenia; przy pełnym HP nie wydaje Run ani ładunku leczenia. Zaćmienie zużywa wyłącznie sparowane zasoby: przy 3 Cienia i 1 Runie pozostają 2 Cienia i 0 Run. Zasadzka i Detonacja zużywają cały właściwy zasób.
 
-Metadane odkrytych kart i sprzętu zachowują niezależne `schema: 1`. Nie zmieniono zapisów historii, Trust, romansu ani albumu. Nieznany numer formatu lub nieznana postać nie są po cichu zamieniane na Kaela i Lyrę. Nieudany odczyt nie usuwa takiego zapisu.
+## Widoki i wejście do runu
 
-## Granica tej iteracji i dalsza rozbudowa
+Moduł js/28-roster-game.js obsługuje wybór pojedynczych postaci. Podgląd zmienia tylko lokalny wybór; bieżący run i zapis zostają zastąpione dopiero po naciśnięciu poziomu trudności. Można zamknąć wybór bez utraty podejścia.
 
-To fundament domeny i migracji, nie gotowy ekran wyboru czterech postaci. Testowe definicje magini i skrytobójcy istnieją wyłącznie w testach. Nie są publikowaną zawartością i nie mają zastępczych kart, portretów ani scen.
+Mapa, portrety, HP, zasoby, intencje, mikstury, awanse, wyposażenie, podsumowanie i historia odczytują wybranych bohaterów. Stare identyfikatory DOM, np. kaelField, oznaczają stabilny slot widoku dla animacji; data-hero przechowuje prawdziwe ID. Accessory dawnych nazw statystyk są adapterami slotów, nie drugim stanem ani tożsamością postaci. Nowe mechaniki używają ID.
 
-Przed udostępnieniem innych składów trzeba jeszcze:
+## Zapisy i migracja
 
-1. Dodać pełne definicje, karty, zasoby i ilustracje nowych postaci oraz talie każdego wspieranego duetu.
-2. Zastąpić adaptery HUD i animacji widokami generowanymi z postaci. Przenieść specyficzne haki Kaela (`lastKaelThisTurn`, Prowokacja, Ochrona) do opisanych zdolności i celów; obecne karty nadal świadomie opisują jego i Lyrę.
-3. Rozdzielić globalny postęp Trust, relacji i albumu według `relationshipId`, migrując obecny postęp wyłącznie do Kael–Lyra. Samo dodanie ID nie wykonuje tej migracji.
-4. Przypisać dialogi, reakcje i sceny do konkretnych bohaterów i duetów, zamiast podmieniać imiona w obecnych opowieściach.
-5. Dopiero wtedy udostępnić wybór postaci przed nowym runem i przejść wszystkimi czterema kombinacjami pierwszy akt.
+Run zachowuje schema 2 i klucz forbidden_deck_run_v1. Schema 1 migruje do oryginalnego duetu Kael–Lyra. Dotychczasowe zapisy schema 2 bez combat odzyskują stare flagi Prowokacji/Ochrony i zagrania Kaela. Nowy zapis zawiera stan kanoniczny. activeActor jest zapisywany jako null — to chwilowy kontekst obliczeń.
 
-## Testy
+Klucze starego postępu Kaela i Lyry pozostają niezmienione:
+- Trust: fd08_trust;
+- relacja: forbidden_deck_relationship_v1;
+- album: forbidden_deck_companions_v1.
 
-`tests/party-model.mjs`: cztery kombinacje na definicjach testowych, zasada składu, odwrócona kolejność wyboru, własność kart, osobiste statystyki, leczenie, obrażenia, sprzęt, serializacja i migracja.
+Inne duety używają:
+- forbidden_deck_trust_<pairId>;
+- forbidden_deck_relationship_v1:<pairId>;
+- forbidden_deck_companions_v1:<pairId>.
 
-`tests/party-foundation-smoke.mjs`: prawdziwy zapis schema 1 wczytany w przeglądarce, zachowanie stanu, format 2 po migracji, ponowne wczytanie, reset, własność nagród, PL/EN i brak usuwania przyszłych lub nieobsługiwanych zapisów.
+Ich początkowy postęp jest pusty; nie dziedziczą starych scen, Trust ani wyborów. Odkrycia kart/sprzętu i historia wypraw pozostają wspólne. Historia zapisuje ID i nazwy rzeczywistych członków, zachowując odczyt starych wpisów.
 
-`tests/fixtures/v097-party-run.json` pochodzi z uruchomienia oryginalnego kodu V0.9.7 (`a256514c8a60915a0b22720d088a8f1dae8e4d8d`). Przed zapisem ustawiono jawny stan środkowej walki (zranienia, ulepszone HP, statusy, Momentum, sprzęt i rękę), a payload wygenerował stary `ForbiddenDeckSave.save`. Nie zawiera danych osobowych ani sekretów.
+## Rozmowy i zgoda
 
-Istniejące testy regresyjne nadal sprawdzają walkę, bossów Standard, przejścia aktów, relacje, ilustracje, układ bez przewijania, lokalizację i działanie offline. Testy przyszłych kombinacji są dowodem działania modelu danych, nie balansu nowych bohaterów ani kompletności ich kampanii.
+Trzy nowe duety mają po cztery własne rozmowy na progach 20/40/60/80 Trust i własne reakcje w walce. Nie są podmianą imion w opowieściach Kaela i Lyry. Album pokazuje też osobowości wybranych bohaterów.
+
+Pierwszy wybór jest pamiętany osobno dla pary i sceny. Przyjaźń, opcjonalna bliskość i pominięcie mają identyczną korzyść: +6 Trust i jednorazowo +6 Block dla obojga w następnej walce. Album nie daje korzyści bojowych ani nie nadpisuje decyzji. Rozmowę można zamknąć i wznowić na tej samej kwestii, również po odświeżeniu i zmianie PL/EN. Jeśli wyprawa ruszyła dalej podczas przerwy, dokończenie nie przeskakuje następnego etapu.
+
+Romans wymaga włączenia ustawienia oraz osobnego wyboru, od 40 Trust. Zaufanie ani wybór w innej relacji nie stanowią zgody. Wyłączenie romansu przed zakończeniem cofa wybór do neutralnych opcji. Treść obejmuje flirt, troskę i dobrowolną bliskość, z wygaszeniem sceny; bez graficznych opisów seksu. Wyłączenie ruchu i systemowe ograniczenie animacji są respektowane.
+
+## Weryfikacja i granice
+
+roster-smoke.mjs: cztery składy w trzech aktach, zasoby, leczenie, przechwycenie, wyposażenie, zapis/odczyt, PL/EN oraz 1024×560, 1366×768 i 390×844. Portret nie zasłania HP; podgląd wyboru nie zmienia zapisanego runu.
+
+roster-stories-smoke.mjs: wszystkie 12 rozmów, równoważne ścieżki, brak korzyści za odtwarzanie, zmiana języka, wznawianie i izolacja postępu.
+
+roster-act1-smoke.mjs: rzeczywista ustalona trasa Aktu I na Standardzie każdym duetem. Kontroler używa kart, mikstur, odpoczynku i zdobywanych awansów; nie podnosi HP ani nie osłabia wrogów. Seed 27 jest przypadkiem regresji, nie estymacją win rate ani gwarancją zwycięstwa dla dowolnej talii i trasy.
+
+Starsze testy nadal weryfikują kampanię Kaela i Lyry, bossów, migracje i układ. Samodzielny HTML osadza wszystkie nowe ilustracje, karty i rozmowy; nowy duet działa również bez sieci. Nowi bohaterowie mogą kontynuować w Aktach II/III, ale automatyczny pełny przebieg wszystkich kombinacji dotyczy Aktu I. Dalszy balans i ocena naturalności dialogów wymagają rozgrywek ludzi.

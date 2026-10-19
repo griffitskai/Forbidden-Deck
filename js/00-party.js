@@ -5,10 +5,17 @@
  const freeze=value=>{if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value)}return value};
  const characters=freeze({
   kael:{id:'kael',name:'Kael',gender:'male',age:32,role:'warrior',baseHp:48,portrait:'assets/portraits/kael.webp',resources:{momentum:0},equipment:{armor:'ironArmor'},starter:['strike','strike','strike','guard','guard','challenge','heavy','finish']},
-  lyra:{id:'lyra',name:'Lyra',gender:'female',age:29,role:'ranger',baseHp:38,portrait:'assets/portraits/lyra.webp',resources:{},equipment:{armor:null},starter:['shot','shot','shot','expose','expose','focus','evade']}
+  lyra:{id:'lyra',name:'Lyra',gender:'female',age:29,role:'ranger',baseHp:38,portrait:'assets/portraits/lyra.webp',resources:{},equipment:{armor:null},starter:['shot','shot','shot','expose','expose','focus','evade']},
+  selene:{id:'selene',name:'Selene',gender:'female',age:31,role:'mage',baseHp:38,portrait:'assets/portraits/selene.webp',resources:{runes:0,mends:1},equipment:{armor:null},starter:['spark','spark','spark','runeward','runeward','detonate','mend']},
+  varyn:{id:'varyn',name:'Varyn',gender:'male',age:34,role:'assassin',baseHp:44,portrait:'assets/portraits/varyn.webp',resources:{shadow:0},equipment:{armor:'paddedArmor'},starter:['knife','knife','knife','veil','veil','ambush','venomknife','smoke']}
  });
  const defaults=freeze(['kael','lyra']);
- const duos=freeze({'kael+lyra':{id:'kael+lyra',members:defaults,starter:['cover','intercept','opening','rally'],relationshipId:'kael+lyra'}});
+ const duos=freeze({
+  'kael+selene':{id:'kael+selene',members:['kael','selene'],starter:['runiccover','runiccover','aegisburst','aegisrally'],relationshipId:'kael+selene'},
+  'lyra+varyn':{id:'lyra+varyn',members:['varyn','lyra'],starter:['shadowfeint','shadowfeint','crosshunt','silenttrail'],relationshipId:'lyra+varyn'},
+  'selene+varyn':{id:'selene+varyn',members:['varyn','selene'],starter:['veilrune','veilrune','eclipse','nightward'],relationshipId:'selene+varyn'},
+  'kael+lyra':{id:'kael+lyra',members:defaults,starter:['cover','intercept','opening','rally'],relationshipId:'kael+lyra'}});
+ const blankCombat=()=>({acted:[],taunt:{source:null,charges:0},guard:{source:null,target:null,charges:0}});
  const blankStatus=()=>({bleed:0,poison:0,burn:0,weak:0});
  const copy=value=>JSON.parse(JSON.stringify(value));
  const count=(value,fallback=0,max=9999)=>Number.isFinite(value)?Math.max(0,Math.min(max,Math.floor(value))):fallback;
@@ -22,7 +29,7 @@
  function pairId(ids){return [...ids].sort().join('+')}
  function create(ids=defaults,catalog=characters){
   const definitions=validate(ids,catalog).sort((a,b)=>a.gender==='male'?-1:1);
-  return {schema:1,relationshipId:pairId(ids),members:definitions.map(d=>({id:d.id,hp:d.baseHp,maxHp:d.baseHp,block:0,status:blankStatus(),resources:copy(d.resources||{}),equipment:copy(d.equipment||{armor:null})})),equipment:{amulet:'arcaneCharm'}};
+  return {schema:1,relationshipId:pairId(ids),combat:blankCombat(),members:definitions.map(d=>({id:d.id,hp:d.baseHp,maxHp:d.baseHp,block:0,status:blankStatus(),resources:copy(d.resources||{}),equipment:copy(d.equipment||{armor:null})})),equipment:{amulet:'arcaneCharm'}};
  }
  function startingDeck(ids=defaults,catalog=characters,pairs=duos){
   const definitions=validate(ids,catalog).sort((a,b)=>a.gender==='male'?-1:1),duo=pairs[pairId(ids)];
@@ -41,9 +48,14 @@
   party.members.forEach(h=>{
    const saved=raw.members.find(m=>m.id===h.id);h.maxHp=Math.max(1,count(saved.maxHp,h.maxHp));h.hp=count(saved.hp,h.maxHp,h.maxHp);h.block=count(saved.block);
    for(const type of Object.keys(h.status))h.status[type]=count(saved.status?.[type],0,12);
-   for(const key of Object.keys(h.resources))h.resources[key]=count(saved.resources?.[key],0,key==='momentum'?5:9999);
+   for(const key of Object.keys(h.resources))h.resources[key]=count(saved.resources?.[key],0,key==='momentum'?5:['shadow','runes'].includes(key)?3:key==='mends'?1:9999);
    h.equipment.armor=typeof saved.equipment?.armor==='string'?saved.equipment.armor:null;
   });
+  const selected=party.members.map(h=>h.id),combat=raw.combat;
+  if(combat){party.combat.acted=Array.isArray(combat.acted)?combat.acted.filter(id=>selected.includes(id)):[];
+   if(selected.includes(combat.taunt?.source))party.combat.taunt={source:combat.taunt.source,charges:count(combat.taunt.charges)};
+   if(selected.includes(combat.guard?.source)&&selected.includes(combat.guard?.target)&&combat.guard.source!==combat.guard.target)party.combat.guard={source:combat.guard.source,target:combat.guard.target,charges:count(combat.guard.charges)};
+  }
   party.equipment.amulet=typeof raw.equipment?.amulet==='string'?raw.equipment.amulet:null;
   return party;
  }
@@ -63,18 +75,26 @@
   const alias=(key,get,set)=>Object.defineProperty(state,key,{configurable:true,enumerable:false,get,set});
   for(const id of defaults)for(const field of ['hp','maxHp','block']){
    const key=id+(field==='maxHp'?'MaxHp':field==='hp'?'Hp':'Block');
-   alias(key,()=>member(id,state)[field],value=>{member(id,state)[field]=value});
+   const slot=id==='kael'?'lead':'partner';
+   alias(key,()=>member(slot,state)[field],value=>{member(slot,state)[field]=value});
   }
-  alias('momentum',()=>member('kael',state).resources.momentum,value=>{member('kael',state).resources.momentum=value});
+  alias('momentum',()=>member('lead',state).resources.momentum??member('lead',state).resources.shadow??0,value=>{const h=member('lead',state);h.resources[h.id==='kael'?'momentum':'shadow']=value});
+  if(!saved.party?.combat){party.combat.taunt={source:party.members[0].id,charges:count(saved.taunt)};party.combat.guard={source:party.members[0].id,target:party.members[1].id,charges:count(saved.protectLyra)};if(saved.lastKaelThisTurn)party.combat.acted.push('kael')}
+  alias('taunt',()=>state.party.combat.taunt.charges,value=>{state.party.combat.taunt={source:member('lead',state).id,charges:value}});
+  alias('protectLyra',()=>state.party.combat.guard.charges,value=>{state.party.combat.guard={source:member('lead',state).id,target:member('partner',state).id,charges:value}});
+  alias('lastKaelThisTurn',()=>state.party.combat.acted.includes('kael'),value=>{state.party.combat.acted=state.party.combat.acted.filter(id=>id!=='kael');if(value)state.party.combat.acted.push('kael')});
   const statuses={},equipment={};
-  for(const id of defaults)Object.defineProperty(statuses,id,{enumerable:true,get:()=>member(id,state).status,set:value=>{member(id,state).status={...blankStatus(),...value}}});
-  alias('heroStatus',()=>statuses,value=>{for(const id of defaults)member(id,state).status={...blankStatus(),...value?.[id]}});
+  for(const [index,legacy] of defaults.entries()){
+   const slot=index===0?'lead':'partner';
+   for(const id of new Set([legacy,party.members[index].id]))Object.defineProperty(statuses,id,{enumerable:true,get:()=>member(slot,state).status,set:value=>{member(slot,state).status={...blankStatus(),...value}}});
+  }
+  alias('heroStatus',()=>statuses,value=>{state.party.members.forEach((h,index)=>{h.status={...blankStatus(),...(value?.[h.id]||value?.[defaults[index]])}})});
   Object.defineProperties(equipment,{armor:{enumerable:true,get:()=>member('lead',state).equipment.armor,set:value=>{member('lead',state).equipment.armor=value}},amulet:{enumerable:true,get:()=>state.party.equipment.amulet,set:value=>{state.party.equipment.amulet=value}}});
   alias('equipment',()=>equipment,value=>{member('lead',state).equipment.armor=value?.armor||null;state.party.equipment.amulet=value?.amulet||null});
   return state;
  }
- function reset(state=S){state.party=create();return state.party}
- function resetCombat(state=S,catalog=characters){for(const h of state.party.members){h.block=0;h.status=blankStatus();h.resources=copy(catalog[h.id].resources||{})}state.activeActor=null}
+ function reset(state=S){state.party=create(state.party.members.map(h=>h.id));return state.party}
+ function resetCombat(state=S,catalog=characters){state.party.combat=blankCombat();for(const h of state.party.members){h.block=0;h.status=blankStatus();h.resources=copy(catalog[h.id].resources||{})}state.activeActor=null}
  function heal(id,amount,state=S){const h=member(id,state),before=h.hp;h.hp=Math.min(h.maxHp,h.hp+count(amount));return h.hp-before}
  function healAll(amount,state=S){return state.party.members.map(h=>heal(h.id,amount,state))}
  function addBlock(id,amount,state=S){const h=member(id,state);h.block+=count(amount);return h.block}
@@ -102,5 +122,10 @@
   if(actor?.startsWith('duo:'))return Math.max(...state.party.members.map(h=>h.status.weak||0));
   return state.party.members.find(h=>h.id===actor)?.status.weak||0;
  }
- window.ForbiddenDeckParty=Object.freeze({characters,duos,defaults,validate,pairId,create,startingDeck,normalize,hydrate,reset,resetCombat,member,heal,healAll,addBlock,addBlockAll,defeated,resistance,damagePreview,damage,ownsCard,availableRewards,actorId,actorWeakness});
+ const isLegacy=(state=S)=>state.party.relationshipId==='kael+lyra';
+ const trustKey=(state=S)=>isLegacy(state)?'fd08_trust':'forbidden_deck_trust_'+state.party.relationshipId;
+ const pairKey=(legacy,state=S)=>isLegacy(state)?legacy:legacy+':'+state.party.relationshipId;
+ function protect(source,target,charges=1,state=S){member(source,state);member(target,state);if(source===target)throw new Error('Guard must protect a different hero');state.party.combat.guard={source,target,charges}}
+ function recordPlayed(id,state=S){if(id&&!state.party.combat.acted.includes(id))state.party.combat.acted.push(id)}
+ window.ForbiddenDeckParty=Object.freeze({protect,recordPlayed,isLegacy,trustKey,pairKey,characters,duos,defaults,validate,pairId,create,startingDeck,normalize,hydrate,reset,resetCombat,member,heal,healAll,addBlock,addBlockAll,defeated,resistance,damagePreview,damage,ownsCard,availableRewards,actorId,actorWeakness});
 })();

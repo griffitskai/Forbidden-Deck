@@ -11,10 +11,10 @@
   }
   function intendedTarget(e,it,protect=S.protectLyra){
     let target=targetFor(e,it),intercepted=false;
-    if(target==='lyra'&&protect>0&&!it.ignoreProtect){target='kael';intercepted=true}
+    if(target===S.party.combat.guard.target&&protect>0&&!it.ignoreProtect){target=S.party.combat.guard.source;intercepted=true}
     return{target,intercepted};
   }
-  function targetName(target){return (target===ForbiddenDeckParty.member('lead').id?'⚔️ ':'🏹 ')+ForbiddenDeckParty.characters[target].name}
+  function targetName(target){return ({kael:'⚔️ ',lyra:'🏹 ',selene:'✦ ',varyn:'🗡️ '}[target]||'')+ForbiddenDeckParty.characters[target].name}
 
   function previewIntent(e){
     const it=intentFor(e);
@@ -32,10 +32,10 @@
     for(const e of liveEnemies()){
       const it=intentFor(e);if(it.type!=='attack')continue;
       let target=targetFor(e,it);
-      if(target==='lyra'&&protect>0&&!it.ignoreProtect){target='kael';protect--}
+      if(target===S.party.combat.guard.target&&protect>0&&!it.ignoreProtect){target=S.party.combat.guard.source;protect--}
       const reduced=afterResistance(it.v,it.dtype||'physical',target);
       let total=reduced.perHit*(it.hits||1);
-      if(target==='kael'){
+      if(target===ForbiddenDeckParty.member('lead').id){
         const used=Math.min(kBlock,total);kBlock-=used;total-=used;kHp+=total;
       }else{
         const used=Math.min(lBlock,total);lBlock-=used;total-=used;lHp+=total;

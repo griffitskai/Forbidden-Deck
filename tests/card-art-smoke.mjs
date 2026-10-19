@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';import {chromium} from 'playwright';
 const b=await chromium.launch({headless:true});const p=await b.newPage({viewport:{width:1366,height:768}});const errors=[];p.on('pageerror',e=>errors.push(e.message));
 await p.goto('http://127.0.0.1:8000/');await p.waitForFunction(()=>window.ForbiddenDeckCardArt&&!!cards.purify);
 await p.evaluate(()=>{ForbiddenDeckMenu.close();ForbiddenTutorial.setEnabled(false);newRun('standard');S.act=1;S.currentNode={type:'battle',label:'Gęstwina'};startBattle([enemy('Bandita','⚔️',70,'bandit',6),enemy('Łuczniczka','🏹',50,'archer',6),enemy('Kultystka','🕯️',60,'cult',6,'magic')]);S.trust=80;S.synergy=60;S.momentum=3;renderBattle()});
-const ids=await p.evaluate(()=>Object.keys(cards));assert.equal(ids.length,76);
+const ids=await p.evaluate(()=>Object.keys(cards));assert.equal(ids.length,112);
 for(let offset=0;offset<ids.length;offset+=5){
  const chunk=ids.slice(offset,offset+5);await p.evaluate(chunk=>{S.hand=chunk.map((id,i)=>({id,uid:'art-'+i}));renderHand()},chunk);
  assert.deepEqual(await p.locator('#hand .card').evaluateAll(els=>els.map(e=>e.dataset.cardId)),chunk);
@@ -32,4 +32,4 @@ await p.evaluate(()=>{hideModal();ForbiddenDeckSave.save('map');ForbiddenDeckMen
 const missing=await b.newPage();missing.on('pageerror',e=>errors.push(e.message));await missing.route('**/assets/cards/**',r=>r.abort());await missing.goto('http://127.0.0.1:8000/');await missing.waitForFunction(()=>window.ForbiddenDeckCardArt&&!!cards.purify);
 await missing.evaluate(()=>{ForbiddenDeckMenu.close();ForbiddenTutorial.setEnabled(false);newRun();S.currentNode={type:'battle',label:'Patrol'};startBattle([enemy('Bandita','⚔️',80,'bandit',6)]);S.hand=[{id:'strike',uid:'fallback'}];renderBattle()});
 await missing.waitForFunction(()=>!document.querySelector('#hand .card-art'));assert.match(await missing.locator('#hand .card').innerText(),/Strike/);await missing.locator('#hand .card').click();assert.equal(await missing.evaluate(()=>S.energy),2);
-assert.deepEqual(errors,[]);await b.close();console.log('Card art OK: 76 variants, PL/EN, desktop/mobile, fixed illustrated preview, deck, real upgrade/reward callbacks, Codex and missing-image fallback.');
+assert.deepEqual(errors,[]);await b.close();console.log('Card art OK: 112 variants, PL/EN, desktop/mobile, fixed illustrated preview, deck, real upgrade/reward callbacks, Codex and missing-image fallback.');

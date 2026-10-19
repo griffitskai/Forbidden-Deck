@@ -1,7 +1,7 @@
 /* Optional character stories; separate save, no changes to combat/Trust rewards. */
 (()=>{
  'use strict';
- const KEY='forbidden_deck_companions_v1',episodes=window.ForbiddenDeckStories;
+ const KEY=()=>ForbiddenDeckParty.pairKey('forbidden_deck_companions_v1'),episodes=window.ForbiddenDeckStories;
  const asset=path=>globalThis.ForbiddenDeckPreviewAssets?.[path]||path;
  const atlas='assets/portraits/expressions.webp';
  const portraits={Kael:'assets/portraits/kael.webp',Lyra:'assets/portraits/lyra.webp'};
@@ -9,14 +9,14 @@
  function defaults(){return{schema:1,unlocked:['bread'],seen:[],choices:{},active:null,motion:true,banter:true}}
  function load(){
   try{
-   const raw=JSON.parse(localStorage.getItem(KEY)||'null');if(raw?.schema!==1)return defaults();
+   const raw=JSON.parse(localStorage.getItem(KEY())||'null');if(raw?.schema!==1)return defaults();
    const unlocked=[...new Set(['bread',...(Array.isArray(raw.unlocked)?raw.unlocked:[]).filter(id=>ids.includes(id))])];
    const choices={};for(const e of episodes)if(e.options.some(o=>o.id===raw.choices?.[e.id]))choices[e.id]=raw.choices[e.id];
    return{schema:1,unlocked,seen:(Array.isArray(raw.seen)?raw.seen:[]).filter(id=>unlocked.includes(id)),choices,active:raw.active&&unlocked.includes(raw.active.id)?raw.active:null,motion:raw.motion!==false,banter:raw.banter!==false};
   }catch{return defaults()}
  }
- function save(data){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(error){console.warn('Nie udało się zapisać wspólnych chwil.',error)}}
- function unlock(id){const data=load();if(!data.unlocked.includes(id)){data.unlocked.push(id);save(data);refreshEntry();return true}return false}
+ function save(data){try{localStorage.setItem(KEY(),JSON.stringify(data))}catch(error){console.warn('Nie udało się zapisać wspólnych chwil.',error)}}
+ function unlock(id){if(!ForbiddenDeckParty.isLegacy())return false;const data=load();if(!data.unlocked.includes(id)){data.unlocked.push(id);save(data);refreshEntry();return true}return false}
  function remember(id,choice){const data=load();if(!data.seen.includes(id))data.seen.push(id);if(!Object.hasOwn(data.choices,id))data.choices[id]=choice;data.active=null;save(data);refreshEntry()}
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  function motionAllowed(){return load().motion&&!reduced.matches}
@@ -32,7 +32,7 @@
  let returnFocus=null,session=null;
  function show(){if(screen.hidden)returnFocus=document.activeElement;screen.hidden=false;document.body.classList.add('companions-open')}
  function close(){screen.hidden=true;session=null;document.body.classList.remove('companions-open');if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true})}
- function openAlbum(){
+ function openAlbum(){if(!ForbiddenDeckParty.isLegacy())return window.ForbiddenDeckRoster?.openAlbum();
   show();session=null;const data=load();
   screen.innerHTML=`<div class="companions-shell"><header class="companions-header"><div><span class="life-eyebrow">LUDZIE ZA KARTAMI</span><h2 id="companionsTitle">Wspólne chwile</h2><p>Kael i Lyra mają życie także pomiędzy walkami.</p></div><button class="btn" id="companionsClose">Wróć do gry</button></header><div class="life-profiles"><article><img src="assets/portraits/kael.webp" alt="Kael" width="1024" height="1536"><div><span>KAEL · 32 LATA</span><h3>Pierwszy podnosi tarczę.<br>Ostatni prosi o pomoc.</h3><p>Nie lubi ciszy po walce. Gotuje za słoną zupę i zawsze sprawdza, czy ktoś nie został z tyłu.</p></div></article><article><img src="assets/portraits/lyra.webp" alt="Lyra" width="1024" height="1536"><div><span>LYRA · 29 LAT</span><h3>Widzi więcej,<br>niż mówi.</h3><p>Chowa troskę w żartach. Pamięta drogę do domu i uparcie nosi dwa kubki.</p></div></article></div><div class="life-album-head"><h3>Ich małe historie</h3><span>${data.seen.length} / ${episodes.length} przeżytych chwil</span></div><p class="life-caption">Odkrywaj je przez wspólne doświadczenia. Rozmowy są opcjonalne, bez nagród i zmian statystyk.</p><div class="life-album"></div><div class="life-settings"><label><input id="lifeMotion" type="checkbox" ${data.motion?'checked':''}> Ruch kamery i światła<small>Ograniczony ruch w urządzeniu ma pierwszeństwo.</small></label><label><input id="lifeBanter" type="checkbox" ${data.banter?'checked':''}> Krótkie reakcje w walce<small>Nie zatrzymują tury ani zagrywania kart.</small></label></div></div>`;
   screen.querySelector('#companionsClose').onclick=close;
@@ -46,7 +46,7 @@
   for(const [id,key] of [['lifeMotion','motion'],['lifeBanter','banter']])screen.querySelector('#'+id).onchange=event=>{const state=load();state[key]=event.target.checked;save(state);syncMotion();renderBanter()};
   screen.querySelector('#companionsClose').focus({preventScroll:true});
  }
- function openEpisode(id){
+ function openEpisode(id){if(!ForbiddenDeckParty.isLegacy())return window.ForbiddenDeckRoster?.openAlbum();
   const data=load(),e=episodes.find(e=>e.id===id);if(!e||!data.unlocked.includes(id))return;
   show();const old=data.active?.id===id?data.active:null;
   const choice=e.options.some(o=>o.id===old?.choice)?old.choice:null;
@@ -58,14 +58,14 @@
   const e=episodes.find(e=>e.id===session.id),choosing=session.phase==='choice';
   const [name,mood,emotion,text,note]=choosing?e.opening.at(-1):session.phase==='ending'?e.options.find(o=>o.id===session.choice).lines[session.index]:e.opening[session.index];
   const data=load();data.active={...session};save(data);
-  screen.innerHTML=`<div class="life-cinema"><div class="life-camera"><img class="life-background" src="${asset(e.art)}" alt="${e.subtitle}" width="1672" height="941"></div><div class="life-shade"></div><div class="life-dust" aria-hidden="true">${Array.from({length:8},(_,i)=>`<i style="--i:${i}"></i>`).join('')}</div><header class="life-cinema-header"><div><span class="life-eyebrow">WSPÓLNE CHWILE · ${e.place}</span><h2 id="companionsTitle">${e.title}</h2></div><button class="btn" id="lifeLeave">Zamknij · wrócę później</button></header><section class="life-dialogue" aria-label="Rozmowa"><div class="life-speaker">${faceMarkup(name,mood,name+' — '+emotion)}<div><strong>${name}</strong><span>${emotion}</span></div><span class="life-scene-step">${choosing?'TWÓJ WYBÓR':session.phase==='ending'?`${session.index+1} / 2 · odpowiedź`:`${session.index+1} / ${e.opening.length}`}</span></div><div class="life-words" aria-live="polite"><p></p><em></em></div><div class="life-options"></div><footer class="life-dialogue-footer"><button class="btn" id="lifeSkip">Pomiń rozmowę</button><span>${data.seen.includes(e.id)?'Ponownie oglądasz tę chwilę; pierwszy wybór pozostaje zapisany.':'Bez pośpiechu. To Wasza chwila.'}</span></footer></section><button class="life-motion" id="lifeMotionPause" aria-pressed="${!motionAllowed()}">${motionAllowed()?'Wstrzymaj ruch':'Ruch wyłączony'}</button></div>`;
+  screen.innerHTML=`<div class="life-cinema"><div class="life-camera"><img class="life-background" src="${asset(e.art)}" alt="${e.subtitle}" width="1672" height="941"></div><div class="life-shade"></div><div class="life-dust" aria-hidden="true">${Array.from({length:8},(_,i)=>`<i style="--i:${i}"></i>`).join('')}</div><header class="life-cinema-header"><div><span class="life-eyebrow">WSPÓLNE CHWILE · ${e.place}</span><h2 id="companionsTitle">${e.title}</h2></div><button class="btn" id="lifeLeave">Zamknij · wrócę później</button></header><section class="life-dialogue" aria-label="Rozmowa"><div class="life-speaker">${faceMarkup(name,mood,name+' — '+emotion)}<div><strong>${name}</strong><span>${emotion}</span></div><span class="life-scene-step">${choosing?'TWÓJ WYBÓR':session.phase==='ending'?`${session.index+1} / ${e.options.find(o=>o.id===session.choice).lines.length} · odpowiedź`:`${session.index+1} / ${e.opening.length}`}</span></div><div class="life-words" aria-live="polite"><p></p><em></em></div><div class="life-options"></div><footer class="life-dialogue-footer"><button class="btn" id="lifeSkip">Pomiń rozmowę</button><span>${data.seen.includes(e.id)?'Ponownie oglądasz tę chwilę; pierwszy wybór pozostaje zapisany.':'Bez pośpiechu. To Wasza chwila.'}</span></footer></section><button class="life-motion" id="lifeMotionPause" aria-pressed="${!motionAllowed()}">${motionAllowed()?'Wstrzymaj ruch':'Ruch wyłączony'}</button></div>`;
   screen.querySelector('.life-words p').textContent=choosing?e.question:text;
   screen.querySelector('.life-words em').textContent=choosing?'Wybierz, co zostanie między nimi. Każda droga ma taką samą wartość.':note;
   const options=screen.querySelector('.life-options');
   if(choosing)for(const o of e.options){
    const button=document.createElement('button');button.className='life-choice';button.dataset.lifeChoice=o.id;button.innerHTML='<strong></strong><span></span>';button.querySelector('strong').textContent=o.label;button.querySelector('span').textContent=o.hint;button.onclick=()=>{session.phase='ending';session.index=0;session.choice=o.id;renderEpisode()};options.appendChild(button);
   }else{
-   const button=document.createElement('button');button.id='lifeNext';button.className='primary';const last=session.phase==='ending'&&session.index===1;button.textContent=last?'Zachowaj tę chwilę':'Dalej →';
+   const button=document.createElement('button');button.id='lifeNext';button.className='primary';const last=session.phase==='ending'&&session.index===e.options.find(o=>o.id===session.choice).lines.length-1;button.textContent=last?'Zachowaj tę chwilę':'Dalej →';
    button.onclick=()=>{if(last){remember(session.id,session.choice);openAlbum();return}if(session.phase==='opening'&&session.index===e.opening.length-1){session.phase='choice';session.index=0}else session.index++;renderEpisode()};options.appendChild(button);
   }
   screen.querySelector('#lifeLeave').onclick=close;
@@ -96,7 +96,7 @@
   win:[['Lyra','warm','Z ulgą','Dwoje przyszło. Dwoje odchodzi.'],['Kael','warm','Spokojniejszy','Tak miało być.']],
   loss:[['Kael','concerned','Cicho','Następnym razem znajdziemy inną drogę.'],['Lyra','concerned','Blisko','Tylko nie ruszaj beze mnie.']]
  };
- function renderPortraits(){
+ function renderPortraits(){if(!ForbiddenDeckParty.isLegacy())return;
   for(const [key,name] of [['kael','Kael'],['lyra','Lyra']]){
    const holder=document.querySelector('#'+key+'Field .hero-sketch'),target=document.getElementById(key+'Field');if(!holder||!target)continue;
    const hp=key==='kael'?S.kaelHp:S.lyraHp,max=key==='kael'?S.kaelMaxHp:S.lyraMaxHp,line=currentBark?.find(l=>l[0]===name),hurt=hp<=max*.3;
@@ -106,7 +106,7 @@
   }
   const between=document.querySelector('.duo-figures .versus');if(between)between.textContent='DUET';
  }
- function renderBanter(){
+ function renderBanter(){if(!ForbiddenDeckParty.isLegacy())return window.ForbiddenDeckRoster?.renderBanter();
   let box=document.getElementById('companionBanter');if(!box){box=document.createElement('div');box.id='companionBanter';box.className='companion-banter';box.setAttribute('aria-live','polite');document.querySelector('#battlefieldVisual .duo-figures')?.after(box)}
   box.hidden=!load().banter||!currentBark;
   if(currentBark&&box.dataset.lines!==JSON.stringify(currentBark)){box.dataset.lines=JSON.stringify(currentBark);box.replaceChildren();for(const [name,,,text] of currentBark){const p=document.createElement('p'),speaker=document.createElement('strong');speaker.textContent=name+' ';p.append(speaker,document.createTextNode(text));box.appendChild(p)}}
@@ -114,11 +114,11 @@
  }
  function context(){if(!S.companionMoment||typeof S.companionMoment!=='object')S.companionMoment={bark:'start',used:[]};if(!Array.isArray(S.companionMoment.used))S.companionMoment.used=[];return S.companionMoment}
  function once(id){const state=context();if(state.used.includes(id))return false;state.used.push(id);return true}
- function react(id){currentBark=barks[id];context().bark=id;renderBanter()}
+ function react(id){if(!ForbiddenDeckParty.isLegacy())return window.ForbiddenDeckRoster?.react(id);currentBark=barks[id];context().bark=id;renderBanter()}
  const baseRender=renderBattle;renderBattle=function(){const result=baseRender();renderBanter();return result};
  const baseStart=startBattle;startBattle=function(...args){S.companionMoment={bark:'start',used:[]};const result=baseStart(...args);react(load().choices.bread==='home'?'home':'start');window.ForbiddenDeckSave?.save?.('battle');return result};
- const baseProtect=resolveProtectedTarget;resolveProtectedTarget=function(target,intent){const result=baseProtect(target,intent);if(target==='lyra'&&result==='kael'){unlock('shield');if(once('protect'))react('protect')}return result};
- const baseDamage=dmgPlayer;dmgPlayer=function(...args){const result=baseDamage(...args);if(result.hp>0&&S.kaelHp>0&&S.lyraHp>0){const lyra=(result.target||args[2])==='lyra',hp=lyra?S.lyraHp:S.kaelHp,max=lyra?S.lyraMaxHp:S.kaelMaxHp;if(hp<=max*.3){unlock('fear');if(once(lyra?'hurtLyra':'hurtKael'))react(lyra?'hurtLyra':'hurtKael')}}return result};
+ const baseProtect=resolveProtectedTarget;resolveProtectedTarget=function(target,intent){const result=baseProtect(target,intent);if(target===ForbiddenDeckParty.member('partner').id&&result===ForbiddenDeckParty.member('lead').id){unlock('shield');if(once('protect'))react('protect')}return result};
+ const baseDamage=dmgPlayer;dmgPlayer=function(...args){const result=baseDamage(...args);if(result.hp>0&&S.kaelHp>0&&S.lyraHp>0){const lyra=(result.target||args[2])===ForbiddenDeckParty.member('partner').id,hp=lyra?S.lyraHp:S.kaelHp,max=lyra?S.lyraMaxHp:S.kaelMaxHp;if(hp<=max*.3){unlock('fear');if(once(lyra?'hurtLyra':'hurtKael'))react(lyra?'hurtLyra':'hurtKael')}}return result};
  const baseSyn=addSyn;addSyn=function(...args){const before=S.synergy,result=baseSyn(...args);if(before<50&&S.synergy>=50&&once('combo'))react('combo');return result};
  const baseVictory=victory;victory=function(...args){const first=!S.battleOver,boss=S.currentNode?.type==='boss',act=S.act||0;const result=baseVictory(...args);if(first){const discovered=unlock('cups');if(boss&&act===0)unlock('gate');react('win');if(discovered){const note=document.createElement('aside');note.className='life-unlocked-note';note.innerHTML='<strong>Zapamiętacie tę walkę.</strong><span>„Dwa kubki” czekają w albumie na mapie.</span>';document.getElementById('modalBody').prepend(note)}}return result};
  const baseDefeat=defeat;defeat=function(...args){const result=baseDefeat(...args);react('loss');return result};

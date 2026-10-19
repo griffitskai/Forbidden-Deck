@@ -6,7 +6,7 @@ const pictures=process.env.FORBIDDEN_DECK_SCREENSHOTS;
 if(pictures)await mkdir(pictures,{recursive:true});
 async function snapshot(p){return p.evaluate(()=>({trust:S.trust,gold:S.gold,stage:S.stage,deck:[...S.deck],kael:S.kaelHp,lyra:S.lyraHp,relation:localStorage.getItem('forbidden_deck_relationship_v1')}))}
 async function toChoice(p){while(await p.locator('#lifeNext').count())await p.locator('#lifeNext').click()}
-async function choose(p,id){await p.locator(`[data-life-choice="${id}"]`).click();await p.locator('#lifeNext').click();await p.locator('#lifeNext').click()}
+async function choose(p,id){await p.locator(`[data-life-choice="${id}"]`).click();while(await p.locator('#lifeNext').count())await p.locator('#lifeNext').click()}
 try{
  const p=await browser.newPage({viewport:{width:1440,height:1000}});
  p.on('pageerror',e=>errors.push(e.message));

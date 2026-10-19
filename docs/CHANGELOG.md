@@ -1,5 +1,16 @@
 # Changelog
 
+## V0.10.0 — Wybierz swój duet
+
+- Wybór jednej postaci męskiej i jednej żeńskiej: Kael/Varyn + Lyra/Selene.
+- Cień, Runy, ograniczone leczenie i dziewięć nowych kart współpracy.
+- 18 nowych kart bazowych, 18 ulepszeń, 18 ilustracji działań, dwa portrety, trzy sceny.
+- Dynamiczne portrety, statystyki, mikstury, pancerze, awanse, cele i historia.
+- Jawne cele Prowokacji/Ochrony i lista postaci grających w turze.
+- Oddzielne zapisy Trust, relacji i albumu dla nowych duetów.
+- 12 rozmów, reakcje bojowe, wznawianie, PL/EN i równoważne ścieżki relacji.
+- Trzy nowe testy integracji, historii i rzeczywistej trasy Aktu I czterema duetami.
+
 ## V0.9.8 — Fundament wyboru bohaterów
 
 - Rejestry postaci i duetów oraz osobny stan każdego członka drużyny.

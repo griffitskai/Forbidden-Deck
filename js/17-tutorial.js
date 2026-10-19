@@ -2,12 +2,14 @@
   const KEY='forbidden_deck_tutorial_v1';
   const DEFAULT={enabled:true,seen:[]};
   const tips={
-    trust:{icon:'🤝',title:'Trust',text:'Trust rośnie między walkami i runami. Wyższe progi odblokowują nowe karty Duo oraz sceny relacji Kaela i Lyry.'},
+    runes:{icon:'✦',title:'Runy',text:'Selene gromadzi do 3 Run. Detonacja wydaje wszystkie, a Splot odnowy może uleczyć tylko raz w walce.'},
+    shadow:{icon:'◈',title:'Cień',text:'Varyn gromadzi do 3 Cienia. Zasadzka wydaje go na silny atak; Zaćmienie potrzebuje też Run Selene.'},
+    trust:{icon:'🤝',title:'Trust',text:'Trust jest zapisywane osobno dla każdego duetu. Odblokowuje jego wspólne karty i rozmowy.'},
     damage:{icon:'⚔️',title:'Typy obrażeń',text:'Fizyczne, magiczne i toksyczne obrażenia korzystają z różnych odporności. Podgląd intencji pokazuje już przewidywaną stratę HP.'},
-    protect:{icon:'🛡️',title:'Lyra jest celem',text:'Prowokacja kieruje większość ataków na Kaela. Ochrona może przechwycić cios w Lyrę — ale niektóre ataki skrytobójców ją ignorują.'},
+    protect:{icon:'🛡️',title:'Twój partner jest celem',text:'Prowokacja zmienia cel większości ataków. Ochrona przechwytuje wskazany cios, chyba że wróg ją ignoruje.'},
     marked:{icon:'🎯',title:'Marked',text:'Lyra oznacza cel. Heavy Strike, Snipe i część kart Duo potrafią wykorzystać Marked do mocniejszego uderzenia.'},
     momentum:{icon:'🔥',title:'Momentum',text:'Kael buduje Momentum wybranymi atakami. Zachowaj je na finisher albo wykorzystaj wcześniej, jeśli sytuacja tego wymaga.'},
-    synergy:{icon:'⚡',title:'Synergy',text:'Synergy powstaje podczas tej jednej walki, szczególnie gdy Kael i Lyra grają naprzemiennie. Najmocniejsze karty Duo zużywają lub wymagają wysokiej Synergy.'}
+    synergy:{icon:'⚡',title:'Synergy',text:'Synergy rośnie w tej walce, gdy bohaterowie grają naprzemiennie.'}
   };
 
   const css=document.createElement('style');
@@ -54,12 +56,12 @@
 
   const baseStartBattleTut=startBattle;
   startBattle=function(enemies){const result=baseStartBattleTut(enemies);enqueue('damage');
-    const lyraThreat=liveEnemies().some(e=>{const it=intentFor(e);return it.type==='attack'&&targetFor(e,it)==='lyra'});
+    const lyraThreat=liveEnemies().some(e=>{const it=intentFor(e);return it.type==='attack'&&targetFor(e,it)===ForbiddenDeckParty.member('partner').id});
     if(lyraThreat)enqueue('protect');return result};
 
   const baseRenderBattleTut=renderBattle;
   renderBattle=function(){const result=baseRenderBattleTut();if(!isSeen('protect')){
-    const lyraThreat=liveEnemies().some(e=>{const it=intentFor(e);return it.type==='attack'&&targetFor(e,it)==='lyra'});if(lyraThreat)enqueue('protect')}
+    const lyraThreat=liveEnemies().some(e=>{const it=intentFor(e);return it.type==='attack'&&targetFor(e,it)===ForbiddenDeckParty.member('partner').id});if(lyraThreat)enqueue('protect')}
     return result};
 
   const basePlayCardTut=playCard;

@@ -46,3 +46,7 @@ Atlasy przeciwników i przedmiotów oraz most: [pochodzenie, ścieżki i pełne 
 ## V0.9.7
 
 Cztery panoramy środowiskowe wygenerowane narzędziem imagegen: `locations/abbey-ruins.webp`, `locations/toxic-marsh.webp`, `locations/ember-forge.webp`, `locations/ash-throne.webp`. Oryginały 1672×941, konwersja WebP quality 86. [Pełne prompty](location-art-prompts.md). Pozostałe cztery scenerie wykorzystują wcześniejsze lokalne ilustracje krain i mostu. Brak pobierania obrazów w czasie gry.
+
+## V0.10.0
+
+Dwa portrety dorosłych bohaterów Selene i Varyna, dwa atlasy 3×3 z 18 odrębnymi ilustracjami kart oraz trzy sceny duetów. Wygenerowane przez wbudowane imagegen, zapisane jako WebP; bez pobierania lub generowania podczas gry. [Pełne prompty i referencje](roster-art-prompts.md).

@@ -5,11 +5,12 @@
   lyra:{path:'assets/cards/lyra-actions.webp',cols:4,rows:3,ids:['shot','expose','focus','evade','snipe','volley','venomarrow','firearrow','executionarrow','ashshot','venomtrail']},
   duo:{path:'assets/cards/duo-actions.webp',cols:4,rows:4,aspect:4/3,ids:['cover','intercept','opening','rally','twin','back','protect','cross','bond','advancecard','purify','bloodbond','laststand','watchshift','pressure']}
  };
+ Object.assign(atlases,window.ForbiddenDeckRosterData.art);
  const illustrations={};for(const atlas of Object.values(atlases))atlas.ids.forEach((id,index)=>{illustrations[id]={...atlas,index}});
  const asset=path=>globalThis.ForbiddenDeckPreviewAssets?.[path]||path;
  const defensive=new Set(['block','taunt','ironwall','evade','intercept','rally','protect','cleanse','cinderguard','laststand','brace','watchshift']);
  const setup=new Set(['draw','duodraw','mark']);
- function role(d){return defensive.has(d.kind)?['defense','Obrona']:setup.has(d.kind)?['setup','Przygotowanie']:d.actor==='Duo'?['teamwork','Współpraca']:['attack','Atak']}
+ function role(d){return defensive.has(d.kind)||['veil','smoke','runeward','mend','runiccover','aegisrally','nightward','veilrune','shadowfeint'].includes(d.effect)?['defense','Obrona']:setup.has(d.kind)||d.effect==='silenttrail'?['setup','Przygotowanie']:d.actor==='Duo'?['teamwork','Współpraca']:['attack','Atak']}
  function identify(el){
   const title=el.querySelector('h4,h3,.deck-card-head strong')?.textContent.trim();if(!title)return null;
   for(const [id,card] of Object.entries(cards)){

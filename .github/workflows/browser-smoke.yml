@@ -88,6 +88,15 @@ jobs:
       - name: Run stage scenery and map preview test
         run: node tests/location-scenes-smoke.mjs
 
+      - name: Run four-party roster integration
+        run: node tests/roster-smoke.mjs
+
+      - name: Run pair-scoped story and consent tests
+        run: node tests/roster-stories-smoke.mjs
+
+      - name: Run seeded first act with all four parties
+        run: node tests/roster-act1-smoke.mjs
+
       - name: Run translation coverage audit
         run: node tests/translation-audit.mjs
 

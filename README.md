@@ -10,7 +10,9 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 ## Aktualny stan
 
-Wersja robocza: **V0.10.0 — Wybierz swój duet**.
+Wersja robocza: **V0.10.1 — Ślady wspólnej drogi**.
+
+Bohaterowie wracają do poprzednich decyzji. Album pokazuje kronikę relacji, a zwycięstwo i porażka otrzymują osobiste epilogi czterech duetów. Historia wypraw przechowuje niezmienną kopię ówczesnych wyborów. [Raport V0.10.1](docs/ITERATION_10.md).
 
 Wybierz jednego bohatera (**Kael / Varyn**) i jedną bohaterkę (**Lyra / Selene**). Każdy z czterech duetów ma własną talię współpracy i niezależny postęp relacji. Selene przygotowuje Runy, Varyn buduje Cień, a nowe duety łączą te zasoby z obroną i Marked. Dodano 18 kart bazowych z ulepszeniami, portrety, ilustracje kart oraz 12 rozmów dla nowych par. [Raport V0.10.0](docs/ITERATION_09.md).
 

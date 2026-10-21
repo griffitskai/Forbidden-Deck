@@ -130,7 +130,7 @@
  function nextScene(){const data=loadRel();return pair()?.scenes.find(s=>S.trust>=s.threshold&&!data.seen.includes(s.id))||null}
  let session=null;
  function beginScene(scene,replay=false,returnTo='album'){
-  if(!scene)return;session={pairId:S.party.relationshipId,id:scene.id,index:0,phase:'opening',choice:null,replay,returnTo,act:S.act,stage:S.stage};renderScene();
+  if(!scene)return;session={pairId:S.party.relationshipId,id:scene.id,index:0,phase:'opening',choice:null,replay,returnTo,act:S.act,stage:S.stage,narrative:window.ForbiddenDeckNarrative?.capture()};renderScene();
  }
  function resumeScene(saved){
   const scene=pair()?.scenes.find(s=>s.id===saved?.id);if(!scene||saved.pairId!==S.party.relationshipId)return;
@@ -155,6 +155,7 @@
   const panel=document.createElement('div');panel.className='roster-story-words';
   const speaker=document.createElement('strong');speaker.textContent=session.phase==='choice'?'Wybór':line[0];const text=document.createElement('p');text.textContent=session.phase==='choice'?'Zaufanie i bliskość są osobnymi wyborami.':line[1];panel.append(speaker,text);
   if(session.phase==='ending'&&session.choice==='romance'&&session.index===lines.length-1){const after=document.createElement('p');after.className='roster-afterglow';after.textContent=D.afterglow;panel.appendChild(after)}
+  if(session.phase==='opening'&&session.index===0)window.ForbiddenDeckNarrative?.appendCallback(panel,scene.id,session.narrative);
   const actions=document.createElement('div');actions.className='choices';
   if(session.phase==='choice'){
    const f=choiceBtn(scene.friendshipLabel||'Nie wracajmy jeszcze do drogi.','Przyjaźń',()=>choose('friendship'));f.dataset.rosterChoice='friendship';actions.appendChild(f);
@@ -205,6 +206,7 @@
   shell.querySelector('.life-album').before(profiles);
   const settings=document.createElement('div');settings.className='life-settings';
   for(const [key,label] of [['motion','Ruch kamery i światła'],['banter','Krótkie reakcje w walce']]){const control=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.checked=data[key];input.onchange=()=>{const d=loadAlbum();d[key]=input.checked;saveAlbum(d);renderBanter()};control.append(input,document.createTextNode(label));settings.appendChild(control)}shell.appendChild(settings);
+  window.ForbiddenDeckNarrative?.appendChronicle(shell);
   screen.appendChild(shell);shell.querySelector('#companionsClose').onclick=()=>ForbiddenDeckCompanions.close();shell.querySelector('#companionsClose').focus({preventScroll:true});
  }
  function react(kind){if(P.isLegacy())return;const key=kind.startsWith('hurt')?'hurt':kind==='protect'?'combo':['combo','win'].includes(kind)?kind:'start';S.companionMoment??={used:[]};S.companionMoment.bark=key;renderBanter()}

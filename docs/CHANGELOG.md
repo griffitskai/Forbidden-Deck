@@ -1,5 +1,14 @@
 # Changelog
 
+## V0.10.1 — Ślady wspólnej drogi
+- Pamięć wcześniejszych decyzji w kolejnych scenach czterech duetów.
+- Kronika relacji w albumach i zapisana kopia wspomnień w historii wypraw.
+- Osobiste epilogi zwycięstw (bliskość, przyjaźń, bez obietnic) i porażek.
+- Ustawienie romansu maskuje treści bez zmieniania zapisanych decyzji.
+- Podpowiedzi samouczka pojawiają się ponad końcem tury i nie blokują kliknięć treścią.
+- Ukryta rozmowa ogniskowa nie otwiera się ponownie po zmianie preferencji.
+
+
 ## V0.10.0 — Wybierz swój duet
 
 - Wybór jednej postaci męskiej i jednej żeńskiej: Kael/Varyn + Lyra/Selene.

@@ -65,9 +65,10 @@
       id:`${Date.now()}-${Math.random().toString(36).slice(2,7)}`,
       date:new Date().toISOString(),
       result:victory?'victory':'defeat',
-      version:'V0.10.0',
+      version:'V0.10.1',
       party:S.party.members.map(h=>({id:h.id,name:ForbiddenDeckParty.characters[h.id].name,hp:h.hp})),
       relationshipId:S.party.relationshipId,
+      narrative:window.ForbiddenDeckNarrative?.capture()||null,
       difficulty:S.difficulty||'standard',
       act:actReached,
       actTitle:ACTS[actIndex]?.title||'Pogranicze',
@@ -117,6 +118,7 @@
     }).join('');
     const runs=data.runs.length?data.runs.map(r=>`<article class="run-entry ${r.result==='victory'?'win':''}"><div class="run-result">${r.result==='victory'?'🏆':'⚔️'}</div><div class="run-main"><strong>${r.result==='victory'?'Ukończony run':'Wyprawa zakończona'} • ${r.build}</strong><small>Akt ${r.act} — ${r.actTitle} • ${difficultyName(r.difficulty)} • ${formatDate(r.date)}</small><p>${r.wins} wygranych walk • Lv ${r.level} • Trust ${r.trust} • talia ${r.deckSize}</p></div><div class="run-side"><b>${r.party?r.party.map(h=>h.name+' '+h.hp).join(' • '):'K '+r.kaelHp+' • L '+r.lyraHp}</b><span>${r.gold} złota • ${r.version}</span></div></article>`).join(''):'<div class="history-empty">Nie ma jeszcze zakończonych wypraw. Pierwszy wynik pojawi się tutaj po zwycięstwie albo porażce.</div>';
     document.getElementById('historyBody').innerHTML=`<div class="history-stats"><div class="history-stat"><span>Runy</span><b>${s.totalRuns}</b></div><div class="history-stat"><span>Ukończone</span><b>${s.completedRuns}</b></div><div class="history-stat"><span>Najdalszy akt</span><b>${s.bestAct||'—'}</b></div><div class="history-stat"><span>Pokonani bossowie</span><b>${data.bosses.length}/3</b></div></div><div class="boss-progress">${bossHtml}</div><div class="run-history">${runs}</div>`;
+    window.ForbiddenDeckNarrative?.decorateHistory(document.getElementById('historyBody'),data.runs);
   }
   function open(){window.ForbiddenDeckMenu?.close?.();render();screen.classList.add('show')}
   function close(){screen.classList.remove('show');window.ForbiddenDeckMenu?.open?.()}

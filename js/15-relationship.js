@@ -40,8 +40,9 @@
   }
   function setRomanceEnabled(value){
     try{localStorage.setItem(PREFS_KEY,JSON.stringify({schema:1,romanceEnabled:!!value}))}catch(error){console.warn('Forbidden Deck: nie udało się zapisać ustawienia',error)}
+    window.dispatchEvent(new Event('forbidden-deck:romance'));
     document.querySelectorAll('[data-romance-toggle]').forEach(input=>{input.checked=romanceEnabled()});
-    if(campSession){
+    if(campSession&&document.querySelector('#overlay.show #campfireScene')){
       if(!romanceEnabled()&&campSession.choice==='romance'){
         campSession.choice=null;campSession.phase='choice';campSession.index=0;
       }
@@ -105,7 +106,7 @@
   function showRelationshipScene(scene){
     if(scene.id==='trust40')return showCampfire();
     if(scene.id==='trust60')return showCampfire(false,null,'campfire60');
-    showModal(scene.title,'',()=>{const w=document.createElement('div'),d=document.createElement('div');d.className='relation-dialogue';d.innerHTML=scene.text;w.appendChild(d);w.appendChild(grid(scene.options.map(opt=>[opt.label,opt.desc,()=>applyChoice(scene,opt)])));return w});
+    showModal(scene.title,'',()=>{const w=document.createElement('div'),d=document.createElement('div');d.className='relation-dialogue';d.innerHTML=scene.text;window.ForbiddenDeckNarrative?.appendCallback(w,scene.id);w.appendChild(d);w.appendChild(grid(scene.options.map(opt=>[opt.label,opt.desc,()=>applyChoice(scene,opt)])));return w});
   }
 
   const opening=[
@@ -173,6 +174,7 @@
       if(art)sceneImg.src=globalThis.ForbiddenDeckPreviewAssets?.[art]||art;
       if(moment){sceneArt.classList.add('moment-art');sceneImg.alt='Kael i Lyra przy ogniu, pod wspólnym płaszczem, ze splecionymi dłońmi.'}
       sceneArt.querySelector('figcaption').textContent=moment?'Chwila, którą wybierają oboje':(currentAct().title+' · po zmroku');
+      if(session.phase==='opening'&&session.index===0)window.ForbiddenDeckNarrative?.appendCallback(root,later?'trust60':'trust40');
       const sequence=document.createElement('p');sequence.className='campfire-sequence';sequence.textContent=`${later?'60':'40'} Trust · ${choosing?'Wasza decyzja':session.phase==='opening'?'Przy ogniu':'Zostań jeszcze chwilę'}`;root.appendChild(sequence);
       const dialogue=document.createElement('div');dialogue.className='campfire-line';dialogue.setAttribute('aria-live','polite');
       dialogue.innerHTML=`<img src="assets/portraits/${line.speaker==='Kael'?'kael':'lyra'}.webp" alt="${line.speaker}" width="1024" height="1536"><div><strong class="campfire-speaker">${line.speaker}</strong><p></p><em></em></div>`;

@@ -34,6 +34,9 @@ jobs:
       - name: Run party save migration and integration test
         run: node tests/party-foundation-smoke.mjs
 
+      - name: Run narrative continuity and epilogue tests
+        run: node tests/narrative-smoke.mjs
+
       - name: Run gameplay smoke test
         run: node tests/browser-smoke.mjs
 

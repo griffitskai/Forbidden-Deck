@@ -44,6 +44,7 @@
    button.onclick=()=>openEpisode(e.id);grid.appendChild(button);
   }
   for(const [id,key] of [['lifeMotion','motion'],['lifeBanter','banter']])screen.querySelector('#'+id).onchange=event=>{const state=load();state[key]=event.target.checked;save(state);syncMotion();renderBanter()};
+  window.ForbiddenDeckNarrative?.appendChronicle(screen.querySelector('.companions-shell'));
   screen.querySelector('#companionsClose').focus({preventScroll:true});
  }
  function openEpisode(id){if(!ForbiddenDeckParty.isLegacy())return window.ForbiddenDeckRoster?.openAlbum();

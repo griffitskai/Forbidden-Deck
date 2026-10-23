@@ -1,4 +1,4 @@
-# Project Status — V0.10.0
+# Project Status — V0.10.1
 
 ## Grywalny wybór postaci
 
@@ -145,3 +145,7 @@ Tryb walki bez przewijania na komputerze od 1000×560 px CSS. Bohaterowie i prze
 ## Ilustrowane zagrania — V0.9.6
 
 38 ilustrowanych kart bazowych / 76 wariantów. Cztery nowe karty w nagrodach: Zaprzyj się, Zatruty trop, Zmiana warty i Wspólny nacisk, każda z ulepszeniem. Startowe 19 kart i stare zapisy zachowane. [Reguły, analiza i testy](ITERATION_06.md).
+
+## Ciągłość relacji
+
+Kronika decyzji w albumie, odwołania do wcześniejszych rozmów i epilogi wszystkich czterech duetów są zaimplementowane. Zakończony run zapisuje kopię relacji z tego momentu. Stare runy bez tej kopii nie dostają fikcyjnych wspomnień. Wyłączenie romansu ukrywa bliskość bez kasowania wyborów.

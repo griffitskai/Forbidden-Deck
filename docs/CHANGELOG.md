@@ -1,5 +1,11 @@
 # Changelog
 
+## Po V0.10.1 — Rozmowy na szlaku
+- Cztery osobiste sceny w drodze, osiem odpowiedzi i możliwość pominięcia.
+- Konsekwencje dialogowe przy ognisku oraz pamięć w historii wyprawy.
+- Wznowienie rozmowy i oryginalnego wydarzenia po odświeżeniu.
+- Dotychczasowe nagrody wydarzeń i opcjonalny romans pozostają zachowane.
+
 ## V0.10.1 — Ślady wspólnej drogi
 - Pamięć wcześniejszych decyzji w kolejnych scenach czterech duetów.
 - Kronika relacji w albumach i zapisana kopia wspomnień w historii wypraw.

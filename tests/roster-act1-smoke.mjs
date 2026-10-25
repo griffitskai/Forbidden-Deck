@@ -10,6 +10,8 @@ for(const ids of [['kael','lyra'],['kael','selene'],['varyn','lyra'],['varyn','s
    if(document.querySelector('#overlay.show')){
     const choices=[...document.querySelectorAll('#modalBody .choice')],rewards=[...document.querySelectorAll('#modalBody .reward')];
     const title=document.getElementById('modalTitle').textContent;
+    // Roadside dialogue precedes the unchanged event and has a single continue action.
+    if(document.getElementById('roadsideScene')){(document.querySelector('[data-road-continue]')||document.querySelector('[data-road-choice="1"]'))?.click();return}
     if(rewards.length){choices.at(-1)?.click();return}
     if(title.startsWith('Awans')){const weakest=S.party.members.map((h,i)=>({i,r:h.hp/h.maxHp})).sort((a,b)=>a.r-b.r)[0];choices[weakest.i]?.click();return}
     if(S.currentNode?.type==='camp'){choices[0]?.click();return}

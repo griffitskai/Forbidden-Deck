@@ -37,6 +37,9 @@ jobs:
       - name: Run narrative continuity and epilogue tests
         run: node tests/narrative-smoke.mjs
 
+      - name: Run roadside memory tests
+        run: node tests/roadside-smoke.mjs
+
       - name: Run gameplay smoke test
         run: node tests/browser-smoke.mjs
 

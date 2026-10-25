@@ -82,6 +82,7 @@
    S.hand=Array.isArray(saved.hand)?saved.hand:[];
    S.enemies=Array.isArray(saved.enemies)?saved.enemies:[];
    S.relationshipScene=saved.relationshipScene||null;
+   S.roadside=saved.roadside||null;
    S.routeHistory=saved.routeHistory&&typeof saved.routeHistory==='object'?saved.routeHistory:{};
    S.tempRes=saved.tempRes||{physical:0,magic:0,toxin:0};
    runActive=true;

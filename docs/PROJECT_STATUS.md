@@ -149,3 +149,7 @@ Tryb walki bez przewijania na komputerze od 1000×560 px CSS. Bohaterowie i prze
 ## Ciągłość relacji
 
 Kronika decyzji w albumie, odwołania do wcześniejszych rozmów i epilogi wszystkich czterech duetów są zaimplementowane. Zakończony run zapisuje kopię relacji z tego momentu. Stare runy bez tej kopii nie dostają fikcyjnych wspomnień. Wyłączenie romansu ukrywa bliskość bez kasowania wyborów.
+
+## Rozmowy na szlaku — etap po V0.10.1
+
+Cztery opcjonalne sceny poprzedzają pierwsze odwiedzone wydarzenie w runie: naprawa tarczy, odpoczynek bez poczucia winy, sygnał powrotu i pomoc bez długu. Każda ma dwie odpowiedzi oraz pominięcie; nie zmieniają HP, talii, złota ani Trust. Po rozmowie wraca dotychczasowe wydarzenie wraz z nagrodami. Zapis wznawia pytanie, odpowiedź lub pierwotne wydarzenie. Pamięć jest ograniczona do wyprawy, wraca przy ognisku i zostaje skopiowana do kroniki zakończonego runu. Nowy run ją zeruje. Brak wpisu w starym zapisie oznacza brak wspomnienia. PL/EN, bez nowych zależności i zasobów sieciowych.

@@ -161,3 +161,7 @@ Przełączenie romansu usuwa z widoku wyłącznie nawiązania rozmów relacyjnyc
 ## Po trudnym zwycięstwie
 
 Cztery reakcje duetów przy ognisku, uruchamiane po zwycięstwie z nową utratą zdrowia i końcowym HP do 30%. Zapis początku walki pozwala zachować warunek po wczytaniu. Wspomnienie należy do bieżącego runu, resetuje się z nową wyprawą i jest niezależne od romansu. Bez premii i dodatkowych okien. [Zakres i ograniczenia](ITERATION_12.md).
+
+## Odpowiedzi po trudnym zwycięstwie
+
+Każdy duet ma dwie odpowiedzi z własną reakcją i późniejszym echem przy ognisku. Wybór jest jednorazowy w wyprawie, zachowywany po wczytaniu i kolejnych trudnych walkach. Kronika kopiuje go do zakończonego runu. Brak odpowiedzi pozwala wrócić później, bez blokowania odpoczynku i bez utraty nagród. Stare zapisy wspomnienia bez wyboru otwierają pytanie; stare historie nie otrzymują wymyślonych decyzji. Pełne PL/EN, niezależnie od romansu. [Raport](ITERATION_13.md).

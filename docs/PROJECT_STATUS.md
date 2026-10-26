@@ -165,3 +165,7 @@ Cztery reakcje duetów przy ognisku, uruchamiane po zwycięstwie z nową utratą
 ## Odpowiedzi po trudnym zwycięstwie
 
 Każdy duet ma dwie odpowiedzi z własną reakcją i późniejszym echem przy ognisku. Wybór jest jednorazowy w wyprawie, zachowywany po wczytaniu i kolejnych trudnych walkach. Kronika kopiuje go do zakończonego runu. Brak odpowiedzi pozwala wrócić później, bez blokowania odpoczynku i bez utraty nagród. Stare zapisy wspomnienia bez wyboru otwierają pytanie; stare historie nie otrzymują wymyślonych decyzji. Pełne PL/EN, niezależnie od romansu. [Raport](ITERATION_13.md).
+
+## Czytelność wspomnień przy ognisku
+
+Wspólny panel details grupuje nawiązania pod akcjami obozu. Nierozstrzygnięta rozmowa po trudnej walce otwiera panel; zapisane wspomnienia zaczynają zwinięte. Enter/Spacja obsługują natywny summary, widoczny fokus pomaga nawigować, a wybranie odpowiedzi przenosi fokus na reakcję. Większe litery, odstępy i oddzielone podpowiedzi nagród; bez zmian zapisów, mechanik, treści rozmów lub układu walki. [Raport](ITERATION_14.md).

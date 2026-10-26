@@ -12,6 +12,8 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 Wersja robocza: **V0.10.1 — Ślady wspólnej drogi**.
 
+Po trudnym zwycięstwie bohaterowie wracają do przeżytego strachu przy ognisku: cztery osobne reakcje, zależne od utraty HP w rzeczywistej walce. [Raport](docs/ITERATION_12.md).
+
 Nowy etap roboczy: cztery opcjonalne rozmowy na szlaku, po jednej dla każdego duetu. Pierwsze odwiedzone wydarzenie w wyprawie poprzedza osobista scena z dwiema odpowiedziami lub pominięciem. Wybór wraca przy ognisku i w historii wyprawy; nagrody istniejącego wydarzenia pozostają bez zmian. [Raport etapu](docs/ITERATION_11.md).
 
 Bohaterowie wracają do poprzednich decyzji. Album pokazuje kronikę relacji, a zwycięstwo i porażka otrzymują osobiste epilogi czterech duetów. Historia wypraw przechowuje niezmienną kopię ówczesnych wyborów. [Raport V0.10.1](docs/ITERATION_10.md).

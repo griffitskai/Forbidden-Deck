@@ -157,3 +157,7 @@ Cztery opcjonalne sceny poprzedzają pierwsze odwiedzone wydarzenie w runie: nap
 ### Niezależność wspomnień od ustawienia romansu
 
 Przełączenie romansu usuwa z widoku wyłącznie nawiązania rozmów relacyjnych. Zwykłe wspomnienie ze szlaku pozostaje przy ognisku i w kronice; zapisane wybory nie zmieniają się. Test scen drogowych sprawdza przełączenie w obie strony dla czterech duetów i obu odpowiedzi. To poprawka prezentacji, bez nowych scen ani premii.
+
+## Po trudnym zwycięstwie
+
+Cztery reakcje duetów przy ognisku, uruchamiane po zwycięstwie z nową utratą zdrowia i końcowym HP do 30%. Zapis początku walki pozwala zachować warunek po wczytaniu. Wspomnienie należy do bieżącego runu, resetuje się z nową wyprawą i jest niezależne od romansu. Bez premii i dodatkowych okien. [Zakres i ograniczenia](ITERATION_12.md).

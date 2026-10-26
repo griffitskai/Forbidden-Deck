@@ -153,3 +153,7 @@ Kronika decyzji w albumie, odwołania do wcześniejszych rozmów i epilogi wszys
 ## Rozmowy na szlaku — etap po V0.10.1
 
 Cztery opcjonalne sceny poprzedzają pierwsze odwiedzone wydarzenie w runie: naprawa tarczy, odpoczynek bez poczucia winy, sygnał powrotu i pomoc bez długu. Każda ma dwie odpowiedzi oraz pominięcie; nie zmieniają HP, talii, złota ani Trust. Po rozmowie wraca dotychczasowe wydarzenie wraz z nagrodami. Zapis wznawia pytanie, odpowiedź lub pierwotne wydarzenie. Pamięć jest ograniczona do wyprawy, wraca przy ognisku i zostaje skopiowana do kroniki zakończonego runu. Nowy run ją zeruje. Brak wpisu w starym zapisie oznacza brak wspomnienia. PL/EN, bez nowych zależności i zasobów sieciowych.
+
+### Niezależność wspomnień od ustawienia romansu
+
+Przełączenie romansu usuwa z widoku wyłącznie nawiązania rozmów relacyjnych. Zwykłe wspomnienie ze szlaku pozostaje przy ognisku i w kronice; zapisane wybory nie zmieniają się. Test scen drogowych sprawdza przełączenie w obie strony dla czterech duetów i obu odpowiedzi. To poprawka prezentacji, bez nowych scen ani premii.

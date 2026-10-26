@@ -17,3 +17,9 @@ Zaliczone wszystkie 28 zestawów z workflow: pierwszy przebieg 27/28, następnie
 ## Następny etap
 
 Rozwinąć wydarzenia zależne od rzeczywistych przeżyć (np. ciężka walka), z dalszymi konsekwencjami wcześniejszych odpowiedzi. Ten etap dostarcza po jednej scenie na duet, nie system wielu losowych wydarzeń. Odbiór dialogów przez graczy pozostaje do oceny.
+
+## Korekta widoczności wspomnień
+
+Po zielonym CI PR #38 wykryto, że obsługa zmiany romansu usuwała wszystkie elementy `.narrative-callback`, także nieromantyczne wspomnienia ze szlaku. Nawiązania relacyjne otrzymują osobną klasę `relationship-callback`; czyszczenie nie obejmuje już wspomnień drogowych. Rozszerzony test sprawdza zachowanie treści i niezmienność zapisanych faktów przy trzykrotnym przełączeniu ustawienia dla każdego duetu i obu odpowiedzi. Dotychczasowy test narracji nadal kontroluje ukrywanie romantycznych epilogów.
+
+Weryfikacja korekty: PASS roadside-smoke (cztery duety × dwie odpowiedzi/pominięcie oraz przełączanie romansu), narrative-smoke (prywatność, epilogi, stare zapisy, PL/EN), gameplay-standard-smoke (karty, tury, mikstury, ekwipunek, bossowie i przejścia aktów), składnia i git diff --check. Przebudowano podgląd offline. Pełny zestaw bazy PR #38 był zielony w GitHub Actions: 40239468529; CI poprawki jest oddzielne.

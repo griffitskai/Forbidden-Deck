@@ -40,6 +40,9 @@ jobs:
       - name: Run roadside memory tests
         run: node tests/roadside-smoke.mjs
 
+      - name: Run hard-won camp memories
+        run: node tests/hard-won-smoke.mjs
+
       - name: Run gameplay smoke test
         run: node tests/browser-smoke.mjs
 

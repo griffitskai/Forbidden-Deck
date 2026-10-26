@@ -32,13 +32,22 @@
   const line=document.createElement('p');line.textContent=ForbiddenDeckHardWonResponses[memory.pairId][memory.choice].echo;
   box.append(title,line);parent.appendChild(box);
  }
+ function groupMemories(parent,pending){
+  const memories=[...parent.children].filter(el=>el.classList.contains('narrative-callback'));
+  if(!memories.length)return;
+  const panel=document.createElement('details');panel.className='camp-memories';panel.open=pending;
+  const summary=document.createElement('summary');summary.textContent=pending?'Wspomnienia · nowa rozmowa':'Wspomnienia przy ognisku';
+  const body=document.createElement('div');body.className='camp-memories-body';body.append(...memories);
+  panel.append(summary,body);parent.appendChild(panel);
+ }
  const baseCamp=camp;
  camp=function(...args){
   const result=baseCamp(...args);
   S.hardWon=clean(S.hardWon);
-  const memory=S.hardWon;if(!memory)return result;
+  const memory=S.hardWon;
   const parent=document.getElementById('modalBody');
-  if(memory.choice!==null){appendMemory(parent,memory);return result}
+  if(!memory){groupMemories(parent,false);return result}
+  if(memory.choice!==null){appendMemory(parent,memory);groupMemories(parent,false);return result}
   const section=document.createElement('aside');section.className='narrative-callback hard-won-memory';
   const title=document.createElement('small');title.textContent='Po trudnym zwycięstwie';section.appendChild(title);
   for(const line of [...ForbiddenDeckHardWonData[pair()],'Możesz odpowiedzieć teraz albo wrócić do rozmowy przy kolejnym ognisku.']){
@@ -49,10 +58,11 @@
     if(S.hardWon!==memory||memory.choice!==null||!section.isConnected)return;
     memory.choice=index;ForbiddenDeckSave.save('map');
     section.querySelectorAll('button').forEach(b=>b.remove());
-    const response=document.createElement('p');response.textContent=option.reply;section.appendChild(response);
+    const response=document.createElement('p');response.textContent=option.reply;response.className='camp-memory-response';response.tabIndex=-1;section.appendChild(response);response.focus();
+    section.closest('.camp-memories').querySelector('summary').textContent='Wspomnienia przy ognisku';
    });button.dataset.hardWonChoice=String(index);section.appendChild(button);
   });
-  parent.appendChild(section);return result;
+  parent.appendChild(section);groupMemories(parent,true);return result;
  };
  window.addEventListener('forbidden-deck:restore',()=>{S.hardWon=clean(S.hardWon)});
  window.ForbiddenDeckHardWon={clean,appendMemory};

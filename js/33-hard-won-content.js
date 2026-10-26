@@ -53,5 +53,7 @@
  })]));
  ForbiddenDeckEnglish['Bez premii. Odpowiedź zostanie zapamiętana.']='No bonus. Your answer will be remembered.';
  ForbiddenDeckEnglish['Możesz odpowiedzieć teraz albo wrócić do rozmowy przy kolejnym ognisku.']='You can answer now or return to this conversation at the next campfire.';
+ ForbiddenDeckEnglish['Wspomnienia · nowa rozmowa']='Memories · new conversation';
+ ForbiddenDeckEnglish['Wspomnienia przy ognisku']='Campfire memories';
  window.ForbiddenDeckHardWonData=pairs;
 })();

@@ -12,6 +12,8 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 Wersja robocza: **V0.10.1 — Ślady wspólnej drogi**.
 
+Wspomnienia przy ognisku mają rozwijany panel: nowa rozmowa otwiera się automatycznie, przeczytane nawiązania pozostają zwinięte. Akcje obozu są przed panelem; większy tekst i obsługa klawiaturą ułatwiają czytanie. [Raport](docs/ITERATION_14.md).
+
 Po trudnym zwycięstwie bohaterowie wracają do przeżytego strachu przy ognisku: cztery osobne reakcje, zależne od utraty HP w rzeczywistej walce. Każdy duet ma dwie odpowiedzi, późniejsze nawiązanie i zapis wyboru w kronice. Rozmowę można odłożyć; bez dodatkowych premii. [Raport](docs/ITERATION_13.md).
 
 Nowy etap roboczy: cztery opcjonalne rozmowy na szlaku, po jednej dla każdego duetu. Pierwsze odwiedzone wydarzenie w wyprawie poprzedza osobista scena z dwiema odpowiedziami lub pominięciem. Wybór wraca przy ognisku i w historii wyprawy; nagrody istniejącego wydarzenia pozostają bez zmian. [Raport etapu](docs/ITERATION_11.md).

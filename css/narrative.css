@@ -4,3 +4,19 @@
 #roadsideScene .choice strong,#roadsideScene .choice span{display:block}
 #roadsideScene .choice span{margin-top:5px;font-size:12px;line-height:1.5;color:#aeb8c5}
 #roadsideScene .choice:focus-visible{outline:2px solid #d1b77a;outline-offset:2px}
+
+/* Camp actions stay above an optional, keyboard-accessible memory panel. */
+.camp-memories{grid-column:1/-1;min-width:0;margin-top:16px;border:1px solid #9e80594d;border-radius:12px;background:linear-gradient(135deg,#30271f,#141b24 65%);overflow:hidden}
+.camp-memories>summary{cursor:pointer;padding:16px;color:#edcca0;font-size:14px;font-weight:700;min-height:48px;box-sizing:border-box}
+.camp-memories>summary:focus-visible{outline:2px solid #e9c286;outline-offset:-4px}
+.camp-memories[open]>summary{border-bottom:1px solid #9e80594d}
+.camp-memories-body{padding:4px 16px 16px}
+.camp-memories .narrative-callback{margin:14px 0 0;padding:12px 16px;background:#0c121a80;border-radius:0 8px 8px 0}
+.camp-memories .narrative-callback small{font-size:11px;letter-spacing:.08em;color:#dfbb8e}
+.camp-memories .narrative-callback p{font-size:14px;line-height:1.7;max-width:75ch;color:#e0ddd5;overflow-wrap:anywhere}
+.camp-memories .choice{display:block;width:100%;margin-top:12px;text-align:left;white-space:normal;overflow-wrap:anywhere}
+.camp-memories .choice strong,.camp-memories .choice span{display:block;line-height:1.6}
+.camp-memories .choice span{margin-top:6px;font-size:12px;color:#bdc6d2}
+.camp-memories .choice:focus-visible,.camp-memory-response:focus{outline:2px solid #e9c286;outline-offset:3px}
+.camp-memories .camp-memory-response{padding:12px;border-left:2px solid #84b9aa;background:#20342f80}
+@media(max-width:600px){.camp-memories-body{padding:0 10px 12px}.camp-memories .narrative-callback{padding:10px}.camp-memories>summary{padding:14px}}

@@ -31,6 +31,7 @@ try{
   await page.evaluate(()=>camp());
   assert.equal(await page.locator('.roadside-memory').count(),choice==='skipped'?0:1);
   if(choice!=='skipped'){
+   await page.locator('.camp-memories>summary').click();
    const remembered=await page.locator('.roadside-memory').innerText();
    for(const enabled of [true,false,true]){
     await page.evaluate(enabled=>ForbiddenDeckRelationship.setRomanceEnabled(enabled),enabled);

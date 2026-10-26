@@ -32,6 +32,7 @@ try{
   await p.evaluate(()=>{S.party.members.forEach(h=>h.hp=h.maxHp);startBattle([enemy('Bandita','',10,'bandit',1)]);S.party.members[0].hp=8;S.enemies.forEach(e=>e.hp=0);victory();hideModal();camp()});
   assert.equal(await p.evaluate(()=>S.hardWon.choice),choice,'Later victories retain the chosen response');
   assert.equal(await p.locator('[data-hard-won-choice]').count(),0);
+  await p.locator('.camp-memories>summary').click();
   const echo=await p.evaluate(()=>ForbiddenDeckHardWonResponses[S.party.relationshipId][S.hardWon.choice].echo);
   assert.equal(await p.locator('.hard-won-memory p').innerText(),echo);
   const state=await p.evaluate(()=>JSON.stringify({hp:S.party.members.map(h=>h.hp),gold:S.gold,trust:S.trust}));

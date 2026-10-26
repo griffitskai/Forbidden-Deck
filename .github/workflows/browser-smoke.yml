@@ -43,6 +43,9 @@ jobs:
       - name: Run hard-won camp memories
         run: node tests/hard-won-smoke.mjs
 
+      - name: Check camp memory panel
+        run: node tests/camp-memories-layout.mjs
+
       - name: Run gameplay smoke test
         run: node tests/browser-smoke.mjs
 

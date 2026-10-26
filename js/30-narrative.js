@@ -14,12 +14,13 @@
   const companionChoices={};
   if(raw.pairId==='kael+lyra')for(const e of ForbiddenDeckStories){const choice=raw.companionChoices?.[e.id];if(e.options.some(o=>o.id===choice))companionChoices[e.id]=choice}
   const roadside=window.ForbiddenDeckRoadside?.clean(raw.roadside,raw.pairId)||null;
-  return {schema:1,pairId:raw.pairId,choices,companionChoices,...(roadside?{roadside}:{})};
+  const hardWon=window.ForbiddenDeckHardWon?.clean(raw.hardWon,raw.pairId)||null;
+  return {schema:1,pairId:raw.pairId,choices,companionChoices,...(roadside?{roadside}:{}),...(hardWon?{hardWon}:{})};
  }
  function capture(){
   const relation=ForbiddenDeckRelationship.load();let companionChoices={};
   if(P.isLegacy())companionChoices=ForbiddenDeckCompanions.load().choices;
-  return clean({schema:1,pairId:S.party.relationshipId,choices:relation.choices,companionChoices,roadside:S.roadside});
+  return clean({schema:1,pairId:S.party.relationshipId,choices:relation.choices,companionChoices,roadside:S.roadside,hardWon:S.hardWon});
  }
  function callback(id,snapshot=capture()){
   const state=clean(snapshot);if(!state)return null;
@@ -50,8 +51,9 @@
   function add(title,words){const row=document.createElement('li'),label=document.createElement('strong'),text=document.createElement('span');label.textContent=title;text.textContent=words;row.append(label,text);list.appendChild(row)}
   for(const row of state.choices)add(sceneFor(state.pairId,row.scene).title,memoryLabel(state,row));
   for(const e of ForbiddenDeckStories){const choice=state.companionChoices[e.id];if(choice)add(e.title,e.options.find(o=>o.id===choice).label)}
-  if(list.children.length)box.appendChild(list);else if(!state.roadside?.finished||!Number.isInteger(state.roadside.choice)){const empty=document.createElement('p');empty.textContent='Pierwsze wspomnienia są jeszcze przed wami.';box.appendChild(empty)}
+  if(list.children.length)box.appendChild(list);else if((!state.roadside?.finished||!Number.isInteger(state.roadside.choice))&&!Number.isInteger(state.hardWon?.choice)){const empty=document.createElement('p');empty.textContent='Pierwsze wspomnienia są jeszcze przed wami.';box.appendChild(empty)}
   window.ForbiddenDeckRoadside?.appendMemory(box,state.roadside||null);
+  window.ForbiddenDeckHardWon?.appendMemory(box,state.hardWon||null);
   parent.appendChild(box);
  }
  function epilogue(run){

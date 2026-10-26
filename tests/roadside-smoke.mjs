@@ -31,6 +31,12 @@ try{
   await page.evaluate(()=>camp());
   assert.equal(await page.locator('.roadside-memory').count(),choice==='skipped'?0:1);
   if(choice!=='skipped'){
+   const remembered=await page.locator('.roadside-memory').innerText();
+   for(const enabled of [true,false,true]){
+    await page.evaluate(enabled=>ForbiddenDeckRelationship.setRomanceEnabled(enabled),enabled);
+    assert.equal(await page.locator('.roadside-memory').innerText(),remembered,'Romance preferences must not hide non-romantic camp memories');
+    assert.deepEqual(await page.evaluate(()=>ForbiddenDeckNarrative.capture()),snapshot,'Preference changes preserve narrative facts');
+   }
    for(const width of [1366,390,320]){await page.setViewportSize({width,height:768});assert(await page.evaluate(()=>document.getElementById('modalBody').scrollWidth<=document.getElementById('modalBody').clientWidth+1))}
    await page.setViewportSize({width:1366,height:768});
   }

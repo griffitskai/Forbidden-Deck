@@ -29,7 +29,7 @@
  }
  function appendCallback(parent,id,snapshot){
   const line=callback(id,snapshot);if(!line)return;
-  const box=document.createElement('aside');box.className='narrative-callback';
+  const box=document.createElement('aside');box.className='narrative-callback relationship-callback';
   const title=document.createElement('small');title.textContent='Wcześniej między wami';
   const text=document.createElement('p'),speaker=document.createElement('strong');speaker.textContent=line[0]+': ';text.append(speaker,document.createTextNode(line[1]));box.append(title,text);parent.appendChild(box);
  }
@@ -80,7 +80,7 @@
  window.addEventListener('forbidden-deck:romance',()=>{
   const album=document.querySelector('#companionsScreen .narrative-chronicle');if(album){const parent=album.parentElement;album.remove();appendChronicle(parent)}
   if(document.getElementById('historyScreen').classList.contains('show'))ForbiddenDeckHistory.render();
-  document.querySelectorAll('.narrative-callback').forEach(el=>el.remove());
+  document.querySelectorAll('.relationship-callback').forEach(el=>el.remove());
   const run=ForbiddenDeckHistory.load().runs[0],result=document.querySelector('#modalBody .narrative-epilogue');if(result&&run){const open=result.open;result.replaceWith(epilogueElement(run,open))}
  });
 })();

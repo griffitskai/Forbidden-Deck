@@ -169,3 +169,7 @@ Każdy duet ma dwie odpowiedzi z własną reakcją i późniejszym echem przy og
 ## Czytelność wspomnień przy ognisku
 
 Wspólny panel details grupuje nawiązania pod akcjami obozu. Nierozstrzygnięta rozmowa po trudnej walce otwiera panel; zapisane wspomnienia zaczynają zwinięte. Enter/Spacja obsługują natywny summary, widoczny fokus pomaga nawigować, a wybranie odpowiedzi przenosi fokus na reakcję. Większe litery, odstępy i oddzielone podpowiedzi nagród; bez zmian zapisów, mechanik, treści rozmów lub układu walki. [Raport](ITERATION_14.md).
+
+## Drugie spotkanie na szlaku
+
+Drugie spotkanie na szlaku ma osiem wariantów zależnych od pierwszej odpowiedzi (po dwa dla każdego duetu). Pojawia się raz, przed pierwszym odwiedzonym wydarzeniem w późniejszym akcie. Pominięcie pierwszej rozmowy wyłącza jej kontynuację. Po krótkiej wymianie zdań wraca zwykłe wydarzenie z dotychczasowymi nagrodami. Zapis wznawia rozmowę, a potwierdzone spotkanie trafia do wspomnień przy ognisku i kroniki zakończonej wyprawy. PL/EN, bez premii i bez wymogu romansu.

@@ -131,3 +131,65 @@ Object.assign(window.ForbiddenDeckEnglish,{
   "Przejdź do wydarzenia na trasie.": "Continue to the route event.",
   "Wspomnienie ze szlaku": "A roadside memory"
 });
+
+window.ForbiddenDeckRoadsideFollowups={
+  "kael+lyra": [
+    [
+      "Kael: Pasek znowu puszcza. Tym razem proszę, zanim zacznie boleć.",
+      "Lyra: A ja tym razem nie powiem „a nie mówiłam”. Siadaj. Igła jest tam, gdzie ją zostawiłeś."
+    ],
+    [
+      "Lyra: Ten ścieg jest twój? Krzywy, ale trzyma.",
+      "Kael: Dwa razy prułem. Za trzecim pomyślałem, że mogę ci pokazać, zanim będzie idealny."
+    ]
+  ],
+  "kael+selene": [
+    [
+      "Selene: Pięć minut. Wiem, jeszcze mogę iść. Właśnie dlatego mówię teraz.",
+      "Kael: Tarcza na ziemię. Kredę też odkładamy? Nie pilnuję cię. Sam potrzebuję przypomnienia."
+    ],
+    [
+      "Kael: Masz taką minę, jakbyś układała odpowiedź, której chciałbym posłuchać.",
+      "Selene: Jestem zła i zmęczona. Woda pomoże na jedno. Z drugim po prostu idź obok."
+    ]
+  ],
+  "lyra+varyn": [
+    [
+      "Lyra: Widziałam dwie kreski. Mimo to chciałam pobiec za tobą.",
+      "Varyn: Znak nie załatwi wszystkiego. Następnym razem powiem też, jak długo mnie nie będzie."
+    ],
+    [
+      "Varyn: Co widzisz przy zakręcie?",
+      "Lyra: Złamane trzciny. I ciebie, jak czekasz na moją odpowiedź, choć już znasz swoją. To drugie jest nowe."
+    ]
+  ],
+  "selene+varyn": [
+    [
+      "Varyn: Znowu sięgnąłem po monetę. Nie podałem jej. To chyba mały postęp.",
+      "Selene: Nie musisz mi zdawać raportu. Ale dziękuję, że powiedziałeś. Następnym razem też możesz się zawahać."
+    ],
+    [
+      "Selene: Moja kolej na torbę. Oddaj, zanim zaczniesz udawać, że nic nie waży.",
+      "Varyn: Waży okropnie. Chciałem powiedzieć to od godziny. Dobrze, że nie płacisz mi za dzielność."
+    ]
+  ]
+};
+Object.assign(ForbiddenDeckEnglish,{
+  "Dalszy ślad": "A later trace",
+  "Kael: Pasek znowu puszcza. Tym razem proszę, zanim zacznie boleć.": "Kael: The strap is giving way again. This time I am asking before it hurts.",
+  "Lyra: A ja tym razem nie powiem „a nie mówiłam”. Siadaj. Igła jest tam, gdzie ją zostawiłeś.": "Lyra: And this time I will not say I told you so. Sit down. The needle is where you left it.",
+  "Lyra: Ten ścieg jest twój? Krzywy, ale trzyma.": "Lyra: Is that your stitching? Crooked, but it holds.",
+  "Kael: Dwa razy prułem. Za trzecim pomyślałem, że mogę ci pokazać, zanim będzie idealny.": "Kael: I pulled it out twice. The third time I thought I could show you before it was perfect.",
+  "Selene: Pięć minut. Wiem, jeszcze mogę iść. Właśnie dlatego mówię teraz.": "Selene: Five minutes. I know I can still walk. That is exactly why I am saying it now.",
+  "Kael: Tarcza na ziemię. Kredę też odkładamy? Nie pilnuję cię. Sam potrzebuję przypomnienia.": "Kael: Shield down. Are we putting the chalk away too? I am not watching you. I need the reminder myself.",
+  "Kael: Masz taką minę, jakbyś układała odpowiedź, której chciałbym posłuchać.": "Kael: You look as though you are composing the answer I would like to hear.",
+  "Selene: Jestem zła i zmęczona. Woda pomoże na jedno. Z drugim po prostu idź obok.": "Selene: I am angry and tired. Water will help with one. For the other, just walk beside me.",
+  "Lyra: Widziałam dwie kreski. Mimo to chciałam pobiec za tobą.": "Lyra: I saw the two marks. I still wanted to run after you.",
+  "Varyn: Znak nie załatwi wszystkiego. Następnym razem powiem też, jak długo mnie nie będzie.": "Varyn: A sign cannot solve everything. Next time I will also tell you how long I will be gone.",
+  "Varyn: Co widzisz przy zakręcie?": "Varyn: What do you see by the bend?",
+  "Lyra: Złamane trzciny. I ciebie, jak czekasz na moją odpowiedź, choć już znasz swoją. To drugie jest nowe.": "Lyra: Broken reeds. And you waiting for my answer even though you already have yours. The second part is new.",
+  "Varyn: Znowu sięgnąłem po monetę. Nie podałem jej. To chyba mały postęp.": "Varyn: I reached for the coin again. I did not offer it. A little progress, I suppose.",
+  "Selene: Nie musisz mi zdawać raportu. Ale dziękuję, że powiedziałeś. Następnym razem też możesz się zawahać.": "Selene: You do not have to report to me. But thank you for telling me. You are allowed to hesitate next time too.",
+  "Selene: Moja kolej na torbę. Oddaj, zanim zaczniesz udawać, że nic nie waży.": "Selene: My turn with the bag. Hand it over before you start pretending it weighs nothing.",
+  "Varyn: Waży okropnie. Chciałem powiedzieć to od godziny. Dobrze, że nie płacisz mi za dzielność.": "Varyn: It weighs a terrible amount. I have wanted to say that for an hour. Good thing you are not paying me to be brave."
+});

@@ -12,6 +12,8 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 Wersja robocza: **V0.10.1 — Ślady wspólnej drogi**.
 
+Drugie spotkanie na szlaku ma osiem wariantów zależnych od pierwszej odpowiedzi (po dwa dla każdego duetu). Pojawia się raz, przed pierwszym odwiedzonym wydarzeniem w późniejszym akcie. Pominięcie pierwszej rozmowy wyłącza jej kontynuację. Po krótkiej wymianie zdań wraca zwykłe wydarzenie z dotychczasowymi nagrodami. Zapis wznawia rozmowę, a potwierdzone spotkanie trafia do wspomnień przy ognisku i kroniki zakończonej wyprawy. PL/EN, bez premii i bez wymogu romansu. [Raport](docs/ITERATION_15.md).
+
 Wspomnienia przy ognisku mają rozwijany panel: nowa rozmowa otwiera się automatycznie, przeczytane nawiązania pozostają zwinięte. Akcje obozu są przed panelem; większy tekst i obsługa klawiaturą ułatwiają czytanie. [Raport](docs/ITERATION_14.md).
 
 Po trudnym zwycięstwie bohaterowie wracają do przeżytego strachu przy ognisku: cztery osobne reakcje, zależne od utraty HP w rzeczywistej walce. Każdy duet ma dwie odpowiedzi, późniejsze nawiązanie i zapis wyboru w kronice. Rozmowę można odłożyć; bez dodatkowych premii. [Raport](docs/ITERATION_13.md).

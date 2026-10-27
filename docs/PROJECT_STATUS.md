@@ -173,3 +173,7 @@ Wspólny panel details grupuje nawiązania pod akcjami obozu. Nierozstrzygnięta
 ## Drugie spotkanie na szlaku
 
 Drugie spotkanie na szlaku ma osiem wariantów zależnych od pierwszej odpowiedzi (po dwa dla każdego duetu). Pojawia się raz, przed pierwszym odwiedzonym wydarzeniem w późniejszym akcie. Pominięcie pierwszej rozmowy wyłącza jej kontynuację. Po krótkiej wymianie zdań wraca zwykłe wydarzenie z dotychczasowymi nagrodami. Zapis wznawia rozmowę, a potwierdzone spotkanie trafia do wspomnień przy ognisku i kroniki zakończonej wyprawy. PL/EN, bez premii i bez wymogu romansu.
+
+## Przypomnienie decyzji
+
+Kontynuacje rozmów i wspomnienia ze szlaku mają zwijane przypomnienie konkretnej wcześniejszej odpowiedzi wraz z tytułem pierwszego spotkania. Przypomnienie jest domyślnie zamknięte i działa klawiaturą; nie zmienia zapisów ani wyborów. PL/EN.

@@ -193,3 +193,5 @@ Object.assign(ForbiddenDeckEnglish,{
   "Selene: Moja kolej na torbę. Oddaj, zanim zaczniesz udawać, że nic nie waży.": "Selene: My turn with the bag. Hand it over before you start pretending it weighs nothing.",
   "Varyn: Waży okropnie. Chciałem powiedzieć to od godziny. Dobrze, że nie płacisz mi za dzielność.": "Varyn: It weighs a terrible amount. I have wanted to say that for an hour. Good thing you are not paying me to be brave."
 });
+
+ForbiddenDeckEnglish['Wcześniejszy wybór']='Earlier choice';

@@ -20,3 +20,9 @@
 .camp-memories .choice:focus-visible,.camp-memory-response:focus{outline:2px solid #e9c286;outline-offset:3px}
 .camp-memories .camp-memory-response{padding:12px;border-left:2px solid #84b9aa;background:#20342f80}
 @media(max-width:600px){.camp-memories-body{padding:0 10px 12px}.camp-memories .narrative-callback{padding:10px}.camp-memories>summary{padding:14px}}
+
+.roadside-decision{margin:12px 0;border:1px solid #9e80594d;border-radius:8px;background:#101821;color:#d9d3c9}
+.roadside-decision>summary{padding:12px;cursor:pointer;font-size:13px;color:#e5c49a;min-height:44px;box-sizing:border-box}
+.roadside-decision>summary:focus-visible{outline:2px solid #e9c286;outline-offset:-3px}
+.roadside-decision>strong{display:block;margin:4px 14px;font-size:13px}
+.roadside-decision>blockquote{margin:8px 14px 14px;padding-left:12px;border-left:2px solid #a78c61;font-size:14px;line-height:1.65;overflow-wrap:anywhere}

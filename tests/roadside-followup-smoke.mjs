@@ -11,14 +11,24 @@ try{
   const before=await stats();
   await p.locator('.node:not(.locked)').nth(1).click();
   if(choice==='skipped'){assert.equal(await p.locator('[data-road-followup]').count(),0);continue}
+  const recap=p.locator('[data-road-followup] .roadside-decision');
+  assert.equal(await recap.evaluate(el=>el.open),false);
+  await recap.locator('summary').focus();await p.keyboard.press('Enter');
+  assert(await recap.evaluate(el=>el.open));
+  assert.equal(await recap.locator('blockquote').innerText(),await p.evaluate(()=>ForbiddenDeckRoadsideData[S.party.relationshipId].options[S.roadside.choice].label));
   const expected=await p.evaluate(()=>ForbiddenDeckRoadsideFollowups[S.party.relationshipId][S.roadside.choice].join('\n'));
   assert.equal((await p.locator('[data-road-followup] p').allTextContents()).join('\n'),expected);
   await reload();assert.equal((await p.locator('[data-road-followup] p').allTextContents()).join('\n'),expected);
+  await p.locator('[data-road-followup] .roadside-decision>summary').click();
   await p.evaluate(()=>ForbiddenDeckLanguage.set('en'));assert(!/[ąćęłńóśźż]/i.test(await p.locator('[data-road-followup]').innerText()));
   await p.evaluate(()=>ForbiddenDeckLanguage.set('pl'));
   await p.locator('[data-road-continue]').click();assert.equal(await stats(),before,'Follow-up does not alter rewards');
   await reload();assert.equal(await p.locator('[data-road-followup]').count(),0,'Acknowledged scene does not replay');
   await p.locator('#modalBody .choice').first().click();assert.equal(await p.evaluate(()=>S.stage),1,'Original event advances once');
+  await p.evaluate(()=>camp());
+  await p.locator('.camp-memories>summary').click();
+  await p.locator('.roadside-decision>summary').click();
+  assert.equal(await p.locator('.roadside-decision blockquote').innerText(),await p.evaluate(()=>ForbiddenDeckRoadsideData[S.party.relationshipId].options[S.roadside.choice].label));
   const snapshot=await p.evaluate(()=>ForbiddenDeckNarrative.capture());assert(snapshot.roadside.followup.finished);
   await p.evaluate(()=>{hideModal();S.act=2;runComplete()});
   assert.deepEqual(await p.evaluate(()=>ForbiddenDeckHistory.load().runs[0].narrative),snapshot);

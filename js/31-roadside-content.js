@@ -195,3 +195,5 @@ Object.assign(ForbiddenDeckEnglish,{
 });
 
 ForbiddenDeckEnglish['Wcześniejszy wybór']='Earlier choice';
+
+ForbiddenDeckEnglish['Pominiesz także jej dalszy ciąg w tej wyprawie. Nagrody wydarzenia pozostają bez zmian.']='This also skips its follow-up for this expedition. Event rewards stay unchanged.';

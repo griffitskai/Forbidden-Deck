@@ -181,3 +181,7 @@ Kontynuacje rozmów i wspomnienia ze szlaku mają zwijane przypomnienie konkretn
 ## Pokrycie kolejności spotkań
 
 CI obejmuje 36 scenariuszy tras: cztery duety, pierwszy dialog w każdym z trzech aktów, dwie odpowiedzi i pominięcie. Weryfikuje brak powtórzeń i zachowanie oryginalnych wydarzeń. Węzły walk są pomijane; to kontrola kolejności, nie pomiar tempa pełnej rozgrywki. [Raport](ITERATION_17.md).
+
+## Jasna konsekwencja pominięcia
+
+Opis pominięcia rozmowy na szlaku informuje przed decyzją, że pominięta zostanie również jej kontynuacja w tej wyprawie, a nagrody wydarzenia nie zmienią się. PL/EN, bez zmiany zasad lub zapisów. [Raport](ITERATION_18.md).

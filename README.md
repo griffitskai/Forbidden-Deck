@@ -116,3 +116,5 @@ Warstwa romantyczna/18+ pozostaje opcjonalnym dodatkiem do pełnoprawnej gry i n
 - `docs/PROJECT_STATUS.md` — aktualny stan mechanik,
 - `docs/ROADMAP.md` — plan dalszego rozwoju,
 - `docs/DECISIONS.md` — najważniejsze decyzje projektowe.
+
+Test `node tests/roadside-route-smoke.mjs` sprawdza kolejność osobistych spotkań w trzech aktach (36 scenariuszy, bez symulowania walk). Wymaga lokalnego serwera HTTP na porcie 8000 lub `FD_TEST_URL`. [Zakres i wyniki](docs/ITERATION_17.md).

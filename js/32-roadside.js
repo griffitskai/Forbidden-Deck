@@ -12,9 +12,25 @@
  }
  const atNode=memory=>memory&&memory.act===S.act&&memory.stage===S.stage&&S.currentNode?.type==='event';
  const baseEvent=eventNode;
+ function focusScene(){
+  const root=document.getElementById('roadsideScene');
+  root.tabIndex=-1;root.setAttribute('role','group');root.setAttribute('aria-labelledby','modalTitle');
+  root.addEventListener('keydown',event=>{
+   if(event.key!=='Tab'||!document.getElementById('overlay').classList.contains('show'))return;
+   const controls=[...root.querySelectorAll('button:not(:disabled),summary')];
+   const first=controls[0],last=controls[controls.length-1];
+   if(event.shiftKey&&(document.activeElement===root||document.activeElement===first)){event.preventDefault();last?.focus()}
+   else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}
+  });
+  root.focus({preventScroll:true});
+ }
+ function resumeEvent(){
+  baseEvent();
+  document.querySelector('#modalBody .choice')?.focus({preventScroll:true});
+ }
  function continueEvent(memory){
   if(S.roadside!==memory||!atNode(memory))return;
-  memory.finished=true;ForbiddenDeckSave.save('map');baseEvent();
+  memory.finished=true;ForbiddenDeckSave.save('map');resumeEvent();
  }
  function render(){
   const memory=S.roadside,story=data[memory.pairId];
@@ -31,6 +47,7 @@
    }else{const next=choiceBtn('Idźmy dalej','Przejdź do wydarzenia na trasie.',()=>continueEvent(memory));next.dataset.roadContinue='';root.appendChild(next)}
    return root;
   });
+  focusScene();
  }
  function appendDecision(parent,memory){
   const details=document.createElement('details');details.className='roadside-decision';
@@ -46,9 +63,10 @@
    for(const line of ForbiddenDeckRoadsideFollowups[memory.pairId][memory.choice]){const p=document.createElement('p');p.textContent=line;root.appendChild(p)}
    const next=choiceBtn('Idźmy dalej','Przejdź do wydarzenia na trasie.',()=>{
     if(S.roadside!==memory||followup.finished||!atNode(followup))return;
-    followup.finished=true;ForbiddenDeckSave.save('map');baseEvent();
+    followup.finished=true;ForbiddenDeckSave.save('map');resumeEvent();
    });next.dataset.roadContinue='';root.appendChild(next);return root;
   });
+  focusScene();
  }
  eventNode=function(){
   S.roadside=clean(S.roadside);
@@ -67,8 +85,8 @@
  const baseNew=newRun;newRun=function(...args){S.roadside=null;return baseNew(...args)};
  window.addEventListener('forbidden-deck:restore',()=>{
   S.roadside=clean(S.roadside);
-  if(atNode(S.roadside?.followup)){if(!S.roadside.followup.finished)renderFollowup();else baseEvent()}
-  else if(atNode(S.roadside)){if(!S.roadside.finished)render();else baseEvent()}
+  if(atNode(S.roadside?.followup)){if(!S.roadside.followup.finished)renderFollowup();else resumeEvent()}
+  else if(atNode(S.roadside)){if(!S.roadside.finished)render();else resumeEvent()}
  });
  function appendMemory(parent,raw=S.roadside){
   const memory=clean(raw,raw?.pairId);if(!memory||!memory.finished||!Number.isInteger(memory.choice))return;

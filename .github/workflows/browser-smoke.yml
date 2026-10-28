@@ -43,6 +43,9 @@ jobs:
       - name: Check later roadside encounters
         run: node tests/roadside-followup-smoke.mjs
 
+      - name: Check roadside keyboard navigation
+        run: node tests/roadside-keyboard-smoke.mjs
+
       - name: Check roadside route pacing
         run: node tests/roadside-route-smoke.mjs
 

@@ -1,5 +1,9 @@
 # Project Status — V0.10.1
 
+## Obsługa rozmów klawiaturą
+
+Sceny na szlaku mają fokus na treści, nazwę grupy powiązaną z tytułem i cykl Tab/Shift+Tab obejmujący odpowiedzi oraz przypomnienie wcześniejszego wyboru. Po rozmowie fokus wraca do pierwszej decyzji wydarzenia. Test czterech duetów w PL/EN w CI. Bez zmiany danych zapisu. [ITERATION_19.md](ITERATION_19.md).
+
 ## Grywalny wybór postaci
 
 Cztery postacie i cztery duety, osobne zasoby i osobiste wyposażenie. Selene: Runy i jedno leczenie w walce. Varyn: Cień, zasadzka i trucizna. Nowe duety: 18 kart bazowych z ulepszeniami, 12 rozmów, trzy sceny i osobne zapisy Trust, wyborów oraz albumów. Stary postęp Kaela i Lyry pozostaje przypisany wyłącznie do nich. Wszystkie duety ukończyły deterministyczną trasę Aktu I na Standardzie. [Architektura i granice testów](PARTY_ARCHITECTURE.md).

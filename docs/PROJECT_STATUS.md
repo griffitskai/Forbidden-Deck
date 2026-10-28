@@ -177,3 +177,7 @@ Drugie spotkanie na szlaku ma osiem wariantów zależnych od pierwszej odpowiedz
 ## Przypomnienie decyzji
 
 Kontynuacje rozmów i wspomnienia ze szlaku mają zwijane przypomnienie konkretnej wcześniejszej odpowiedzi wraz z tytułem pierwszego spotkania. Przypomnienie jest domyślnie zamknięte i działa klawiaturą; nie zmienia zapisów ani wyborów. PL/EN.
+
+## Pokrycie kolejności spotkań
+
+CI obejmuje 36 scenariuszy tras: cztery duety, pierwszy dialog w każdym z trzech aktów, dwie odpowiedzi i pominięcie. Weryfikuje brak powtórzeń i zachowanie oryginalnych wydarzeń. Węzły walk są pomijane; to kontrola kolejności, nie pomiar tempa pełnej rozgrywki. [Raport](ITERATION_17.md).

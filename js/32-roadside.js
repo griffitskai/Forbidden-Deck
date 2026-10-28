@@ -27,7 +27,7 @@
      if(S.roadside!==memory||memory.choice!==null||!atNode(memory))return;
      memory.choice=index;ForbiddenDeckSave.save('map');render();
     });button.dataset.roadChoice=String(index);root.appendChild(button)});
-    const skip=choiceBtn('Pomiń rozmowę','Przejdź do wydarzenia na trasie.',()=>{if(S.roadside!==memory||memory.choice!==null||!atNode(memory))return;memory.choice='skipped';continueEvent(memory)});skip.dataset.roadSkip='';root.appendChild(skip);
+    const skip=choiceBtn('Pomiń rozmowę','Pominiesz także jej dalszy ciąg w tej wyprawie. Nagrody wydarzenia pozostają bez zmian.',()=>{if(S.roadside!==memory||memory.choice!==null||!atNode(memory))return;memory.choice='skipped';continueEvent(memory)});skip.dataset.roadSkip='';root.appendChild(skip);
    }else{const next=choiceBtn('Idźmy dalej','Przejdź do wydarzenia na trasie.',()=>continueEvent(memory));next.dataset.roadContinue='';root.appendChild(next)}
    return root;
   });

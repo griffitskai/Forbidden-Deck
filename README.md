@@ -12,6 +12,8 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 Wersja robocza: **V0.10.1 — Ślady wspólnej drogi**.
 
+Opis pominięcia rozmowy na szlaku informuje przed decyzją, że pominięta zostanie również jej kontynuacja w tej wyprawie, a nagrody wydarzenia nie zmienią się. PL/EN, bez zmiany zasad lub zapisów. [Raport](docs/ITERATION_18.md).
+
 Kontynuacje rozmów i wspomnienia ze szlaku mają zwijane przypomnienie konkretnej wcześniejszej odpowiedzi wraz z tytułem pierwszego spotkania. Przypomnienie jest domyślnie zamknięte i działa klawiaturą; nie zmienia zapisów ani wyborów. PL/EN. [Raport](docs/ITERATION_16.md).
 
 Drugie spotkanie na szlaku ma osiem wariantów zależnych od pierwszej odpowiedzi (po dwa dla każdego duetu). Pojawia się raz, przed pierwszym odwiedzonym wydarzeniem w późniejszym akcie. Pominięcie pierwszej rozmowy wyłącza jej kontynuację. Po krótkiej wymianie zdań wraca zwykłe wydarzenie z dotychczasowymi nagrodami. Zapis wznawia rozmowę, a potwierdzone spotkanie trafia do wspomnień przy ognisku i kroniki zakończonej wyprawy. PL/EN, bez premii i bez wymogu romansu. [Raport](docs/ITERATION_15.md).

@@ -197,3 +197,33 @@ Object.assign(ForbiddenDeckEnglish,{
 ForbiddenDeckEnglish['Wcześniejszy wybór']='Earlier choice';
 
 ForbiddenDeckEnglish['Pominiesz także jej dalszy ciąg w tej wyprawie. Nagrody wydarzenia pozostają bez zmian.']='This also skips its follow-up for this expedition. Event rewards stay unchanged.';
+
+// Short camp echoes; the chronicle retains the complete roadside exchange.
+window.ForbiddenDeckRoadsideEchoes={
+  "kael+lyra": [
+    "Kael: Igłę zostawiłem przy twoim kubku. Nie chowam już napraw na koniec dnia.",
+    "Lyra: Nie poprawiałam tego ściegu. Chciałam, żebyś rano zobaczył, że twój też wytrzymał."
+  ],
+  "kael+selene": [
+    "Kael: Dzisiaj ja proszę o pięć minut. Posiedzisz ze mną?",
+    "Selene: Już mi trochę lżej. Nie dlatego, że znalazłeś odpowiedź. Dobrze było nie iść z tym samej."
+  ],
+  "lyra+varyn": [
+    "Varyn: Po chrust. Do tamtych drzew i z powrotem, nim zagotujesz wodę. Tak, uczę się mówić przed wyjściem.",
+    "Varyn: Jutro ty wybierasz przejście. Jeśli czegoś nie zobaczę, powiesz mi."
+  ],
+  "selene+varyn": [
+    "Varyn: Opatrunek trzyma. Chciałem tylko podziękować. Dziwnie krótko to brzmi bez targowania.",
+    "Selene: Torba stoi między nami. Rano ustalimy, kto ją bierze. Teraz oboje mamy wolne ręce."
+  ]
+};
+Object.assign(ForbiddenDeckEnglish,{
+  "Kael: Igłę zostawiłem przy twoim kubku. Nie chowam już napraw na koniec dnia.": "Kael: I left the needle beside your cup. I no longer save repairs for the end of the day.",
+  "Lyra: Nie poprawiałam tego ściegu. Chciałam, żebyś rano zobaczył, że twój też wytrzymał.": "Lyra: I did not fix that stitch. I wanted you to see in the morning that yours held too.",
+  "Kael: Dzisiaj ja proszę o pięć minut. Posiedzisz ze mną?": "Kael: Today I am the one asking for five minutes. Will you sit with me?",
+  "Selene: Już mi trochę lżej. Nie dlatego, że znalazłeś odpowiedź. Dobrze było nie iść z tym samej.": "Selene: I feel a little lighter now. Not because you found an answer. It helped not to carry it alone.",
+  "Varyn: Po chrust. Do tamtych drzew i z powrotem, nim zagotujesz wodę. Tak, uczę się mówić przed wyjściem.": "Varyn: Going for firewood. To those trees and back before the water boils. Yes, I am learning to say it before I leave.",
+  "Varyn: Jutro ty wybierasz przejście. Jeśli czegoś nie zobaczę, powiesz mi.": "Varyn: Tomorrow you choose the crossing. If I miss something, you will tell me.",
+  "Varyn: Opatrunek trzyma. Chciałem tylko podziękować. Dziwnie krótko to brzmi bez targowania.": "Varyn: The dressing is holding. I just wanted to say thank you. It sounds oddly brief without the bargaining.",
+  "Selene: Torba stoi między nami. Rano ustalimy, kto ją bierze. Teraz oboje mamy wolne ręce.": "Selene: The bag is between us. We can decide who takes it in the morning. For now, both our hands are free."
+});

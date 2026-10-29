@@ -1,5 +1,9 @@
 # Project Status — V0.10.1
 
+## Echa drugiego spotkania
+
+Osiem nowych kwestii przy ognisku rozwija skutki wyborów ze szlaku. Pojawiają się dopiero po potwierdzeniu drugiego spotkania. Zastępują powtórzenie jego pełnego dialogu w panelu obozu; kronika nadal zawiera całą wymianę. PL/EN, bez zmiany zapisów i nagród. [ITERATION_20.md](ITERATION_20.md).
+
 ## Obsługa rozmów klawiaturą
 
 Sceny na szlaku mają fokus na treści, nazwę grupy powiązaną z tytułem i cykl Tab/Shift+Tab obejmujący odpowiedzi oraz przypomnienie wcześniejszego wyboru. Po rozmowie fokus wraca do pierwszej decyzji wydarzenia. Test czterech duetów w PL/EN w CI. Bez zmiany danych zapisu. [ITERATION_19.md](ITERATION_19.md).

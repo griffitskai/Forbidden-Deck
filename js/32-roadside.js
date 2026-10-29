@@ -88,17 +88,17 @@
   if(atNode(S.roadside?.followup)){if(!S.roadside.followup.finished)renderFollowup();else resumeEvent()}
   else if(atNode(S.roadside)){if(!S.roadside.finished)render();else resumeEvent()}
  });
- function appendMemory(parent,raw=S.roadside){
+ function appendMemory(parent,raw=S.roadside,compact=false){
   const memory=clean(raw,raw?.pairId);if(!memory||!memory.finished||!Number.isInteger(memory.choice))return;
   const box=document.createElement('aside');box.className='narrative-callback roadside-memory';
   const title=document.createElement('small');title.textContent='Wspomnienie ze szlaku';
   const line=document.createElement('p');line.textContent=data[memory.pairId].options[memory.choice].echo;box.append(title,line);appendDecision(box,memory);
   if(memory.followup?.finished){
    const heading=document.createElement('small');heading.textContent='Dalszy ślad';box.appendChild(heading);
-   for(const words of ForbiddenDeckRoadsideFollowups[memory.pairId][memory.choice]){const p=document.createElement('p');p.textContent=words;box.appendChild(p)}
+   for(const words of compact?[ForbiddenDeckRoadsideEchoes[memory.pairId][memory.choice]]:ForbiddenDeckRoadsideFollowups[memory.pairId][memory.choice]){const p=document.createElement('p');p.textContent=words;box.appendChild(p)}
   }
   parent.appendChild(box);
  }
- const baseCamp=camp;camp=function(...args){const result=baseCamp(...args);appendMemory(document.getElementById('modalBody'));return result};
+ const baseCamp=camp;camp=function(...args){const result=baseCamp(...args);appendMemory(document.getElementById('modalBody'),S.roadside,true);return result};
  window.ForbiddenDeckRoadside={clean,appendMemory};
 })();

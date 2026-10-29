@@ -12,6 +12,8 @@ Wersja z gałęzi `main` jest automatycznie publikowana przez GitHub Pages po ka
 
 Wersja robocza: **V0.10.1 — Ślady wspólnej drogi**.
 
+Po drugim spotkaniu na szlaku ognisko przynosi krótką, nową kwestię zależną od wcześniejszego wyboru — osiem wariantów dla czterech duetów w PL/EN. Kronika zachowuje pełną rozmowę. [Raport](docs/ITERATION_20.md).
+
 Rozmowy na szlaku przenoszą fokus na treść po otwarciu, odpowiedzi i wczytaniu. Tab oraz Shift+Tab pozostają w scenie; zakończenie rozmowy przenosi fokus na wybory zwykłego wydarzenia. PL/EN, również offline. [Raport](docs/ITERATION_19.md).
 
 Opis pominięcia rozmowy na szlaku informuje przed decyzją, że pominięta zostanie również jej kontynuacja w tej wyprawie, a nagrody wydarzenia nie zmienią się. PL/EN, bez zmiany zasad lub zapisów. [Raport](docs/ITERATION_18.md).
